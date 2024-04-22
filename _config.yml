@@ -37,7 +37,7 @@ author:
   type      : # "person" (default), "organization"
   name      : coolzest
   url       :
-  avatar    : # path or url of avatar image (square)
+  avatar    :  image (C:\Users\ASUS\Documents\BLOG\coolzest.github.io\images\avater.jpg) # path or url of avatar image (square)
   bio       : lingt
   email     : coolzest@qq.com
   facebook  : # "user_name" the last part of your profile url, e.g. https://www.facebook.com/user_name
