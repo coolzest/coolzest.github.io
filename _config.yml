@@ -20,9 +20,9 @@ text_skin: chocolate # "default" (default), "dark", "forest", "ocean", "chocolat
 highlight_theme: default # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
 url     : # the base hostname & protocol for your site e.g. https://www.someone.com
 baseurl : # does not include hostname
-title   : "My Awesome Website"
+title   : "笔记分享"
 description: > # this means to ignore newlines until "Language & timezone"
-  未来属于自己！
+  不想努力er！
 
 
 ## => Language and Timezone
