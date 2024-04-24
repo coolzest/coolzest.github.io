@@ -1,13 +1,13 @@
 # Site settings
-title: oukohou
-subtitle: [ 璇珠杂俎]
-keywords: oukohou
-description: 我梦扬州，便想到扬州梦我。幸会。微信公众号：oukohou.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://www.oukohou.wang/" # 你的域名
+title: 备忘录
+subtitle: [ 偷懒]
+keywords: 
+description: 不想努力er
+baseurl: "auto" # the subpath of your site, e.g. /blog
+url:  # 你的域名
 page_no_title: "oukohou's blog" # 文章无标题时默认显示内容
 beian: # "备案号"
-author: oukohou
+author: coolzest
 email: oukohou@outlook.com
 
 # Build settings
