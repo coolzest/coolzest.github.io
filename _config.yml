@@ -103,7 +103,7 @@ comments:
     repo: coolzest/coolzest.github.io
     repo_id:  R_kgDOLxjz2w
     category: General
-    category_id: DIC_kwDOLxjz284Ce5ZP
+    category_id: DIC_kwDOLxjz284Ce5ZN
     mapping: pathname # optional, default to 'pathname'
     input_position: top# optional, default to 'bottom'
     lang: zh-CN# optional, default to the value of `site.lang`
