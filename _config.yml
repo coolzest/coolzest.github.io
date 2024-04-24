@@ -100,10 +100,10 @@ comments:
 #https://github.com/mmistakes/minimal-mistakes/pull/3022#issuecomment-869022785:
 # JEKYLL_ENV=production jekyll serve
   giscus:
-    repo: oukohou/image_gallery
-    repo_id:  MDEwOlJlcG9zaXRvcnkxODg5ODYzOTY=
+    repo: coolzest/coolzest.github.io
+    repo_id:  R_kgDOLxjz2w
     category: General
-    category_id: DIC_kwDOC0O0HM4CdbSz
+    category_id: DIC_kwDOLxjz284Ce5ZP
     mapping: pathname # optional, default to 'pathname'
     input_position: top# optional, default to 'bottom'
     lang: zh-CN# optional, default to the value of `site.lang`
