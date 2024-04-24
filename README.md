@@ -1,89 +1,53 @@
-# [TeXt Theme](https://github.com/kitian616/jekyll-TeXt-theme)
+[我的独立博客](http://www.oukohou.wang/)
+=================================
 
-[![license](https://img.shields.io/github/license/kitian616/jekyll-TeXt-theme.svg)](https://github.com/kitian616/jekyll-TeXt-theme/blob/master/LICENSE)
-[![Gem Version](https://img.shields.io/gem/v/jekyll-text-theme.svg)](https://github.com/kitian616/jekyll-TeXt-theme/releases)
-[![Travis](https://img.shields.io/travis/kitian616/jekyll-TeXt-theme.svg)](https://travis-ci.org/kitian616/jekyll-TeXt-theme)
-[![Tip Me via PayPal](https://img.shields.io/badge/PayPal-tip%20me-1462ab.svg?logo=paypal)](https://www.paypal.me/kitian616)
-[![Tip Me via Bitcoin](https://img.shields.io/badge/Bitcoin-tip%20me-f7931a.svg?logo=bitcoin)](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/docs/assets/images/3Fkufxcw2xd8HnaRJBNK4ccdtkUDyyNu4V.jpg)
+一个简洁的、多设备支持的 Jekyll 博客模板，用于搭建[我的独立博客](http://www.oukohou.wang/)。  
+[我的独立博客](http://www.oukohou.wang/) 主题基于 [maupassant-jekyll](https://github.com/alafighting/maupassant-jekyll.git) 
+重新修改和优化，同时很大程度上参考了 [kuanghy](https://github.com/kuanghy) 的博客主题 [luring](https://github.com/kuanghy/luring)，感谢。  
+模板预览：
+![template preview](https://camo.githubusercontent.com/74fd2ccea00a682742515ce1d3725283c3385721/687474703a2f2f6f6f6f2e306f302e6f6f6f2f323031352f31302f32342f353632623562653132313737652e6a7067)  
+希望你在介绍自己的博客主题时，也能像上面一样，援引一下我的博客主题～～  
 
-![TeXt Theme](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/TeXt-home.jpg)
 
-![TeXt Theme Details](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/TeXt-layouts.png)
+## **使用我的博客主题的注意事项：**  
+**首先要感谢你使用我的博客主题！**   
+我的博客主题里有一些自己定制化的内容，其中涉及到一些信息获取的事宜(比如百度统计的代码，你忘记修改的话，
+我可以直接获取到你的网站的各种访问信息呦🙈)，所以我一一都写在了 **[这篇博文](https://www.oukohou.wang/2018/12/18/notices-for-jekyll-themes-fork/ "对没错，就是是这篇超级暖心的博文")**
+ 里，敬请访问～～
+[![a_glimpse_of_this_blog](https://raw.githubusercontent.com/oukohou/image_gallery/master/blogs/notices_for_fork_theme/a_glimpse_of_this_blog.png)](https://www.oukohou.wang/2018/12/18/notices-for-jekyll-themes-fork/ "点击图像直达博文～～")  
+是不是超级暖心？🐼    
 
-TeXt is a super customizable Jekyll theme for personal site, team site, blog, project, documentation, etc. Similar to iOS 11 style, it has large and prominent titles, round buttons and cards.
 
-**[Change Log](https://github.com/kitian616/jekyll-TeXt-theme/blob/master/CHANGELOG.md)** | **[中文](https://github.com/kitian616/jekyll-TeXt-theme/blob/master/README-zh.md)**
+## 主题安装
 
-## Features
+安装 Jekyll 本地环境，以便于调试：
 
-- Responsive
-- Semantic HTML
-- Skins
-- Highlight Theme
-- Internationalization
-- Search
-- Table of contents
-- Authors
-- Additional styles (alert, tag, image, icon, button, grid, etc)
-- Extensions (audios, videos, slides, demos)
-- Markdown enhancements ([MathJax](https://www.mathjax.org/), [mermaid](https://mermaidjs.github.io/), [chartjs](http://www.chartjs.org/))
-- Sharing ([AddToAny](https://www.addtoany.com/), [AddThis](https://www.addthis.com/))
-- Comments ([Disqus](https://disqus.com/), [Gitalk](https://gitalk.github.io/), [Valine](https://valine.js.org/en/))
-- Pageview ([LeanCloud](https://leancloud.cn/))
-- Analytics ([Google Analytics](https://analytics.google.com/analytics/web/))
-- RSS ([jekyll-feed](https://github.com/jekyll/jekyll-feed))
+```bash
+gem install jekyll
+jekyll new my-awesome-site
+cd my-awesome-site
+bundle install
+bundle exec jekyll serve
+# => 打开浏览器 http://localhost:4000
+```
 
-## Skins
+下载原作者主题安装调试：
 
-TeXt has 6 built-in skins, you can also set up your own skin.
+```bash
+git clone https://github.com/alafighting/maupassant-jekyll.git maupassant
+cd maupassant
+# 当然你也可以选择clone我的这个更改后的博客主题，只需改一下地址即可：
+# git clone https://github.com/oukohou/oukohou.github.io oukohou
+# cd oukohou
+gem install jekyll-paginate
+jekyll build
+jekyll server
+```
 
-| `default` | `dark` | `forest` |
-| --- |  --- | --- |
-| ![Default](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_default.jpg) | ![Dark](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_dark.jpg) | ![Forest](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_forest.jpg) |
+**Any star, fork or [donation](https://www.oukohou.wang/donate/ "赏个铜板") is highly appreciated!!!**  
+![yasashii](https://raw.githubusercontent.com/oukohou/image_gallery/master/blogs/anime/%E6%B8%A9%E6%9F%94%E7%9A%84%E7%94%B7%E5%AD%A9%E5%AD%90.jpg "当然，女孩子会更温柔的啦～～")  
 
-| `ocean` | `chocolate` | `orange` |
-| --- |  --- | --- |
-| ![Ocean](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_ocean.jpg) | ![Chocolate](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_chocolate.jpg) | ![Orange](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/skins_orange.jpg) |
+------
 
-### Highlight Theme
-
-TeXt use [Tomorrow](https://github.com/chriskempson/tomorrow-theme) as the highlight theme.
-
-| `tomorrow` | `tomorrow-night` | `tomorrow-night-eighties` | `tomorrow-night-blue` | `tomorrow-night-bright` |
-| --- |  --- | --- | --- |  --- |
-| ![Tomorrow](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/highlight_tomorrow.png) | ![Tomorrow Night](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/highlight_tomorrow-night.png) | ![Tomorrow Night Eighties](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/highlight_tomorrow-night-eighties.png) | ![Tomorrow Night Blue](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/highlight_tomorrow-night-blue.png) | ![Tomorrow Night Bright](https://raw.githubusercontent.com/kitian616/jekyll-TeXt-theme/master/screenshots/highlight_tomorrow-night-bright.png) |
-
-## Documentation
-
-### Start
-
-- [Quick Start](https://kitian616.github.io/jekyll-TeXt-theme/docs/en/quick-start)
-- [Update from 1.x to 2.x](https://kitian616.github.io/jekyll-TeXt-theme/docs/en/update-from-1-to-2)
-
-### Customization
-
-- [Configuration](https://kitian616.github.io/jekyll-TeXt-theme/docs/en/configuration)
-- [Navigation](https://kitian616.github.io/jekyll-TeXt-theme/docs/en/navigation)
-- [Layouts](https://kitian616.github.io/jekyll-TeXt-theme/docs/en/layouts)
-- [Logo and Favicon](https://kitian616.github.io/jekyll-TeXt-theme/docs/en/logo-and-favicon)
-- [Authors](https://kitian616.github.io/jekyll-TeXt-theme/docs/en/authors)
-- [Internationalization](https://kitian616.github.io/jekyll-TeXt-theme/docs/en/i18n)
-
-### Content
-
-- [Writing Posts](https://kitian616.github.io/jekyll-TeXt-theme/docs/en/writing-posts)
-- [Additional styles](https://kitian616.github.io/jekyll-TeXt-theme/docs/en/additional-styles)
-- [Extensions](https://kitian616.github.io/jekyll-TeXt-theme/docs/en/extensions)
-- [Markdown Enhancements](https://kitian616.github.io/jekyll-TeXt-theme/docs/en/markdown-enhancements)
-
-## Demo Pages
-
-| Name | Description |
-| --- | --- |
-| [Home](https://kitian616.github.io/jekyll-TeXt-theme/test/) | Home page |
-| [Archive](https://kitian616.github.io/jekyll-TeXt-theme/archive.html) | Archive page |
-| [Layout Examples](https://kitian616.github.io/jekyll-TeXt-theme/samples.html) | Examples for different layouts |
-
-## License
-
-TeXt Theme is [MIT licensed](https://github.com/kitian616/jekyll-TeXt-theme/blob/master/LICENSE).
+oukohou(<oukohou@outlook.com>)<br>
+2018-09-17
