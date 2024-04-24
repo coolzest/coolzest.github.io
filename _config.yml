@@ -104,7 +104,7 @@ comments:
     repo_id:  R_kgDOLxjz2w
     category: General
     category_id: DIC_kwDOLxjz284Ce5ZN
-    mapping: pathname # optional, default to 'pathname'
+    mapping: title # optional, default to 'pathname'
     input_position: top# optional, default to 'bottom'
     lang: zh-CN# optional, default to the value of `site.lang`
     reactions_enabled: 1# optional, default to the value of `1`
