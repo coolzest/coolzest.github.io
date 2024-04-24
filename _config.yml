@@ -1,7 +1,7 @@
 # Site settings
 title: 备忘录
 subtitle: [ 偷懒]
-keywords: coolzest
+keywords: oukohou
 description: 不想努力er
 baseurl: "auto" # the subpath of your site, e.g. /blog
 url:  # 你的域名
@@ -63,7 +63,7 @@ menu:
 links: # 友情链接
 
   - title: 2121
-    url:1212
+    url: 1212
   - title: 
     url: 
 #  - title:
