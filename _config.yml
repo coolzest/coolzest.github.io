@@ -3,9 +3,9 @@ title: 备忘录
 subtitle: [ 偷懒]
 keywords: oukohou
 description: 不想努力er
-baseurl: "auto" # the subpath of your site, e.g. /blog
+baseurl: "" # the subpath of your site, e.g. /blog
 url:  # 你的域名
-page_no_title: "oukohou's blog" # 文章无标题时默认显示内容
+page_no_title: "coolzest's blog" # 文章无标题时默认显示内容
 beian: # "备案号"
 author: coolzest
 email: coolzest@qq.com
@@ -62,10 +62,8 @@ menu:
 # Link settings
 links: # 友情链接
 
-  - title: 2121
-    url: 1212
-  - title: 
-    url: 
+  - title: #2121
+    url: #
 #  - title:
 #    url: http://jekyllcn.com/
   - title: Jekyll blog system
@@ -80,10 +78,10 @@ ga_domain: auto              # 默认的是 auto, 这里我是自定义了的域
 # Code hub settings
 codehub: # 代码仓库
   - title: Github
-    url: https://github.com/oukohou
-
+    url: [coolzest/coolzest.github.io](https://github.com/coolzest/coolzest.github.io)
 
 #valine:
+
 #  enable: true
 #  app_id:  K1rbn2Oo0YMM04VuzdLS7Nzz-gzGzoHsz
 #  app_key: AAsHbwVm8ofKFJ6ghGqqrXSU
