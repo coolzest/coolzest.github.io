@@ -134,7 +134,7 @@ Yet no award for you……
         <div class="site-name">
             <h1 class="hidden">{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h1>
             <a id="logo" href="/.">{{ site.title }}</a>
-            <p class="description">{{ site.subtitle }}，幸会。</p>
+            <p class="description">{{ site.subtitle }}</p>
         </div>
         <div id="nav-menu">
             {% for menu in site.menu %}
@@ -168,17 +168,17 @@ Yet no award for you……
 
         <div class="pure-u-1-4">
             <div id="sidebar">
+                {% include widgets/link_list %}
+
                 {% include widgets/search_box_new %}
 
                 {% include widgets/personlized_signature %}
 
                 {% include widgets/category_list %}
 
-                {% include widgets/star_post_list %}
+                <!--{% include widgets/star_post_list %}-->
 
-                {% include widgets/codehub_list %}
-
-                {% include widgets/link_list %}
+                <!--{% include widgets/codehub_list %}-->
 
                 {% include widgets/post_toc %}
             </div>
