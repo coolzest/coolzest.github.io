@@ -1,8 +1,8 @@
 # Site settings
-title: 备忘录
-subtitle: [ 偷懒]
-keywords: oukohou
-description: 不想努力er
+title: coolzest
+subtitle: [欢迎打开我的小笔记本]
+keywords: coolzest
+description: 不想努力le
 baseurl: "" # the subpath of your site, e.g. /blog
 url:  # 你的域名
 page_no_title: "coolzest's blog" # 文章无标题时默认显示内容
@@ -62,8 +62,8 @@ menu:
 # Link settings
 links: # 友情链接
 
-  - title: #2121
-    url: #
+  - title: oukohou's blog #2121
+    url: https://www.oukohou.wang/ #
 #  - title:
 #    url: http://jekyllcn.com/
   - title: Jekyll blog system
