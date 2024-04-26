@@ -30,11 +30,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e1108593-cb63-4cf8-9894-877d9ad19767" name="Default" comment="comment: using giscus instead of valine, as valine has benn outdated.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/404.html" beforeDir="false" afterPath="$PROJECT_DIR$/404.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_includes/widgets/codehub_list" beforeDir="false" afterPath="$PROJECT_DIR$/_includes/widgets/!codehub_list" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_includes/widgets/personlized_signature" beforeDir="false" afterPath="$PROJECT_DIR$/_includes/widgets/personlized_signature" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/_layouts/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/_layouts/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_posts/2024-04-22-Markdown笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/_posts/2024-04-22-Markdown笔记.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -229,7 +225,7 @@
       <workItem from="1713926518140" duration="108000" />
       <workItem from="1713945461708" duration="782000" />
       <workItem from="1713947235307" duration="670000" />
-      <workItem from="1714120402881" duration="2770000" />
+      <workItem from="1714120402881" duration="3630000" />
     </task>
     <task id="LOCAL-00156" summary="add post: face aging using GAN.">
       <created>1548930291687</created>
