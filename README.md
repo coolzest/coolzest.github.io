@@ -14,7 +14,7 @@
 我的博客主题里有一些自己定制化的内容，其中涉及到一些信息获取的事宜(比如百度统计的代码，你忘记修改的话，
 我可以直接获取到你的网站的各种访问信息呦🙈)，所以我一一都写在了 **[这篇博文](https://www.coolzest.github.io/2018/12/18/notices-for-jekyll-themes-fork/ "对没错，就是是这篇超级暖心的博文")**
  里，敬请访问～～
-[![a_glimpse_of_this_blog](https://raw.githubusercontent.com/oukohou/image_gallery/master/blogs/notices_for_fork_theme/a_glimpse_of_this_blog.png)](https://www.coolzest.github.io/2018/12/18/notices-for-jekyll-themes-fork/ "点击图像直达博文～～")  
+[![a_glimpse_of_this_blog](https://raw.githubusercontent.com/coolzest/image_gallery/master/blogs/notices_for_fork_theme/a_glimpse_of_this_blog.png)](https://www.coolzest.github.io/2018/12/18/notices-for-jekyll-themes-fork/ "点击图像直达博文～～")  
 是不是超级暖心？🐼    
 
 
@@ -37,17 +37,17 @@ bundle exec jekyll serve
 git clone https://github.com/alafighting/maupassant-jekyll.git maupassant
 cd maupassant
 # 当然你也可以选择clone我的这个更改后的博客主题，只需改一下地址即可：
-# git clone https://github.com/oukohou/oukohou.github.io oukohou
-# cd oukohou
+# git clone https://github.com/coolzest/coolzest.github.io coolzest
+# cd coolzest
 gem install jekyll-paginate
 jekyll build
 jekyll server
 ```
 
 **Any star, fork or [donation](https://www.coolzest.github.io/donate/ "赏个铜板") is highly appreciated!!!**  
-![yasashii](https://raw.githubusercontent.com/oukohou/image_gallery/master/blogs/anime/%E6%B8%A9%E6%9F%94%E7%9A%84%E7%94%B7%E5%AD%A9%E5%AD%90.jpg "当然，女孩子会更温柔的啦～～")  
+![yasashii](https://raw.githubusercontent.com/coolzest/image_gallery/master/blogs/anime/%E6%B8%A9%E6%9F%94%E7%9A%84%E7%94%B7%E5%AD%A9%E5%AD%90.jpg "当然，女孩子会更温柔的啦～～")  
 
 ------
 
-oukohou(<oukohou@outlook.com>)<br>
+coolzest(<coolzest@outlook.com>)<br>
 2018-09-17
