@@ -30,12 +30,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e1108593-cb63-4cf8-9894-877d9ad19767" name="Default" comment="comment: using giscus instead of valine, as valine has benn outdated.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/_config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_includes/widgets/star_post_list" beforeDir="false" afterPath="$PROJECT_DIR$/_includes/widgets/star_post_list" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_layouts/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/_layouts/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_posts/2024-04-22-Markdown笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/_posts/2024-04-22-Markdown笔记.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/guestbook.html" beforeDir="false" afterPath="$PROJECT_DIR$/guestbook.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/about.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -231,7 +226,7 @@
       <workItem from="1713945461708" duration="782000" />
       <workItem from="1713947235307" duration="670000" />
       <workItem from="1714120402881" duration="3902000" />
-      <workItem from="1714129224993" duration="261000" />
+      <workItem from="1714129224993" duration="703000" />
     </task>
     <task id="LOCAL-00156" summary="add post: face aging using GAN.">
       <created>1548930291687</created>
