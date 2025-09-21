@@ -44,6 +44,24 @@ jekyll build
 jekyll server
 ```
 
+### 修改说明
+
+#### 复制按钮功能
+- **文件位置**：`assets/js/copy-code.js`
+- **作用**：为代码框添加复制功能，鼠标悬停时显示复制图标。
+- **相关样式**：`assets/css/style.css` 中的 `.copy-button` 和 `pre:hover .copy-button`。
+
+#### 博客整体排版优化
+- **文件位置**：`assets/css/style.css`
+- **作用**：
+  - 调整字体为 `Arial`，提高可读性。
+  - 优化标题和段落的间距。
+  - 为代码框添加左侧边框和背景色。
+  - 设置文章内容区域的最大宽度和居中显示。
+
+#### 测试与验证
+- 请在本地运行博客，检查复制按钮和整体排版效果是否符合预期。
+
 **Any star, fork or [donation](https://www.coolzest.github.io/donate/ "赏个铜板") is highly appreciated!!!**  
 ![yasashii](https://raw.githubusercontent.com/coolzest/image_gallery/master/blogs/anime/%E6%B8%A9%E6%9F%94%E7%9A%84%E7%94%B7%E5%AD%A9%E5%AD%90.jpg "当然，女孩子会更温柔的啦～～")  
 
