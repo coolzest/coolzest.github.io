@@ -548,6 +548,7 @@ pre {
     background-color: #EBEBEB;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 4px;
+    position: relative; /* 确保复制按钮定位正确 */
 }
 
 pre code {
@@ -1260,4 +1261,24 @@ ul {
     overflow: auto;
 }
 
+}
+
+/* 添加复制按钮的样式 */
+.copy-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.copy-button:hover {
+    opacity: 1;
 }
