@@ -19,12 +19,12 @@ def md5(s):
     return m.hexdigest()
 
 def create_post_file(name, title, target):
-    name = str(datetime.date.today()) + "-" + name + ".md"
+    # Remove date prefix from the file name
+    name = name + ".md"
     path = os.path.join(os.path.abspath(target), name)
     with open(path, "w") as f:
         f.write('---\n')
         f.write('layout: post\n')
-        #f.write('thread: %s\n' % md5(path))
         f.write('title: "%s"\n' % title)
         f.write('keywords:\n')
         f.write('description:\n')
