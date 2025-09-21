@@ -1307,7 +1307,7 @@ ul {
     right: 10px;
     width: 24px;
     height: 24px;
-    background: url('/assets/imgs/copy-icon.svg') no-repeat center center;
+    background: url('/assets/imgs/icon_copy.png') no-repeat center center;
     background-size: contain;
     border: none;
     cursor: pointer;
