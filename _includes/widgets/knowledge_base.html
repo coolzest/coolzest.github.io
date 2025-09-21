@@ -1,0 +1,10 @@
+<div class="widget">
+    <h3>知识库</h3>
+    <ul>
+        {% for kb in site.data.knowledge_bases %}
+        <li>
+            <a href="{{ kb.url }}">{{ kb.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

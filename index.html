@@ -123,3 +123,15 @@ layout: base
 <!--<a href="https://clustrmaps.com/site/1b6rd" title="Visit tracker">-->
 <!--<img src="//www.clustrmaps.com/map_v2.png?d=AjthYW1xsC160mPRvz36bECA0Oi2v43aj1tyCOkL_Cc&cl=ffffff" width="100%"/>-->
 <!--</a>-->
+
+<!-- 知识库入口页面 -->
+<div class="knowledge-base">
+    <h1>知识库</h1>
+    <ul>
+        {% for kb in site.data.knowledge_bases %}
+        <li>
+            <a href="{{ kb.url }}">{{ kb.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
