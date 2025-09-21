@@ -28,10 +28,37 @@ p {
 }
 
 pre {
+    position: relative; /* 确保复制按钮定位正确 */
+    padding: 12px 12px 12px 12px; /* 为代码框内容留出空间 */
+    overflow: auto;
     background-color: #f4f4f4;
-    border-left: 4px solid #007bff;
-    padding: 1em;
-    overflow-x: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+pre code {
+    display: block;
+    white-space: pre-wrap; /* 保证长代码自动换行 */
+    word-wrap: break-word;
+}
+
+.copy-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    background: url('/assets/imgs/icon_copy.png') no-repeat center center;
+    background-size: contain;
+    border: none;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s, transform 0.2s;
+}
+
+.copy-button:hover {
+    opacity: 1;
+    transform: scale(1.1);
 }
 
 .post-content {
@@ -1303,18 +1330,19 @@ ul {
 /* 优化复制按钮样式 */
 .copy-button {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 24px;
-    height: 24px;
+    top: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
     background: url('/assets/imgs/icon_copy.png') no-repeat center center;
     background-size: contain;
     border: none;
     cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.3s;
+    opacity: 0.7;
+    transition: opacity 0.3s, transform 0.2s;
 }
 
-pre:hover .copy-button {
+.copy-button:hover {
     opacity: 1;
+    transform: scale(1.1);
 }
