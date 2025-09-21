@@ -1,6 +1,18 @@
 - name: C++ 基础知识库
-  url: /knowledge/cpp-basics/
+  articles:
+    - title: C++ 入门
+      url: /posts/cpp-intro/
+    - title: C++ 高级
+      url: /posts/cpp-advanced/
 - name: Linux 命令知识库
-  url: /knowledge/linux-commands/
+  articles:
+    - title: 基本命令
+      url: /posts/linux-basic-commands/
+    - title: 高级命令
+      url: /posts/linux-advanced-commands/
 - name: 网络安全知识库
-  url: /knowledge/network-security/
+  articles:
+    - title: 入门教程
+      url: /posts/network-security-intro/
+    - title: 高级攻击
+      url: /posts/network-security-advanced/
