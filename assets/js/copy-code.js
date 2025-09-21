@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Add click event to copy the code
         button.addEventListener("click", () => {
             navigator.clipboard.writeText(block.innerText).then(() => {
-                setTimeout(() => (button.innerText = "复制"), 2000);
+                setTimeout(() => (button.innerText = ""), 2000);
             });
         });
     });
