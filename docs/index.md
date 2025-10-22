@@ -1,18 +1,33 @@
-# Welcome to MkDocs
+---
+hide:
+  - navigation
+  - toc
+  - footer
+---
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
-傻嘚看这里
+<!-- 主页容器：带边界感，不强制全屏覆盖 -->
+<div class="home-container">
+  <!-- 柔和背景层 -->
+  <div class="home-bg"></div>
+  
+  <!-- 装饰元素：精简且贴合风格 -->
+  <div class="decor dot-1"></div>
+  <div class="decor line-1"></div>
+  <div class="decor dot-2"></div>
 
-## Commands
-
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+  <!-- 内容框：带视觉边界，居中显示 -->
+  <div class="content-box">
+    <!-- 品牌标识 -->
+    <div class="site-logo">coolzest</div>
+    
+    <!-- 核心文案：保留寓意，优化排版 -->
+    <div class="motto-wrapper">
+      <p class="motto">所有的坚持，</p>
+      <p class="motto highlight">终会让幸运与你不期而遇</p>
+    </div>
+    
+    <!-- 细微装饰：增强细节感 -->
+    <div class="divider"></div>
+    <p class="subtext">—— 慢慢来，比较快</p>
+  </div>
+</div>

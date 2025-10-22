@@ -1,0 +1,133 @@
+/* 主页容器：带上下留白，不强制全屏 */
+.home-container {
+  position: relative;
+  min-height: 100vh;
+  padding: 3rem 1rem; /* 上下留白，形成"上框"视觉 */
+  max-width: 1200px;
+  margin: 0 auto; /* 居中，左右留空形成"侧框" */
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* 柔和背景：淡色渐变，不抢眼 */
+.home-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #f9fafb 0%, #f0f4f8 100%);
+  z-index: 0;
+}
+
+/* 装饰元素：精简、轻量，贴合风格 */
+.decor {
+  position: absolute;
+  opacity: 0.15;
+  z-index: 1;
+}
+.dot-1 {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #518FC1;
+  top: 20%;
+  left: 10%;
+  animation: float 15s infinite ease-in-out;
+}
+.line-1 {
+  width: 180px;
+  height: 2px;
+  background: #4CAF50;
+  top: 60%;
+  right: 15%;
+  transform: rotate(-15deg);
+  animation: stretch 18s infinite ease-in-out;
+}
+.dot-2 {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #F5A623;
+  bottom: 15%;
+  left: 25%;
+  animation: float 12s infinite ease-in-out 2s;
+}
+
+/* 内容框：带视觉边界，增强包裹感 */
+.content-box {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  margin: 5rem auto; /* 上下留白，形成"下框"视觉 */
+  padding: 4rem 2rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* 轻微阴影，强化"框"感 */
+}
+
+/* 品牌标识：简洁醒目 */
+.site-logo {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #518FC1;
+  margin-bottom: 2.5rem;
+  letter-spacing: 0.5px;
+}
+
+/* 文案排版：层次分明 */
+.motto-wrapper {
+  margin-bottom: 2rem;
+}
+.motto {
+  font-size: 1.6rem;
+  color: #333;
+  line-height: 1.8;
+  margin: 0;
+}
+.motto.highlight {
+  color: #518FC1;
+  font-weight: 500;
+}
+
+/* 细节装饰：增强精致感 */
+.divider {
+  width: 60px;
+  height: 2px;
+  background: #eee;
+  margin: 0 auto 1.5rem;
+}
+.subtext {
+  font-size: 1rem;
+  color: #888;
+  margin: 0;
+}
+
+/* 动画效果：柔和不夸张 */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+@keyframes stretch {
+  0%, 100% { transform: rotate(-15deg) scaleX(1); }
+  50% { transform: rotate(-15deg) scaleX(1.2); }
+}
+
+/* 响应式调整：保持边界感 */
+@media (max-width: 768px) {
+  .home-container {
+    padding: 2rem 0.5rem;
+  }
+  .content-box {
+    padding: 3rem 1.5rem;
+    margin: 3rem auto;
+    border-radius: 12px;
+  }
+  .motto {
+    font-size: 1.4rem;
+  }
+  .decor {
+    transform: scale(0.8);
+  }
+}

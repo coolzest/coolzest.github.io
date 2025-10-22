@@ -1,0 +1,103 @@
+/* 全局深色模式与变量定义 */
+:root {
+  --tech-bg: #121212;
+  --tech-card-bg: #1e1e1e;
+  --tech-card-hover: #2a2a2a;
+  --tech-accent: #00bfa5;
+  --tech-accent-light: #00e6c7;
+  --tech-text: #e0e0e0;
+  --tech-text-light: #a0a0a0;
+  --glass-blur: 10px;
+  --glass-opacity: 0.8;
+}
+
+/* 全局重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: var(--tech-bg);
+  color: var(--tech-text);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* 玻璃态导航栏 */
+.md-header {
+  background: rgba(255, 255, 255, var(--glass-opacity));
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.md-header__topic, .md-nav__link {
+  color: #000 !important;
+  font-weight: 500;
+}
+
+.md-header__button {
+  color: #000 !important;
+}
+
+/* 卡片式模块 */
+.md-typeset .card,
+.md-typeset .grid.cards>li {
+  background-color: var(--tech-card-bg);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.md-typeset .card:hover,
+.md-typeset .grid.cards>li:hover {
+  background-color: var(--tech-card-hover);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* 按钮与交互元素 */
+.md-button, .md-nav__button {
+  background-color: var(--tech-accent);
+  color: #000 !important;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.md-button:hover, .md-nav__button:hover {
+  background-color: var(--tech-accent-light);
+  transform: translateY(-2px);
+}
+
+/* 文字样式 */
+.md-typeset h1, .md-typeset h2, .md-typeset h3 {
+  color: var(--tech-text);
+}
+
+.md-typeset p, .md-typeset li {
+  color: var(--tech-text-light);
+}
+
+/* 页脚样式 */
+.md-footer {
+  background-color: var(--tech-card-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.md-footer__link {
+  color: var(--tech-accent) !important;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .md-header {
+    backdrop-filter: blur(5px);
+    --glass-blur: 5px;
+  }
+  .md-typeset .card,
+  .md-typeset .grid.cards>li {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+}
