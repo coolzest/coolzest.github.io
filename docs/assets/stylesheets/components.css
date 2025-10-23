@@ -1,0 +1,321 @@
+/* ==============================================
+   按钮样式
+   ============================================== */
+.buttoncss, .buttoncss1 {
+  border-radius: var(--button-border-radius);
+  border: none;
+  color: white;
+  padding: var(--button-padding);
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: var(--button-font-size);
+  margin: var(--button-margin);
+  cursor: pointer;
+  will-change: background-color, color;
+  transition: var(--transition-default);
+}
+.buttoncss { background-color: #4CAF50; }
+.buttoncss1 { background-color: #567fd0; }
+
+.buttonxuan, .buttonxuan1, .buttonxuan2, .buttonxuan3 {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  font-size: var(--button-font-size);
+  margin: var(--button-margin);
+  cursor: pointer;
+  transition: var(--transition-default);
+}
+.buttonxuan {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+}
+.buttonxuan1 {
+  background-color: white;
+  color: black;
+  border: 2px solid #4CAF50;
+}
+.buttonxuan1:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+.buttonxuan2, .buttonxuan3 {
+  font-size: 28px;
+  padding: 20px;
+  width: 300px;
+  border: 2px solid;
+  border-radius: var(--rcorners-border-radius);
+  transition: all var(--transition-slow);
+  will-change: transform;
+}
+.buttonxuan2 {
+  background-color: #ACE48E;
+  color: #FFFFFF;
+}
+.buttonxuan3:hover {
+  background-color: #5577D1;
+  color: #FFFFFF;
+}
+
+.buttonxuan2 span, .buttonxuan3 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: var(--transition-slow);
+}
+.buttonxuan2 span:after, .buttonxuan3 span:after {
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: var(--transition-slow);
+}
+.buttonxuan2:hover span, .buttonxuan3:hover span {
+  padding-right: 25px;
+}
+.buttonxuan2:hover span:after, .buttonxuan3:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+/* ==============================================
+   容器和卡片样式
+   ============================================== */
+.rcorners-common {
+  border-radius: var(--rcorners-border-radius);
+  padding: var(--rcorners-padding);
+  width: 100%;
+  contain: layout;
+}
+
+#rcorners1 {
+  border-radius: var(--rcorners-border-radius);
+  padding: var(--rcorners-padding);
+  width: 100%;
+  contain: layout;
+  background: linear-gradient(to right, rgba(189, 224, 245), rgba(218, 232, 241), rgba(238, 237, 238));
+  height: 100px;
+  text-align: center;
+  font-size: 16px;
+  contain: layout paint;
+}
+
+#rcorners2, #rcorners3, #rcorners5 {
+  border-radius: var(--rcorners-border-radius);
+  padding: var(--rcorners-padding);
+  width: 100%;
+  contain: layout;
+  border: 2px solid var(--rcorners-border-color);
+  height: 100%;
+}
+#rcorners2 {
+  font-size: 16px;
+}
+
+#rcorners4, #rcorners6 {
+  border-radius: 32px;
+  border: var(--rcorners-light-border);
+  padding: var(--rcorners-padding);
+  height: 100%;
+  contain: layout;
+}
+#rcorners4 {
+  width: 110%;
+}
+
+/* 网格布局 */
+.item1 { grid-area: header; }
+.item2 { grid-area: menu; }
+.item3 { grid-area: main; }
+.item4 { grid-area: right; }
+.item5 { grid-area: footer; }
+
+.grid-container {
+  display: grid;
+  grid:
+    'header header header header header header'
+    'menu main main main right right'
+    'menu footer footer footer footer footer';
+  grid-gap: var(--grid-gap);
+  background-color: var(--grid-bg-color);
+  padding: var(--grid-padding);
+  contain: layout;
+}
+.grid-container>div {
+  background-color: var(--grid-item-bg-color);
+  text-align: center;
+  padding: var(--grid-item-padding);
+  font-size: var(--grid-item-font-size);
+}
+
+/* 图片样式 */
+img.img1, img.img2, img.img3 {
+  border-radius: var(--rcorners-border-radius);
+  contain: paint;
+}
+
+.image-container {
+  text-align: center;
+  contain: layout;
+}
+.image-container img {
+  display: inline-block;
+  margin: 10px;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 200px;
+}
+
+/* 特殊模块 */
+.video-container, .aspect-ratio {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  margin: 3% auto;
+}
+.video-container iframe, .aspect-ratio iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#cusdis_thread > iframe {
+  height: 30rem;
+}
+
+.reward-container {
+  margin: 20px auto;
+  padding: 10px 0;
+  text-align: center;
+  width: 90%;
+  contain: layout;
+}
+.reward-container button {
+  background: transparent;
+  border: 1px solid #6A8CB9;
+  color: #6A8CB9;
+  cursor: pointer;
+  line-height: 2;
+  padding: 0 15px;
+  transition: color var(--transition-default);
+}
+.reward-container button:hover {
+  border: 1px solid #608DBD;
+  color: #e480b2;
+}
+
+#qr {
+  display: none;
+  text-align: center;
+}
+#qr img {
+  width: 250px;
+  margin: 10px;
+  border-radius: var(--rcorners-border-radius);
+  content-visibility: auto;
+}
+#qr p {
+  font-size: 16px;
+  color: #555;
+}
+
+.runnable-code {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+.code-header {
+  background: #f5f5f5;
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.run-btn {
+  background: #007acc;
+  color: white;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color var(--transition-default);
+}
+.run-btn:hover {
+  background: #005fa3;
+}
+
+/* 提示框样式 */
+:root {
+  --md-admonition-icon--pied-piper: url("data:image/svg+xml,%3Csvg width='30.000000' height='30.000000' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cdesc%3E Created with Pixso. %3C/desc%3E%3Cdefs%3E%3CclipPath id='clip103_2030'%3E%3Crect id='icon' width='30.000000' height='30.000000' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg clip-path='url(%23clip103_2030)'%3E%3Cpath id='icon' d='M25.8 5.40002L25.8 24.6L4.20001 24.6L4.20001 5.40002L25.8 5.40002ZM9.60001 10.8L13.8 15L9.60001 19.2M15.6 19.2L21.6 19.2' stroke='%23101112' stroke-width='1.200000'/%3E%3C/g%3E%3C/svg%3E%0A");
+  --md-admonition-icon--pied-piper1: var(--md-admonition-icon--pied-piper);
+}
+
+.md-typeset .admonition.pied-piper,
+.md-typeset details.pied-piper {
+  border-color: rgb(43, 155, 70);
+  font-size: large;
+  contain: content;
+}
+.md-typeset .pied-piper>.admonition-title,
+.md-typeset .pied-piper>summary {
+  background-color: rgba(43, 155, 70, 0.1);
+}
+.md-typeset .pied-piper>.admonition-title::before,
+.md-typeset .pied-piper>summary::before {
+  background-color: rgb(43, 155, 70);
+  -webkit-mask-image: var(--md-admonition-icon--pied-piper);
+  mask-image: var(--md-admonition-icon--pied-piper);
+}
+
+.md-typeset .admonition.pied-piper1,
+.md-typeset details.pied-piper1 {
+  font-size: large;
+  width: 100%;
+  border-radius: var(--rcorners-border-radius);
+  contain: content;
+}
+.md-typeset .pied-piper1>.admonition-title,
+.md-typeset .pied-piper1>summary {
+  border-top-left-radius: var(--rcorners-border-radius);
+  border-top-right-radius: var(--rcorners-border-radius);
+  height: 45px;
+}
+.md-typeset .pied-piper1>.admonition-title::before,
+.md-typeset .pied-piper1>summary::before {
+  background-color: rgb(31, 31, 33);
+  -webkit-mask-image: var(--md-admonition-icon--pied-piper1);
+  mask-image: var(--md-admonition-icon--pied-piper1);
+}
+
+/* Markdown卡片 */
+.md-typeset .grid.cards>ol>li,
+.md-typeset .grid.cards>ul>li,
+.md-typeset .grid>.card {
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.7rem;
+  padding: 0.8rem;
+  transition: border var(--transition-default), box-shadow var(--transition-default);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  contain: content;
+  will-change: box-shadow, border;
+}
+
+/* 社交图标 */
+img.twitter { color: #1DA1F2; }
+.bilibili { color: #EA7A99; }
+.github { color: #25292E; }
+.laptop { color: #d1e82a; }
+
+.mask {
+  background-color: #252525;
+  color: #252525;
+  transition: color var(--transition-slow);
+}
+.mask:hover {
+  color: #ffffff;
+}

@@ -1,32 +1,36 @@
 ---
+title: " "
 hide:
-  - navigation
   - toc
   - footer
 ---
 
-<!-- 主页容器：带边界感，不强制全屏覆盖 -->
-<div class="home-container">
-  <!-- 柔和背景层 -->
-  <div class="home-bg"></div>
-  
-  <!-- 装饰元素：精简且贴合风格 -->
-  <div class="decor dot-1"></div>
-  <div class="decor line-1"></div>
-  <div class="decor dot-2"></div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.body.classList.add('home-page');
+});
+</script>
 
-  <!-- 内容框：带视觉边界，居中显示 -->
-  <div class="content-box">
-    <!-- 品牌标识 -->
-    <div class="site-logo">coolzest</div>
-    
-    <!-- 核心文案：保留寓意，优化排版 -->
+
+
+<div class="home-container">
+  <!-- 头像部分：完全复制别人代码的结构 -->
+  <div class="avatar-section">
+    <div class="avatar-wrapper">
+      <div class="flip-container">
+        <img src="https://s1.imagehub.cc/images/2025/07/25/27c0e105ea7efbed5d046d3a8c303e9d.jpeg" alt="正面头像" class="avatar-front" width="280" height="280">
+        <img src="https://pic4.zhimg.com/v2-a0456a5f527c1923f096759f2926012f_1440w.jpg" alt="背面头像" class="avatar-back" width="280" height="280">
+      </div>
+      <div class="avatar-glow"></div>
+    </div>
+  </div>
+
+  <!-- 文字内容：保持您原有的文字 -->
+  <div class="text-container">
     <div class="motto-wrapper">
       <p class="motto">所有的坚持，</p>
       <p class="motto highlight">终会让幸运与你不期而遇</p>
     </div>
-    
-    <!-- 细微装饰：增强细节感 -->
     <div class="divider"></div>
     <p class="subtext">—— 慢慢来，比较快</p>
   </div>

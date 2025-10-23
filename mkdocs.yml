@@ -2,16 +2,18 @@
 site_name: Coolzest NOTE
 site_url: https://mydomain.org/
 
+
+
 #[UI]
 theme:
   name: material
-  #custom_dir: docs/overrides
+  custom_dir: docs/overrides
   # font: false
-  logo: "resources/logo.png"
+  logo: "assets/images/logo.png"
   # https://s1.imagehub.cc/images/2025/01/05/64eafdf8c27f482c7ecb83003d460d6a.webp
   # https://s1.imagehub.cc/images/2024/02/02/91a767e93d1a344e44c69936464c583e.png
 
-  favicon: "resources/fav2.ico"
+  favicon: "assets/images/fav2.ico"
   # https://s1.imagehub.cc/images/2025/05/05/7ff9985e6f5baffe306907df47042787.png
   # https://pic4.zhimg.com/v2-fee2c2622ad68aeed98a8b411a8b272b_1440w.jpg
   # https://s2.loli.net/2024/04/06/yEOZavwMr6kTWhu.png
@@ -25,7 +27,7 @@ theme:
       primary: teal # 主色
       accent: indigo # 强调色
       toggle:
-        icon: material/brightness-7
+        icon: material/weather-sunny
         name: 切换至夜间模式
     - media: "(prefers-color-scheme: dark)"
       scheme: slate # 夜间模式
@@ -61,7 +63,7 @@ theme:
     # - content.action.edit # 编辑按钮
     # - content.action.view # 查看源码按钮
     - content.code.annotate # 代码注释
-    - navigation.instant  # 启用无刷新导航（必填）
+    #- navigation.instant  # 启用无刷新导航（必填）
     - navigation.instant.prefetch  # 预加载提升体验（可选但推荐）
     - navigation.sections  # 确保导航结构正确（避免链接解析问题）
   language: zh # 一些提示性的文字会变成中文
@@ -76,6 +78,7 @@ repo_url: https://github.com/coolzest/coolzest.github.io # 右上角点击跳转
 repo_name: coolzest.github.io # 右上角的名字
 
 copyright: Copyright &copy; 2022~2025 Coolzest # 左下角的版权声明
+
 
 markdown_extensions:
   - abbr
@@ -124,22 +127,35 @@ markdown_extensions:
   # - neoteroi.timeline
 
 extra_css:
+  # - assets/stylesheets/_base.css    # 基础变量与全局基础样式（必须最先引入）
+  # - assets/stylesheets/homepage.css
+  # - assets/stylesheets/_layout.css # 布局、容器、背景
+  # - assets/stylesheets/_interactive.css # 按钮、社交元素、交互动画
+  # - assets/stylesheets/_components.css # 提示框、卡片、特殊功能模块
+  # - assets/stylesheets/_page.css    # 公告栏、页脚
+  # - assets/stylesheets/_light-mode.css # 白色模式、响应式、动画优化
+  # - assets/stylesheets/_slate-mode.css # 深色模式、响应式、动画优化
+  - assets/stylesheets/base.css
+  - assets/stylesheets/themes.css
+  - assets/stylesheets/components.css
+  - assets/stylesheets/animations.css
+  - assets/stylesheets/home.css
   # - stylesheets/highlight-search.css
-  - stylesheets/homepage.css
+ 
   # - stylesheets/tech-style.css
 
   # - stylesheets/extra.css
   # - stylesheets/extra2.
-  - stylesheets/global.css
+  #- stylesheets/global.css
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/extra.css
-  - stylesheets/link.css  #友链
+  - assets/stylesheets/link.css  #友链
   # - stylesheets/optimize.css
-  - stylesheets/poem.css
+  - assets/stylesheets/poem.css
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/poem.css
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/link.css  #友链
   # - stylesheets/card2.css
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/card2.css
-  - stylesheets/customize.css  #按钮圆角化
+  # - assets/stylesheets/customize.css  #按钮圆角化
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/customize.css  #按钮圆角化
   # - stylesheets/flink.css
   # - stylesheets/bannerSlider.css
@@ -152,7 +168,7 @@ extra_css:
   # - https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css
   # - https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css  #字体
   # - https://static.zeoseven.com/zsft/292/main/result.css #字体
-  - stylesheets/font.css  #字体
+  - assets/stylesheets/font.css  #字体
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/ziti.css #字体
   # - https://fontsapi.zeoseven.com/292/main/result.css
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/ziti.css?display=swap
@@ -165,8 +181,22 @@ extra_css:
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/poem.css
   
 extra_javascript:
-  - assets/js/animations.js
-  # - assets/js/tech-script.js
+  - assets/javascripts/animations.js
+  # - assets/javascripts/tech-script.js
+  
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/coolzest
+    - icon: fontawesome/brands/weibo
+      link: https://weibo.com/yourusername
+      name: 微博
+    - icon: fontawesome/brands/zhihu
+      link: https://www.zhihu.com/people/yourusername
+      name: 知乎
+    - icon: fontawesome/solid/envelope
+      link: mailto:your-email@example.com
+      name: 邮箱
 
 watch: #监听文件变动自动刷新
 - docs
