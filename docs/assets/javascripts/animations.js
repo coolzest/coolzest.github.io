@@ -218,3 +218,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+
+{% extends "base.html" %}
+
+{% block extra_javascript %}
+<script>
+// 页面加载完成后，触发进入动画
+document.addEventListener('DOMContentLoaded', function() {
+  const container = document.querySelector('.md-container');
+  if (container) {
+    // 先添加初始状态类，再触发动画
+    container.classList.add('page-transition', 'page-transition-enter');
+    setTimeout(() => {
+      container.classList.add('page-transition-enter-active');
+    }, 10); // 微小延迟确保动画触发
+  }
+
+  // 监听所有内部链接的点击事件，触发离开动画
+  document.querySelectorAll('a[href^="/"]:not([href^="#"])').forEach(link => {
+    link.addEventListener('click', function(e) {
+      // 排除外部链接、下载链接和特殊操作链接
+      if (this.target === '_blank' || this.hasAttribute('download')) return;
+
+      e.preventDefault(); // 阻止默认跳转
+      const targetUrl = this.href;
+      const container = document.querySelector('.md-container');
+
+      if (container) {
+        // 触发离开动画
+        container.classList.add('page-transition-leave-active');
+        
+        // 动画结束后跳转页面
+        setTimeout(() => {
+          window.location.href = targetUrl;
+        }, 300); // 与 CSS 中 --transition-duration 保持一致
+      } else {
+        // 若容器不存在，直接跳转
+        window.location.href = targetUrl;
+      }
+    });
+  });
+});
+</script>
+{% endblock %}

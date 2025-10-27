@@ -196,3 +196,17 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* 针对二级导航栏容器设置居中 */
+.md-header__inner .md-tabs {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+/* 确保标签项在居中容器内正常排列，并增大间隔 */
+.md-tabs__list {
+  display: flex;
+  justify-content: center;
+  gap: 2.8rem; /* 标签项间隔（可自定义数值） */
+}

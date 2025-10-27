@@ -15,7 +15,7 @@
   background-attachment: fixed !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0);
 }
 
 [data-md-color-scheme="default"] html::before {
@@ -118,7 +118,7 @@
   background-attachment: fixed !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
-  background-color: rgba(54, 53, 53, 0.4);
+  background-color: rgba(54, 53, 53, 0);
 }
 
 [data-md-color-scheme="slate"] html::before {
@@ -203,3 +203,4 @@
   background-color: transparent !important;
   box-shadow: none !important;
 }
+

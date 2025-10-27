@@ -1,191 +1,203 @@
 #[Info]
-site_name: Coolzest NOTE
-site_url: https://mydomain.org/
+site_name: Coolzest NOTE  # 网站名称（显示在浏览器标题和顶部导航）
+site_url: https://mydomain.org/  # 网站在线访问地址（部署后替换为实际域名）
 
-
+plugin:
+  - search  # 启用搜索功能插件
+  - minify:  # 启用HTML/CSS/JS压缩插件（优化加载速度）
+      minify_html: true
+      minify_css: true
+      minify_js: true
+  - git-revision-date-localized:  # 启用Git修订日期插件（显示最后修改时间）
+      type: timeago
+      locale: zh
+  # - awesome-pages  # 注释：启用Awesome Pages插件（当前未启用）
 
 #[UI]
 theme:
-  name: material
-  custom_dir: docs/overrides
-  # font: false
-  logo: "assets/images/logo.png"
-  # https://s1.imagehub.cc/images/2025/01/05/64eafdf8c27f482c7ecb83003d460d6a.webp
-  # https://s1.imagehub.cc/images/2024/02/02/91a767e93d1a344e44c69936464c583e.png
+  name: material  # 使用Material for MkDocs核心主题
+  custom_dir: docs/overrides  # 自定义模板目录（存放修改后的main.html等）
+  # font: false  # 注释：是否禁用主题默认字体（当前未启用）
+  logo: "assets/images/logo.png"  # 顶部导航栏左侧Logo路径
+  # https://s1.imagehub.cc/images/2025/01/05/64eafdf8c27f482c7ecb83003d460d6a.webp  # 注释：备用Logo图片链接
+  # https://s1.imagehub.cc/images/2024/02/02/91a767e93d1a344e44c69936464c583e.png  # 注释：另一张备用Logo链接
 
-  favicon: "assets/images/fav2.ico"
-  # https://s1.imagehub.cc/images/2025/05/05/7ff9985e6f5baffe306907df47042787.png
-  # https://pic4.zhimg.com/v2-fee2c2622ad68aeed98a8b411a8b272b_1440w.jpg
-  # https://s2.loli.net/2024/04/06/yEOZavwMr6kTWhu.png
-  palette:
-    # - media: "(prefers-color-scheme)"
+  favicon: "assets/images/fav2.ico"  # 浏览器标签页图标路径
+  # https://s1.imagehub.cc/images/2025/05/05/7ff9985e6f5baffe306907df47042787.png  # 注释：备用favicon链接
+  # https://pic4.zhimg.com/v2-fee2c2622ad68aeed98a8b411a8b272b_1440w.jpg  # 注释：备用favicon链接
+  # https://s2.loli.net/2024/04/06/yEOZavwMr6kTWhu.png  # 注释：备用favicon链接
+  palette:  # 主题配色方案（支持浅色/深色模式自动切换）
+    # - media: "(prefers-color-scheme)"  # 注释：启用系统自动配色模式（当前未启用）
     #   toggle:
     #     icon: material/link
     #     name: 关闭自动模式
-    - media: "(prefers-color-scheme: light)"
-      scheme: default # 日间模式
-      primary: teal # 主色
-      accent: indigo # 强调色
+    - media: "(prefers-color-scheme: light)"  # 适配系统浅色模式
+      scheme: default # 日间模式标识
+      primary: teal # 主色（青色）
+      accent: indigo # 强调色（靛蓝色）
       toggle:
-        icon: material/weather-sunny
-        name: 切换至夜间模式
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate # 夜间模式
+        icon: material/weather-sunny  # 切换按钮图标（太阳）
+        name: 切换至夜间模式  # 按钮提示文字
+    - media: "(prefers-color-scheme: dark)"  # 适配系统深色模式
+      scheme: slate # 夜间模式标识
       primary: black
       accent: indigo
       toggle:
-        icon: material/weather-night
-        name: 切换至日间模式
+        icon: material/weather-night  # 切换按钮图标（月亮）
+        name: 切换至日间模式  # 按钮提示文字
   features: 
     
     - announce.dismiss # 可关闭公告栏
-    # - navigation.instant # 页面无刷新切换
-    - navigation.prune # 只渲染可见导航项
-    # - header.autohide  # 自动隐藏头部
-    # - navigation.instant.progress # 页面切换进度条
-    # - navigation.prune # 只渲染可见导航项
-    - navigation.tracking # 滚动时URL锚点自动更新
-    - navigation.tabs # 一级导航显示为顶部Tab
-    # - navigation.tabs.sticky  # Tab栏吸顶
+    # - navigation.instant # 注释：页面无刷新切换（当前未启用）
+    - navigation.prune # 只渲染可见导航项（优化性能）
+    # - header.autohide  # 注释：自动隐藏头部（当前未启用）
+    # - navigation.instant.progress # 注释：页面切换进度条（当前未启用）
+    # - navigation.prune # 注释：重复配置，已启用一次
+    - navigation.tracking # 滚动时URL锚点自动更新（定位当前章节）
+    - navigation.tabs # 一级导航显示为顶部Tab（核心导航样式）
+    # - navigation.tabs.sticky  # 注释：Tab栏吸顶（当前未启用）
     - navigation.top # 返回顶部按钮
     - navigation.footer # 页脚显示在侧边栏
     - search.suggest # 搜索建议
     - search.highlight # 搜索高亮
     - search.share # 搜索结果分享
     - toc.follow # 目录跟随滚动
-    # - toc.integrate # 目录集成到侧边栏
-    #- navigation.expand # 默认展开所有目录
-    - navigation.indexes # 支持节索引页
+    # - toc.integrate # 注释：目录集成到侧边栏（当前未启用）
+    #- navigation.expand # 注释：默认展开所有目录（当前未启用）
+    - navigation.indexes # 支持节索引页（如目录下的index.md）
     - content.tabs.link # 支持标签页链接
     - content.tooltips # 支持鼠标悬浮提示
     - content.code.copy # 代码块一键复制
     - content.code.select # 代码块一键全选
-    # - content.action.edit # 编辑按钮
-    # - content.action.view # 查看源码按钮
+    # - content.action.edit # 注释：编辑按钮（当前未启用）
+    # - content.action.view # 注释：查看源码按钮（当前未启用）
     - content.code.annotate # 代码注释
-    #- navigation.instant  # 启用无刷新导航（必填）
+    #- navigation.instant  # 注释：启用无刷新导航（当前未启用，需配合其他配置）
     - navigation.instant.prefetch  # 预加载提升体验（可选但推荐）
     - navigation.sections  # 确保导航结构正确（避免链接解析问题）
   language: zh # 一些提示性的文字会变成中文
   icon:
-    repo: fontawesome/brands/github #右上角图标
-    previous: fontawesome/solid/angle-left
-    # top: fontawesome/solid/angles-up
-    alternate: fontawesome/solid/language
+    repo: fontawesome/brands/github #右上角图标（GitHub）
+    previous: fontawesome/solid/angle-left # 上一页按钮图标（左箭头）
+    # top: fontawesome/solid/angles-up  # 注释：返回顶部按钮图标（当前未启用）
+    alternate: fontawesome/solid/language # 语言切换图标
   
-edit_uri: edit/main/docs # 编辑按钮跳转的链接 
-repo_url: https://github.com/coolzest/coolzest.github.io # 右上角点击跳转的链接
-repo_name: coolzest.github.io # 右上角的名字
+edit_uri: edit/main/docs # 编辑按钮跳转的链接（指向GitHub仓库编辑页）
+repo_url: https://github.com/coolzest/coolzest.github.io # 右上角点击跳转的链接（GitHub仓库）
+repo_name: coolzest.github.io # 右上角显示的仓库名称
 
 copyright: Copyright &copy; 2022~2025 Coolzest # 左下角的版权声明
 
 
-markdown_extensions:
-  - abbr
-  - attr_list
-  - admonition
-  - def_list
-  - footnotes
-  # - callouts
-  - md_in_html
+markdown_extensions:  # Markdown语法扩展（增强文档编写能力）
+  - abbr # 支持缩写语法
+  - attr_list # 支持为元素添加属性（如图片宽高）
+  - admonition # 支持提示框（警告、信息等）
+  - def_list # 支持定义列表
+  - footnotes # 支持脚注
+  # - callouts  # 注释：自定义提示框扩展（当前未启用）
+  - md_in_html # 支持HTML中嵌套Markdown
   - markdown.extensions.abbr # 支持Markdown文件上方自定义标题标签等
-  - pymdownx.magiclink
-  - pymdownx.blocks.caption
-  - pymdownx.caret
-  - pymdownx.betterem
-  - pymdownx.critic
-  - pymdownx.details
-  - pymdownx.inlinehilite
-  - pymdownx.keys
-  - pymdownx.mark
-  - pymdownx.snippets
-  - pymdownx.smartsymbols
-  - pymdownx.tilde
+  - pymdownx.magiclink # 自动转换URL为链接
+  - pymdownx.blocks.caption # 支持为块级元素添加标题
+  - pymdownx.caret # 支持上标和下标
+  - pymdownx.betterem # 优化强调语法识别
+  - pymdownx.critic # 支持文档修订标记
+  - pymdownx.details # 支持折叠详情框
+  - pymdownx.inlinehilite # 支持行内代码高亮
+  - pymdownx.keys # 支持键盘按键样式
+  - pymdownx.mark # 支持标记文本（==内容==）
+  - pymdownx.snippets # 支持引入外部代码片段
+  - pymdownx.smartsymbols # 支持特殊符号自动替换
+  - pymdownx.tilde # 支持删除线
 
-  - pymdownx.superfences:
+  - pymdownx.superfences: # 支持代码块嵌套和自定义围栏（如Mermaid）
       custom_fences:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
-  - pymdownx.arithmatex:  
+  - pymdownx.arithmatex:  # 支持LaTeX数学公式
       generic: true
   - toc:
-      permalink: true # 固定标题位置为当前位置
-      # baselevel: 2
-      # toc_depth: 3  # 控制标题层级深度
-  - pymdownx.highlight: # 代码块高亮
-      anchor_linenums: true
+      permalink: true # 固定标题位置为当前位置（添加锚点）
+      # baselevel: 2  # 注释：设置目录基准层级（当前未启用）
+      # toc_depth: 3  # 注释：控制标题层级深度（当前未启用）
+  - pymdownx.highlight: # 代码块高亮配置
+      anchor_linenums: true # 为行号添加锚点
       linenums: true # 显示行号
       auto_title: true # 显示编程语言名称
-  - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg
-  - pymdownx.tabbed:
-      alternate_style: true
-  - pymdownx.tasklist:
-      custom_checkbox: true
-  # - neoteroi.timeline
+  - pymdownx.emoji: # 支持Emoji表情
+      emoji_index: !!python/name:material.extensions.emoji.twemoji # 使用Twitter Emoji库
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg # 生成SVG格式Emoji
+  - pymdownx.tabbed: # 支持标签页排版
+      alternate_style: true # 使用交替样式标签页
+  - pymdownx.tasklist: # 支持任务列表
+      custom_checkbox: true # 自定义勾选框样式
+  # - neoteroi.timeline  # 注释：时间线扩展（当前未启用）
 
-extra_css:
-  # - assets/stylesheets/_base.css    # 基础变量与全局基础样式（必须最先引入）
-  # - assets/stylesheets/homepage.css
-  # - assets/stylesheets/_layout.css # 布局、容器、背景
-  # - assets/stylesheets/_interactive.css # 按钮、社交元素、交互动画
-  # - assets/stylesheets/_components.css # 提示框、卡片、特殊功能模块
-  # - assets/stylesheets/_page.css    # 公告栏、页脚
-  # - assets/stylesheets/_light-mode.css # 白色模式、响应式、动画优化
-  # - assets/stylesheets/_slate-mode.css # 深色模式、响应式、动画优化
-  - assets/stylesheets/base.css
-  - assets/stylesheets/themes.css
-  - assets/stylesheets/components.css
-  - assets/stylesheets/animations.css
-  - assets/stylesheets/home.css
-  # - stylesheets/highlight-search.css
+extra_css:  # 额外引入的CSS样式文件
+  # - assets/stylesheets/_base.css    # 注释：基础变量与全局基础样式（当前未启用）
+  # - assets/stylesheets/homepage.css  # 注释：主页样式（当前未启用）
+  # - assets/stylesheets/_layout.css # 注释：布局、容器、背景样式（当前未启用）
+  # - assets/stylesheets/_interactive.css # 注释：交互动画样式（当前未启用）
+  # - assets/stylesheets/_components.css # 注释：组件样式（当前未启用）
+  # - assets/stylesheets/_page.css    # 注释：页面元素样式（当前未启用）
+  # - assets/stylesheets/_light-mode.css # 注释：浅色模式样式（当前未启用）
+  # - assets/stylesheets/_slate-mode.css # 注释：深色模式样式（当前未启用）
+  - assets/stylesheets/base.css # 基础样式
+  - assets/stylesheets/themes.css # 主题配色样式
+  - assets/stylesheets/components.css # 组件样式（按钮、卡片等）
+  - assets/stylesheets/animations.css # 动画样式
+  - assets/stylesheets/home.css # 主页专属样式
+  - assets/stylesheets/tech-style.css # 技术文档样式
+
+  # - stylesheets/highlight-search.css  # 注释：搜索高亮样式（当前未启用）
  
-  # - stylesheets/tech-style.css
+  # - stylesheets/tech-style.css  # 注释：重复配置，已启用一次
 
-  # - stylesheets/extra.css
-  # - stylesheets/extra2.
-  #- stylesheets/global.css
-  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/extra.css
-  - assets/stylesheets/link.css  #友链
-  # - stylesheets/optimize.css
-  - assets/stylesheets/poem.css
-  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/poem.css
-  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/link.css  #友链
-  # - stylesheets/card2.css
-  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/card2.css
-  # - assets/stylesheets/customize.css  #按钮圆角化
-  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/customize.css  #按钮圆角化
-  # - stylesheets/flink.css
-  # - stylesheets/bannerSlider.css
-  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/extra.css # extra.css的CDN
-  # - stylesheets/extra1.css
-  # - stylesheets/video.css
-  # - https://unpkg.com/@waline/client@v2/dist/waline.css
-  # - https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.css #评论
-  # - ckplayer/css/ckplayer.css
-  # - https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css
-  # - https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css  #字体
-  # - https://static.zeoseven.com/zsft/292/main/result.css #字体
-  - assets/stylesheets/font.css  #字体
-  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/ziti.css #字体
-  # - https://fontsapi.zeoseven.com/292/main/result.css
-  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/ziti.css?display=swap
-  # - https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Bold/result.css
-  # - https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css # font-awesome表情支持
-  # - stylesheets/timeline.css
-  # - stylesheets/LiquidGlass.css
-  # - about/sty/portfolio.css
-  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/about/sty/portfolio.css
-  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/poem.css
+  # - stylesheets/extra.css  # 注释：额外样式（当前未启用）
+  # - stylesheets/extra2.  # 注释：不完整的样式配置（当前未启用）
+  #- stylesheets/global.css  # 注释：全局样式（当前未启用）
+  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/extra.css  # 注释：CDN引入的额外样式（当前未启用）
+  - assets/stylesheets/link.css  #友链样式
+  # - stylesheets/optimize.css  # 注释：优化样式（当前未启用）
+  - assets/stylesheets/poem.css # 诗歌页面样式
+  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/poem.css  # 注释：CDN引入的诗歌样式（当前未启用）
+  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/link.css  # 注释：CDN引入的友链样式（当前未启用）
+  # - stylesheets/card2.css  # 注释：卡片样式（当前未启用）
+  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/card2.css  # 注释：CDN引入的卡片样式（当前未启用）
+  # - assets/stylesheets/customize.css  # 注释：按钮圆角化样式（当前未启用）
+  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/customize.css  # 注释：CDN引入的按钮样式（当前未启用）
+  # - stylesheets/flink.css  # 注释：友链样式（当前未启用）
+  # - stylesheets/bannerSlider.css  # 注释：轮播图样式（当前未启用）
+  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/extra.css # 注释：CDN引入的额外样式（当前未启用）
+  # - stylesheets/extra1.css  # 注释：额外样式（当前未启用）
+  # - stylesheets/video.css  # 注释：视频样式（当前未启用）
+  # - https://unpkg.com/@waline/client@v2/dist/waline.css  # 注释：Waline评论样式（当前未启用）
+  # - https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.css # 注释：Gitalk评论样式（当前未启用）
+  # - ckplayer/css/ckplayer.css  # 注释：播放器样式（当前未启用）
+  # - https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css  # 注释：分享功能样式（当前未启用）
+  # - https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css  # 注释：霞鹜文楷字体（当前未启用）
+  # - https://static.zeoseven.com/zsft/292/main/result.css # 注释：自定义字体（当前未启用）
+  - assets/stylesheets/font.css  #字体样式
+  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/ziti.css # 注释：CDN引入的字体（当前未启用）
+  # - https://fontsapi.zeoseven.com/292/main/result.css  # 注释：字体（当前未启用）
+  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/ziti.css?display=swap  # 注释：字体（当前未启用）
+  # - https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Bold/result.css  # 注释：霞鹜文楷粗体（当前未启用）
+  # - https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css # 注释：FontAwesome图标样式（当前未启用）
+  # - stylesheets/timeline.css  # 注释：时间线样式（当前未启用）
+  # - stylesheets/LiquidGlass.css  # 注释：毛玻璃样式（当前未启用）
+  # - about/sty/portfolio.css  # 注释：作品集样式（当前未启用）
+  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/about/sty/portfolio.css  # 注释：CDN引入的作品集样式（当前未启用）
+  # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/poem.css  # 注释：重复配置，已启用一次
   
-extra_javascript:
-  - assets/javascripts/animations.js
-  # - assets/javascripts/tech-script.js
+extra_javascript:  # 额外引入的JavaScript文件
+  - assets/javascripts/animations.js # 全局动画脚本
+  - assets/javascripts/homepage-animations.js # 主页动画脚本
+  - assets/javascripts/tech-script.js # 技术文档交互脚本
   
 extra:
-  social:
+  social:  # 社交图标链接（显示在页脚/顶部）
     - icon: fontawesome/brands/github
       link: https://github.com/coolzest
     - icon: fontawesome/brands/weibo
@@ -198,6 +210,32 @@ extra:
       link: mailto:your-email@example.com
       name: 邮箱
 
-watch: #监听文件变动自动刷新
-- docs
-- mkdocs.yml
+watch: #监听文件变动自动刷新（开发模式用）
+- docs # 监听文档目录
+- mkdocs.yml # 监听配置文件
+
+# # [Navigtion]  # 注释：原导航配置注释
+# nav:  # 注释：原导航配置（已替换为完整导航）
+#   # - 主页: /
+#   - 开发:
+#   - 前端:
+#       - HTML: development/frontend/html.md
+#       - CSS: development/frontend/css.md
+#       - JavaScript: development/frontend/javascript.md
+#       - Vue.js: development/frontend/vue.md
+
+nav:
+
+  
+  - 个人博客:
+    - 博客首页: blog/index.md
+  - 编程开发:
+    - Docker基础: container/docker.md
+  - 网络安全:
+    - 远控木马: security/remote-control-trojan.md
+  - 人工智能:
+    - MySQL基础: database/mysql.md
+  - 软件使用:
+    - Markdown笔记: tools/markdown-notes.md
+  - 留言板: guestbook.md
+  - 关于我: about.md

@@ -33,13 +33,9 @@ html, body {
 }
 
 .md-header__topic, .md-nav__link {
-  color: #000 !important;
   font-weight: 500;
 }
 
-.md-header__button {
-  color: #000 !important;
-}
 
 /* 卡片式模块 */
 .md-typeset .card,
