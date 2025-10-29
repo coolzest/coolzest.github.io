@@ -4,6 +4,7 @@ site_url: https://mydomain.org/  # 网站在线访问地址（部署后替换为
 
 plugin:
   - search  # 启用搜索功能插件
+  - blog
   - minify:  # 启用HTML/CSS/JS压缩插件（优化加载速度）
       minify_html: true
       minify_css: true
@@ -46,7 +47,6 @@ theme:
         icon: material/weather-night  # 切换按钮图标（月亮）
         name: 切换至日间模式  # 按钮提示文字
   features: 
-    
     - announce.dismiss # 可关闭公告栏
     # - navigation.instant # 注释：页面无刷新切换（当前未启用）
     - navigation.prune # 只渲染可见导航项（优化性能）
@@ -214,27 +214,22 @@ watch: #监听文件变动自动刷新（开发模式用）
 - docs # 监听文档目录
 - mkdocs.yml # 监听配置文件
 
-# # [Navigtion]  # 注释：原导航配置注释
-# nav:  # 注释：原导航配置（已替换为完整导航）
-#   # - 主页: /
-#   - 开发:
-#   - 前端:
-#       - HTML: development/frontend/html.md
-#       - CSS: development/frontend/css.md
-#       - JavaScript: development/frontend/javascript.md
-#       - Vue.js: development/frontend/vue.md
-
 nav:
-
-  
   - 个人博客:
     - 博客首页: blog/index.md
+  - 理论学习:
+    - Docker基础: container/docker.md
   - 编程开发:
     - Docker基础: container/docker.md
   - 网络安全:
-    - 远控木马: security/remote-control-trojan.md
+    - 远控木马:
+        - 2121sjfk: security/2024-04-22-CTF.md
+        - 2131sjfk: security/2024-04-22-CTF.md
+    - Web安全:
+        - XSS攻击: security/web/xss.md
+        - SQL注入: security/web/sql-injection.md
   - 人工智能:
-    - MySQL基础: database/mysql.md
+    - MySQL基础: artificial
   - 软件使用:
     - Markdown笔记: tools/markdown-notes.md
   - 留言板: guestbook.md

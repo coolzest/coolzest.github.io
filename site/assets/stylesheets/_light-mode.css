@@ -1,0 +1,201 @@
+/* ==============================================
+   浅色模式（default）变量覆盖
+   ============================================== */
+[data-md-color-scheme="default"] {
+  --bg-color: rgba(255, 255, 255, 0.1);
+  --mask-default: rgba(255, 255, 255, 0.7); /* 调整为可见的遮罩 */
+  --mask-homepage: rgba(255, 255, 255, 0);  /* 主页无遮罩 */
+  --container-bg: rgba(255, 255, 255, 0.5);
+  --container-home: rgba(255, 255, 255, 0);
+}
+
+/* ==============================================
+   浅色模式基础背景（确保所有页面都有背景）
+   ============================================== */
+[data-md-color-scheme="default"] {
+  background-image: url('../images/light-bg.png') !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ==============================================
+   强制主页背景显示
+   ============================================== */
+[data-md-color-scheme="default"] body[data-md-state="home"],
+[data-md-color-scheme="default"] .home-page,
+[data-md-color-scheme="default"] .home-container {
+  background-image: url('../images/light-bg.png') !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+/* ==============================================
+   浅色模式 - 遮罩层
+   ============================================== */
+[data-md-color-scheme="default"] html::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--mask-default);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ==============================================
+   主页遮罩减弱
+   ============================================== */
+[data-md-color-scheme="default"] .home-container ~ ::before {
+  background-color: var(--mask-homepage) !important;
+}
+
+/* ==============================================
+   内容容器
+   ============================================== */
+[data-md-color-scheme="default"] .md-container {
+  background-color: var(--container-bg);
+  border-radius: 4px;
+}
+
+/* ==============================================
+   主页内容容器
+   ============================================== */
+[data-md-color-scheme="default"] .home-container ~ .md-container {
+  background-color: var(--container-home) !important;
+}
+
+/* ==============================================
+   导航栏样式（浅色适配）
+   ============================================== */
+[data-md-color-scheme="default"] .md-header {
+  background-color: rgba(165, 67, 155, 0.243) !important;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.02),
+    transparent
+  ) !important;
+  opacity: 0.96 !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  box-shadow: 
+    0 1px 8px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.3s ease !important;
+}
+
+[data-md-color-scheme="default"] .md-header--shadow {
+  opacity: 0.99 !important;
+  box-shadow: 
+    0 2px 12px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* ==============================================
+   子标签栏样式（浅色适配）
+   ============================================== */
+[data-md-color-scheme="default"] .md-tabs {
+  background-color: rgba(176, 103, 171, 0.05) !important;
+  background-image: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 0, 0, 0)
+  ) !important;
+  opacity: 0.96 !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  box-shadow: 
+    0 1px 4px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(0, 0, 0, 0.03) !important;
+  transition: all 0.3s ease !important;
+}
+
+[data-md-color-scheme="default"] .md-tabs--active {
+  opacity: 0.98 !important; 
+  box-shadow: 
+    0 1px 6px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* ==============================================
+   文字颜色（深色适配，保证可读性）
+   ============================================== */
+[data-md-color-scheme="default"] .md-content p,
+[data-md-color-scheme="default"] .md-content li,
+[data-md-color-scheme="default"] .md-content span,
+[data-md-color-scheme="default"] .md-content div:not(.code-block):not(.highlight) {
+  color: #222222 !important;
+}
+
+[data-md-color-scheme="default"] .md-content h1,
+[data-md-color-scheme="default"] .md-content h2,
+[data-md-color-scheme="default"] .md-content h3,
+[data-md-color-scheme="default"] .md-content h4 {
+  color: #111111 !important;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.03) !important;
+}
+
+[data-md-color-scheme="default"] .md-content a,
+[data-md-color-scheme="default"] .md-nav__link {
+  color: #0052aa !important;
+}
+
+[data-md-color-scheme="default"] .md-content .note,
+[data-md-color-scheme="default"] .md-content .hint,
+[data-md-color-scheme="default"] .md-content small,
+[data-md-color-scheme="default"] .md-toc-item a {
+  color: #444444 !important;
+}
+
+[data-md-color-scheme="default"] .code-block,
+[data-md-color-scheme="default"] .language-text,
+[data-md-color-scheme="default"] .md-code {
+  color: #333333 !important;
+}
+
+/* ==============================================
+   主页隐藏导航元素
+   ============================================== */
+/* [data-md-color-scheme="default"] body[data-md-state="home"] .md-header,
+[data-md-color-scheme="default"] body[data-md-state="home"] .md-tabs,
+[data-md-color-scheme="default"] body[data-md-state="home"] .md-footer {
+  display: none !important;
+} */
+
+/* ==============================================
+   去掉侧边栏标题背景
+   ============================================== */
+[data-md-color-scheme="default"] .md-nav__title {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0.6rem 0.8rem 0.2rem !important;
+  margin: 0 !important;
+  color: #666 !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+}
+
+/* ==============================================
+   去掉左侧导航栏项的高亮色块
+   ============================================== */
+[data-md-color-scheme="default"] .md-nav__item--nested > .md-nav__link,
+[data-md-color-scheme="default"] .md-nav__item--active > .md-nav__link {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* ==============================================
+   主页页脚适配
+   ============================================== */
+[data-md-color-scheme="default"] html body:has(.home-container) .md-footer {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+}

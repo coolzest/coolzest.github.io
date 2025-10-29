@@ -1,0 +1,108 @@
+/* 按钮样式 */
+.buttoncss, .buttoncss1 {
+  border-radius: var(--button-border-radius);
+  border: none;
+  color: white;
+  padding: var(--button-padding);
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: var(--button-font-size);
+  margin: var(--button-margin);
+  cursor: pointer;
+  will-change: background-color, color;
+  transition: var(--transition-default);
+}
+.buttoncss { background-color: #4CAF50; }
+.buttoncss1 { background-color: #567fd0; }
+
+.buttonxuan, .buttonxuan1, .buttonxuan2, .buttonxuan3 {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  font-size: var(--button-font-size);
+  margin: var(--button-margin);
+  cursor: pointer;
+  transition: var(--transition-default);
+}
+.buttonxuan {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+}
+.buttonxuan1 {
+  background-color: white;
+  color: black;
+  border: 2px solid #4CAF50;
+}
+.buttonxuan1:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+.buttonxuan2, .buttonxuan3 {
+  font-size: 28px;
+  padding: 20px;
+  width: 300px;
+  border: 2px solid;
+  border-radius: var(--rcorners-border-radius);
+  transition: all var(--transition-slow);
+  will-change: transform;
+}
+.buttonxuan2 {
+  background-color: #ACE48E;
+  color: #FFFFFF;
+}
+.buttonxuan3:hover {
+  background-color: #5577D1;
+  color: #FFFFFF;
+}
+
+.buttonxuan2 span, .buttonxuan3 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: var(--transition-slow);
+}
+.buttonxuan2 span:after, .buttonxuan3 span:after {
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: var(--transition-slow);
+}
+.buttonxuan2:hover span, .buttonxuan3:hover span {
+  padding-right: 25px;
+}
+.buttonxuan2:hover span:after, .buttonxuan3:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+/* 社交图标与特殊元素 */
+img.twitter { color: #1DA1F2; }
+.bilibili { color: #EA7A99; }
+.github { color: #25292E; }
+.laptop { color: #d1e82a; }
+
+/* 心跳动画 */
+@keyframes heart {
+  0%, 40%, 80%, 100% { transform: scale(1); }
+  20%, 60% { transform: scale(1.15); }
+}
+.heart {
+  animation: heart 1000ms infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* 遮盖效果 */
+.mask {
+  background-color: #252525;
+  color: #252525;
+  transition: color var(--transition-slow);
+}
+.mask:hover {
+  color: #ffffff;
+}
