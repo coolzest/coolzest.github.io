@@ -1,0 +1,751 @@
+/* 全局变量 - 功能分组 */
+:root >*{
+  /* 主色调 */
+  --md-primary-fg-color: #16988d;
+  --md-primary-fg-color--light: #047650;
+  --md-primary-fg-color--dark: #518FC1;
+  --md-primary-fg-color-rgb: 22, 152, 141; /* 新增：用于阴影计算 */
+  
+  /* 圆角与边框 */
+  --rcorners-border-radius: 25px;
+  --rcorners-small-radius: 12px;
+  --rcorners-border-color: #518FC1;
+  --rcorners-light-border: 2px solid rgba(68,138,255,.1);
+  
+  /* 间距与内边距 */
+  --rcorners-padding: 20px;
+  --grid-gap: 10px;
+  --grid-padding: 10px;
+  
+  /* 按钮样式 */
+  --button-border-radius: 12px;
+  --button-padding: 15px 32px;
+  --button-margin: 4px 2px;
+  --button-font-size: 16px;
+  
+  /* 动画时长 */
+  --transition-default: 0.3s ease;
+  --transition-slow: 0.5s ease;
+
+  /* 背景图相关变量（新增，便于统一调整） */
+  --bg-image-light: url('../resources/imag.png'); /* 白夜背景图 */
+  --bg-image-dark: url('../resources/imag.png');  /* 黑夜背景图（可替换为不同图） */
+  --bg-mask-light: rgba(255, 255, 255, 0.8);   /* 白夜遮罩（更透明，避免内容过淡） */
+  --bg-mask-dark: rgba(0, 0, 0, 0.7);          /* 黑夜遮罩 */
+}
+
+
+/* 全局基础样式 */
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background-color: rgba(73, 177, 245, 0.2);
+  border-radius: 2em;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #49b1f5;
+  background-image: -webkit-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.4) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.4) 75%,
+    transparent 75%,
+    transparent
+  );
+  border-radius: 10px;
+}
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+/* 选中文本样式 */
+::-moz-selection {
+  color: #fff;
+  background-color: #49b1f5;
+}
+::selection {
+  color: #fff;
+  background-color: #49b1f5;
+}
+
+/* 平滑滚动 */
+html {
+  scroll-behavior: smooth;
+}
+
+
+/* 1. 图片与容器样式 */
+img.img1, img.img2, img.img3 {
+  border-radius: var(--rcorners-border-radius);
+  contain: paint;
+}
+
+.image-container {
+  text-align: center;
+  contain: layout;
+}
+.image-container img {
+  display: inline-block;
+  margin: 10px;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 200px;
+}
+
+/* 圆角容器系列 */
+.rcorners-common {
+  border-radius: var(--rcorners-border-radius);
+  padding: var(--rcorners-padding);
+  width: 100%;
+  contain: layout;
+}
+
+#rcorners1 {
+  @extend .rcorners-common;
+  background: linear-gradient(to right, rgba(189, 224, 245), rgba(218, 232, 241), rgba(238, 237, 238));
+  height: 100px;
+  text-align: center;
+  font-size: 16px;
+  contain: layout paint;
+}
+
+#rcorners2, #rcorners3, #rcorners5 {
+  @extend .rcorners-common;
+  border: 2px solid var(--rcorners-border-color);
+  height: 100%;
+}
+#rcorners2 {
+  font-size: 16px;
+}
+
+#rcorners4, #rcorners6 {
+  border-radius: 32px;
+  border: var(--rcorners-light-border);
+  padding: var(--rcorners-padding);
+  height: 100%;
+  contain: layout;
+}
+#rcorners4 {
+  width: 110%;
+}
+
+
+/* 2. 按钮样式 */
+.buttoncss, .buttoncss1 {
+  border-radius: var(--button-border-radius);
+  border: none;
+  color: white;
+  padding: var(--button-padding);
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: var(--button-font-size);
+  margin: var(--button-margin);
+  cursor: pointer;
+  will-change: background-color, color;
+  transition: var(--transition-default);
+}
+.buttoncss { background-color: #4CAF50; }
+.buttoncss1 { background-color: #567fd0; }
+
+.buttonxuan {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: var(--button-font-size);
+  margin: var(--button-margin);
+  transition: var(--transition-default);
+  cursor: pointer;
+}
+
+.buttonxuan1 {
+  background-color: white;
+  color: black;
+  border: 2px solid #4CAF50;
+}
+.buttonxuan1:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.buttonxuan2, .buttonxuan3 {
+  display: inline-block;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+  width: 300px;
+  margin: 5px;
+  border: 2px solid;
+  border-radius: var(--rcorners-border-radius);
+  cursor: pointer;
+  transition: all var(--transition-slow);
+  will-change: transform;
+}
+.buttonxuan2 {
+  background-color: #ACE48E;
+  color: #FFFFFF;
+}
+.buttonxuan3:hover {
+  background-color: #5577D1;
+  color: #FFFFFF;
+}
+
+.buttonxuan2 span, .buttonxuan3 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: var(--transition-slow);
+}
+.buttonxuan2 span:after, .buttonxuan3 span:after {
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: var(--transition-slow);
+}
+.buttonxuan2:hover span, .buttonxuan3:hover span {
+  padding-right: 25px;
+}
+.buttonxuan2:hover span:after, .buttonxuan3:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+
+/* 3. 社交图标与特殊元素 */
+img.twitter { color: #1DA1F2; }
+.bilibili { color: #EA7A99; }
+.github { color: #25292E; }
+.laptop { color: #d1e82a; }
+
+/* 心跳动画 */
+@keyframes heart {
+  0%, 40%, 80%, 100% { transform: scale(1); }
+  20%, 60% { transform: scale(1.15); }
+}
+.heart {
+  animation: heart 1000ms infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* 遮盖效果 */
+.mask {
+  background-color: #252525;
+  color: #252525;
+  transition: color var(--transition-slow);
+}
+.mask:hover {
+  color: #ffffff;
+}
+
+
+/* 4. 提示框与卡片样式 */
+:root {
+  --md-admonition-icon--pied-piper: url("data:image/svg+xml,%3Csvg width='30.000000' height='30.000000' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cdesc%3E Created with Pixso. %3C/desc%3E%3Cdefs%3E%3CclipPath id='clip103_2030'%3E%3Crect id='icon' width='30.000000' height='30.000000' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg clip-path='url(%23clip103_2030)'%3E%3Cpath id='icon' d='M25.8 5.40002L25.8 24.6L4.20001 24.6L4.20001 5.40002L25.8 5.40002ZM9.60001 10.8L13.8 15L9.60001 19.2M15.6 19.2L21.6 19.2' stroke='%23101112' stroke-width='1.200000'/%3E%3C/g%3E%3C/svg%3E%0A");
+  --md-admonition-icon--pied-piper1: var(--md-admonition-icon--pied-piper);
+}
+
+.md-typeset .admonition.pied-piper,
+.md-typeset details.pied-piper {
+  border-color: rgb(43, 155, 70);
+  font-size: large;
+  contain: content;
+}
+.md-typeset .pied-piper>.admonition-title,
+.md-typeset .pied-piper>summary {
+  background-color: rgba(43, 155, 70, 0.1);
+}
+.md-typeset .pied-piper>.admonition-title::before,
+.md-typeset .pied-piper>summary::before {
+  background-color: rgb(43, 155, 70);
+  -webkit-mask-image: var(--md-admonition-icon--pied-piper);
+  mask-image: var(--md-admonition-icon--pied-piper);
+}
+
+.md-typeset .admonition.pied-piper1,
+.md-typeset details.pied-piper1 {
+  font-size: large;
+  width: 100%;
+  border-radius: var(--rcorners-border-radius);
+  contain: content;
+}
+.md-typeset .pied-piper1>.admonition-title,
+.md-typeset .pied-piper1>summary {
+  border-top-left-radius: var(--rcorners-border-radius);
+  border-top-right-radius: var(--rcorners-border-radius);
+  height: 45px;
+}
+.md-typeset .pied-piper1>.admonition-title::before,
+.md-typeset .pied-piper1>summary::before {
+  background-color: rgb(31, 31, 33);
+  -webkit-mask-image: var(--md-admonition-icon--pied-piper1);
+  mask-image: var(--md-admonition-icon--pied-piper1);
+}
+
+/* Markdown卡片 */
+.md-typeset .grid.cards>ol>li,
+.md-typeset .grid.cards>ul>li,
+.md-typeset .grid>.card {
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.7rem;
+  padding: 0.8rem;
+  transition: border var(--transition-default), box-shadow var(--transition-default);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  contain: content;
+  will-change: box-shadow, border;
+}
+
+
+/* 5. 布局与网格 */
+:root {
+  --grid-bg-color: #2196F3;
+  --grid-item-bg-color: rgba(255, 255, 255, 0.8);
+  --grid-item-padding: 20px 0;
+  --grid-item-font-size: 30px;
+}
+
+.item1 { grid-area: header; }
+.item2 { grid-area: menu; }
+.item3 { grid-area: main; }
+.item4 { grid-area: right; }
+.item5 { grid-area: footer; }
+
+.grid-container {
+  display: grid;
+  grid:
+    'header header header header header header'
+    'menu main main main right right'
+    'menu footer footer footer footer footer';
+  grid-gap: var(--grid-gap);
+  background-color: var(--grid-bg-color);
+  padding: var(--grid-padding);
+  contain: layout;
+}
+.grid-container>div {
+  background-color: var(--grid-item-bg-color);
+  text-align: center;
+  padding: var(--grid-item-padding);
+  font-size: var(--grid-item-font-size);
+}
+
+
+/* 6. 特殊模块（视频、评论、打赏等） */
+.video-container, .aspect-ratio {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  margin: 3% auto;
+}
+.video-container iframe, .aspect-ratio iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#cusdis_thread > iframe {
+  height: 30rem;
+}
+
+.reward-container {
+  margin: 20px auto;
+  padding: 10px 0;
+  text-align: center;
+  width: 90%;
+  contain: layout;
+}
+.reward-container button {
+  background: transparent;
+  border: 1px solid #6A8CB9;
+  color: #6A8CB9;
+  cursor: pointer;
+  line-height: 2;
+  padding: 0 15px;
+  transition: color var(--transition-default);
+}
+.reward-container button:hover {
+  border: 1px solid #608DBD;
+  color: #e480b2;
+}
+
+#qr {
+  display: none;
+  text-align: center;
+}
+#qr img {
+  width: 250px;
+  margin: 10px;
+  border-radius: var(--rcorners-border-radius);
+  content-visibility: auto;
+}
+#qr p {
+  font-size: 16px;
+  color: #555;
+}
+
+.runnable-code {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+.code-header {
+  background: #f5f5f5;
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.run-btn {
+  background: #007acc;
+  color: white;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color var(--transition-default);
+}
+.run-btn:hover {
+  background: #005fa3;
+}
+
+
+/* 7. 公告栏与页脚 */
+.oneclip-announcement {
+  background-color: var(--md-primary-fg-color, #1976d2);
+  color: #ffffff;
+  font-weight: 400;
+  text-align: center;
+  padding: 15px 20px;
+  margin: -20px -20px 20px -20px;
+  border-radius: var(--rcorners-small-radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+[data-md-color-scheme="slate"] .oneclip-announcement {
+  background-color: var(--md-default-bg-color, #263238);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.oneclip-announcement-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 1.6;
+  animation: slideInDown 0.5s ease-out;
+}
+.oneclip-announcement a {
+  color: #ffffff !important;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.6);
+  transition: all var(--transition-default);
+  font-weight: 500;
+}
+.oneclip-announcement a:hover {
+  text-decoration-color: #ffffff;
+}
+.oneclip-cta {
+  margin-left: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 6px 16px;
+  border-radius: 20px;
+  text-decoration: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all var(--transition-default);
+}
+.oneclip-cta:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+@keyframes slideInDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+footer .md-footer-meta {
+  font-size: 16px;
+  color: #6c757d;
+}
+footer a {
+  text-decoration: none;
+  transition: color var(--transition-default), text-decoration var(--transition-default);
+}
+footer a:hover {
+  text-decoration: underline;
+}
+
+
+/* 响应式设计 */
+@media only screen and (max-width: 768px) {
+  #rcorners4, #rcorners5 {
+    border: none;
+    width: 100%;
+  }
+  
+  .md-announce {
+    padding: 10px 12px;
+  }
+  .md-announce__content {
+    font-size: 13px;
+  }
+  
+  div.hide {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .grid-container {
+    grid-template-areas: 
+      "header" "menu" "main" "right" "footer";
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* 性能优化与可访问性 */
+@media (prefers-reduced-motion: reduce) {
+  .heart, 
+  .buttonxuan2, .buttonxuan3,
+  .buttonxuan2 span, .buttonxuan3 span,
+  .buttonxuan2 span:after, .buttonxuan3 span:after,
+  .mask,
+  .reward-container button,
+  .oneclip-announcement-content {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+nav.md-nav--secondary ul {
+  border-left: 1px solid lightblue;
+}
+
+.md-search__input {
+  font-family: inherit !important;
+}
+
+.version-info {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* 主题切换动画（增强可见性） */
+.theme-switching {
+  transition: background-color 0.6s ease, color 0.6s ease !important;
+}
+.theme-switching .md-container {
+  opacity: 0.4 !important; /* 加深透明度变化 */
+  transform: scale(0.98) !important; /* 加大缩放效果 */
+  transition: opacity 0.6s ease, transform 0.6s ease !important;
+}
+.md-header, .md-button, .md-nav__item {
+  transition: 
+    background-color 0.6s ease,
+    color 0.6s ease,
+    box-shadow 0.6s ease,
+    transform 0.6s ease !important;
+}
+
+/* 页面跳转动画强化（确保覆盖主题默认样式） */
+.md-content {
+  position: relative;
+  overflow: hidden;
+  min-height: 500px; /* 确保内容区域足够大，动画不被截断 */
+  transition: opacity 0.3s ease;
+}
+
+/* 滑出动画（更明显的位移） */
+.md-content--out {
+  animation: fadeOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+  animation-fill-mode: forwards !important; /* 确保动画结束后保持最终状态 */
+}
+@keyframes fadeOut {
+  0% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(-80px); /* 加大位移，确保可见 */ }
+}
+
+/* 滑入动画（更明显的位移） */
+.md-content--in {
+  animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+  animation-fill-mode: forwards !important;
+  opacity: 0;
+  transform: translateX(80px); /* 加大位移，确保可见 */
+}
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateX(80px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+
+/* 针对顶部栏下方横栏（公告栏、标签导航等）的渐变过渡 */
+/* 1. 公告栏（.md-announce） */
+.md-announce {
+  transition: 
+    background-color 0.6s ease, 
+    color 0.6s ease, 
+    box-shadow 0.6s ease !important;
+}
+
+/* 2. 标签导航栏（.md-tabs） */
+.md-tabs {
+  transition: 
+    background-color 0.6s ease, 
+    border-color 0.6s ease, 
+    color 0.6s ease !important;
+}
+
+/* 3. 子导航栏（若有，如.md-nav--primary下方的横栏） */
+.md-nav--primary .md-nav__list {
+  transition: 
+    background-color 0.6s ease, 
+    border-color 0.6s ease !important;
+}
+
+/* 4. 确保主题切换时所有关联横栏同步过渡 */
+.theme-switching .md-announce,
+.theme-switching .md-tabs,
+.theme-switching .md-nav--primary .md-nav__list {
+  transition: 
+    background-color 0.6s ease, 
+    color 0.6s ease, 
+    border-color 0.6s ease, 
+    box-shadow 0.6s ease !important;
+}
+
+
+/* 仅在深色模式下应用样式 */
+[data-md-color-scheme="slate"] {
+  /* 1. 导航栏样式 */
+  .md-header {
+    /* 深色模式原生背景色，增强质感 */
+    background-color: var(--md-header-bg-color) !important;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.03),  /* 顶部极淡高光 */
+      transparent
+    ) !important;
+    /* 微透明+玻璃感 */
+    opacity: 0.96 !important;
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+    /* 深色专属阴影（与主色呼应） */
+    box-shadow: 
+      0 1px 8px rgba(var(--md-primary-fg-color-rgb), 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+    /* 过渡动画 */
+    transition: all 0.3s ease !important;
+  }
+
+  /* 导航栏滚动状态 */
+  .md-header--shadow {
+    opacity: 0.99 !important;
+    box-shadow: 
+      0 2px 12px rgba(var(--md-primary-fg-color-rgb), 0.2),
+      0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+  }
+
+  /* 2. 子标签栏（.md-tabs）样式，与导航栏保持一致 */
+  .md-tabs {
+    /* 与导航栏同色系背景 */
+    background-color: var(--md-header-bg-color) !important;
+    background-image: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(0, 0, 0, 0.05)  /* 底部稍暗，与导航栏过渡 */
+    ) !important;
+    /* 同步透明感 */
+    opacity: 0.96 !important;
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+    /* 同步阴影（稍弱于导航栏，避免层次混乱） */
+    box-shadow: 
+      0 1px 4px rgba(var(--md-primary-fg-color-rgb), 0.1),
+      0 0 0 1px rgba(255, 255, 255, 0.03) !important;
+    /* 与导航栏同步过渡 */
+    transition: all 0.3s ease !important;
+  }
+
+  /* 子标签栏滚动/激活状态（若有） */
+  .md-tabs--active {
+    opacity: 0.98 !important;
+    box-shadow: 
+      0 1px 6px rgba(var(--md-primary-fg-color-rgb), 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+  }
+}
+
+/* 隐藏底部分页导航（上一页/下一页） */
+.md-footer-nav {
+  display: none !important;
+}
+
+/* 若需保留版权信息，仅隐藏分页部分 */
+/* .md-footer-nav__inner {
+  display: none !important;
+} */
+
+
+/* 1. 全局背景容器（单独创建，避免影响body默认样式） */
+.bg-container {
+  position: fixed; /* 固定在视口，不随滚动移动 */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2; /* 层级最低，在所有内容下方 */
+  background-image: url('../resources/imag.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* 2. 遮罩层（仅作用于背景图，不影响内容） */
+.bg-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* 在背景图上方，内容下方 */
+  transition: background-color 0.3s ease; /* 主题切换平滑过渡 */
+}
+
+/* 3. 白夜主题样式 */
+[data-md-color-scheme="default"] .bg-mask {
+  background-color: rgba(255, 255, 255, 0.7); /* 白色遮罩（透明度0.7，可调整） */
+}
+/* 可选：白夜主题用不同背景图 */
+/* [data-md-color-scheme="default"] .bg-container {
+  background-image: url('../resources/light-bg.png');
+} */
+
+/* 4. 黑夜主题样式 */
+[data-md-color-scheme="slate"] .bg-mask {
+  background-color: rgba(0, 0, 0, 0.6); /* 黑色遮罩（透明度0.6，可调整） */
+}
+/* 可选：黑夜主题用不同背景图 */
+/* [data-md-color-scheme="slate"] .bg-container {
+  background-image: url('../resources/dark-bg.png');
+} */
+
+/* 5. 确保内容容器独立背景（关键：避免内容与背景混合） */
+.md-container, .md-content {
+  position: relative;
+  z-index: 1; /* 内容在最上层 */
+  background-color: var(--md-default-bg-color); /* 继承主题默认背景色（白色/深色） */
+  /* 保留原主题的内边距，避免内容贴边 */
+  padding: var(--md-container-padding, 2rem);
+}
