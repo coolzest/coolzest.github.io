@@ -5,19 +5,28 @@ site_url: https://mydomain.org/  # 网站在线访问地址（部署后替换为
 plugin:
   - search  # 启用搜索功能插件
   - blog
+  - git-authors
   - minify:  # 启用HTML/CSS/JS压缩插件（优化加载速度）
       minify_html: true
       minify_css: true
       minify_js: true
-  - git-revision-date-localized:  # 启用Git修订日期插件（显示最后修改时间）
-      type: timeago
-      locale: zh
+  - git-revision-date-localized: # 启用Git修订日期插件
+      type: timeago #时间类型
+      custom_format: "%d. %B %Y"  # 时间格式
+      timezone: Europe/Amsterdam #时区
+      locale: en #首选语言
+      fallback_to_build_date: false #许回退到git 不可用时mkdocs build执行的时间
+      enable_creation_date: true #是否启用创建时间
+      exclude:  #排除的页面
+          - index.md
+      enabled: !ENV [CI, false] #是否启用
+      strict: true
   # - awesome-pages  # 注释：启用Awesome Pages插件（当前未启用）
 
 #[UI]
 theme:
   name: material  # 使用Material for MkDocs核心主题
-  custom_dir: docs/overrides  # 自定义模板目录（存放修改后的main.html等）
+  custom_dir: docs/overrides  # 自定义模板目录
   # font: false  # 注释：是否禁用主题默认字体（当前未启用）
   logo: "assets/images/logo.png"  # 顶部导航栏左侧Logo路径
   # https://s1.imagehub.cc/images/2025/01/05/64eafdf8c27f482c7ecb83003d460d6a.webp  # 注释：备用Logo图片链接
@@ -136,20 +145,13 @@ markdown_extensions:  # Markdown语法扩展（增强文档编写能力）
   # - neoteroi.timeline  # 注释：时间线扩展（当前未启用）
 
 extra_css:  # 额外引入的CSS样式文件
-  # - assets/stylesheets/_base.css    # 注释：基础变量与全局基础样式（当前未启用）
-  # - assets/stylesheets/homepage.css  # 注释：主页样式（当前未启用）
-  # - assets/stylesheets/_layout.css # 注释：布局、容器、背景样式（当前未启用）
-  # - assets/stylesheets/_interactive.css # 注释：交互动画样式（当前未启用）
-  # - assets/stylesheets/_components.css # 注释：组件样式（当前未启用）
-  # - assets/stylesheets/_page.css    # 注释：页面元素样式（当前未启用）
-  # - assets/stylesheets/_light-mode.css # 注释：浅色模式样式（当前未启用）
-  # - assets/stylesheets/_slate-mode.css # 注释：深色模式样式（当前未启用）
   - assets/stylesheets/base.css # 基础样式
   - assets/stylesheets/themes.css # 主题配色样式
   - assets/stylesheets/components.css # 组件样式（按钮、卡片等）
   - assets/stylesheets/animations.css # 动画样式
   - assets/stylesheets/home.css # 主页专属样式
   - assets/stylesheets/tech-style.css # 技术文档样式
+  - assets/stylesheets/rounded.css # 页面圆角样式
 
   # - stylesheets/highlight-search.css  # 注释：搜索高亮样式（当前未启用）
  
@@ -159,7 +161,7 @@ extra_css:  # 额外引入的CSS样式文件
   # - stylesheets/extra2.  # 注释：不完整的样式配置（当前未启用）
   #- stylesheets/global.css  # 注释：全局样式（当前未启用）
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/extra.css  # 注释：CDN引入的额外样式（当前未启用）
-  - assets/stylesheets/link.css  #友链样式
+  # - assets/stylesheets/link.css  #友链样式
   # - stylesheets/optimize.css  # 注释：优化样式（当前未启用）
   - assets/stylesheets/poem.css # 诗歌页面样式
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/poem.css  # 注释：CDN引入的诗歌样式（当前未启用）
@@ -193,8 +195,9 @@ extra_css:  # 额外引入的CSS样式文件
   
 extra_javascript:  # 额外引入的JavaScript文件
   - assets/javascripts/animations.js # 全局动画脚本
-  - assets/javascripts/homepage-animations.js # 主页动画脚本
+  - assets/javascripts/background.js # 动态背景脚本
   - assets/javascripts/tech-script.js # 技术文档交互脚本
+  - assets/javascripts/rounded.js # 页面圆角脚本
   
 extra:
   social:  # 社交图标链接（显示在页脚/顶部）
@@ -224,7 +227,7 @@ nav:
   - 网络安全:
     - 远控木马:
         - 2121sjfk: security/2024-04-22-CTF.md
-        - 2131sjfk: security/2024-04-22-CTF.md
+        - 2131sjfk: security/2024-08-17-远控木马.md
     - Web安全:
         - XSS攻击: security/web/xss.md
         - SQL注入: security/web/sql-injection.md

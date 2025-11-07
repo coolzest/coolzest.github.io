@@ -118,7 +118,7 @@
   background-attachment: fixed !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
-  background-color: rgba(54, 53, 53, 0);
+  /* background-color: rgba(54, 53, 53, 0); */
 }
 
 [data-md-color-scheme="slate"] html::before {
