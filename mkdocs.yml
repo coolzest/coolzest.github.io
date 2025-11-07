@@ -119,6 +119,14 @@ markdown_extensions:  # Markdown语法扩展（增强文档编写能力）
   - pymdownx.snippets # 支持引入外部代码片段
   - pymdownx.smartsymbols # 支持特殊符号自动替换
   - pymdownx.tilde # 支持删除线
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
 
   - pymdownx.superfences: # 支持代码块嵌套和自定义围栏（如Mermaid）
       custom_fences:
