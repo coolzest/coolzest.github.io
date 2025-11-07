@@ -5,6 +5,7 @@ site_url: https://mydomain.org/  # 网站在线访问地址（部署后替换为
 plugin:
   - search  # 启用搜索功能插件
   - blog
+  - awesome-pages
   - git-authors
   - minify:  # 启用HTML/CSS/JS压缩插件（优化加载速度）
       minify_html: true

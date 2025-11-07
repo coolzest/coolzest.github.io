@@ -24,17 +24,7 @@ html, body {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* 玻璃态导航栏 */
-.md-header {
-  background: rgba(255, 255, 255, var(--glass-opacity));
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
 
-.md-header__topic, .md-nav__link {
-  font-weight: 500;
-}
 
 
 /* 卡片式模块 */
@@ -50,7 +40,7 @@ html, body {
 .md-typeset .grid.cards>li:hover {
   background-color: var(--tech-card-hover);
   transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8);
 }
 
 /* 按钮与交互元素 */

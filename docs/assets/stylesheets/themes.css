@@ -10,7 +10,7 @@
 }
 
 [data-md-color-scheme="default"] {
-  background-image: url('../images/light-bg.png') !important;
+  background-image: url('../images/mountains-5626734.jpg') !important;
   background-size: cover !important;
   background-attachment: fixed !important;
   background-repeat: no-repeat !important;
@@ -45,8 +45,8 @@
 
 /* 导航栏样式 */
 [data-md-color-scheme="default"] .md-header {
-  background-color: rgba(165, 67, 155, 0.243) !important;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.02), transparent) !important;
+  background-color: rgba(70, 94, 233, 0.7) !important;
+  background-image: linear-gradient(to bottom, rgba(149, 98, 231, 0.55), transparent) !important;
   opacity: 0.96 !important;
   backdrop-filter: blur(6px) !important;
   -webkit-backdrop-filter: blur(6px) !important;
@@ -55,8 +55,8 @@
 }
 
 [data-md-color-scheme="default"] .md-tabs {
-  background-color: rgba(176, 103, 171, 0.05) !important;
-  background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0)) !important;
+  background-color: rgba(70, 94, 233, 0.6) !important;
+  background-image: linear-gradient(to bottom, transparent, rgba(86, 108, 235, 0)) !important;
   opacity: 0.96 !important;
   backdrop-filter: blur(6px) !important;
   -webkit-backdrop-filter: blur(6px) !important;
@@ -113,7 +113,7 @@
 }
 
 [data-md-color-scheme="slate"] {
-  background-image: url('../images/imag.png') !important;
+  background-image: url('https://s1.imagehub.cc/images/2025/11/07/2070925996a3d87409e84c8c336e511b.png') !important;
   background-size: cover !important;
   background-attachment: fixed !important;
   background-repeat: no-repeat !important;
@@ -149,13 +149,15 @@
 /* 导航栏样式 */
 [data-md-color-scheme="slate"] .md-header {
   background-color: var(--md-header-bg-color) !important;
-  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.03), transparent) !important;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), transparent) !important;
   opacity: 0.96 !important;
   backdrop-filter: blur(6px) !important;
   -webkit-backdrop-filter: blur(6px) !important;
   box-shadow: 0 1px 8px rgba(var(--md-primary-fg-color-rgb), 0.15), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
   transition: all 0.3s ease !important;
 }
+
+
 
 [data-md-color-scheme="slate"] .md-tabs {
   background-color: var(--md-header-bg-color) !important;
@@ -204,3 +206,7 @@
   box-shadow: none !important;
 }
 
+/* 导航栏字体 */
+.md-header__topic, .md-nav__link {
+  font-weight: 500;
+}
