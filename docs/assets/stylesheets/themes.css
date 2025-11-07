@@ -85,12 +85,17 @@
   color: #0052aa !important;
 }
 
+/* title颜色 */
+[data-md-color-scheme="default"] .md-nav__link::current {
+  color: #000000 !important;
+}
+
 /* 侧边栏样式 */
 [data-md-color-scheme="default"] .md-nav__title {
   background: transparent !important;
   padding: 0.6rem 0.8rem 0.2rem !important;
   margin: 0 !important;
-  color: #666 !important;
+  color: #000000 !important;
   font-size: 0.9rem !important;
   font-weight: 600 !important;
 }

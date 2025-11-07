@@ -27,9 +27,3 @@ jobs:
       - run: pip install mkdocs-git-authors-plugin
       # - run: pip install mkdocs-rss-plugin           
 
-!!! abstract "⚡ AI摘要 (GLM)"
-
-    本文介绍了为MKdocs添加文章修订时间戳的方法。通过使用git -revision-date-localized插件，可以在页面底部显示文档更新日期。安装配置简单，但需注意大型文档库渲染速度可能变慢，可通过调整配置优化。
-
-      - run: pip install mkdocs-material 
-      - run: mkdocs gh-deploy --force
