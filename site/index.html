@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coolzest Notebooks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Serif SC', serif;
+            color: #fff;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            /* 背景图片 - 请替换下面的URL为您选择的图片 */
+            background: url('assets/images/432.png') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* 暗色遮罩层 */
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 10, 20, 0.6);
+            z-index: 1;
+        }
+        
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+        }
+        
+        .title {
+            margin-bottom: 2rem;
+            animation: fadeInDown 1.5s ease-out;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+            color: #fff;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .quote {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            animation: fadeIn 2s ease-out 0.5s both;
+            color: #e6f7ff;
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+            font-weight: 300;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            animation: fadeInUp 1.5s ease-out 1s both;
+        }
+        
+        .btn {
+            padding: 14px 35px;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            font-weight: 300;
+        }
+        
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 雪花特效 */
+        .snow-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .snowflake {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            /* 修复：设置初始位置在屏幕上方之外 */
+            top: -10px;
+            animation: fall linear infinite;
+        }
+        
+        /* 动画定义 */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fall {
+            /* 修复：从屏幕上方之外开始，落到屏幕下方之外 */
+            from {
+                transform: translateY(-10px);
+            }
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            .quote {
+                font-size: 1.3rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 200px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .quote {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 雪花特效 -->
+    <div class="snow-container" id="snow-container"></div>
+    
+    <!-- 主要内容 -->
+    <div class="container">
+        <div class="title">
+            <h1>Welcome Coolzest Notebooks</h1>
+            <div class="subtitle">记录思考与灵感的地方</div>
+        </div>
+        
+        <div class="quote">
+            人同树，越是贪恋阳光，越是扎根黑暗。
+        </div>
+        
+        <div class="buttons">
+            <button class="btn" id="blog-btn">进入博客</button>
+            <button class="btn" id="about-btn">关于我</button>
+        </div>
+    </div>
+
+    <script>
+        // 创建雪花特效 - 修复版本
+        function createSnowflakes() {
+            const container = document.getElementById('snow-container');
+            const snowflakeCount = 100; // 雪花数量
+            
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                
+                // 随机大小
+                const size = Math.random() * 5 + 2;
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                
+                // 随机水平位置
+                const startX = Math.random() * 100;
+                snowflake.style.left = `${startX}vw`;
+                
+                // 随机透明度
+                const opacity = Math.random() * 0.7 + 0.3;
+                snowflake.style.opacity = opacity;
+                
+                // 随机动画持续时间
+                const duration = Math.random() * 10 + 5;
+                
+                // 随机动画延迟 - 修复：使用负延迟让雪花从不同时间开始
+                const delay = Math.random() * -20;
+                
+                // 应用动画
+                snowflake.style.animation = `fall ${duration}s linear ${delay}s infinite`;
+                
+                container.appendChild(snowflake);
+            }
+        }
+        
+        // 进入博客按钮事件
+        document.getElementById('blog-btn').addEventListener('click', function() {
+            // 这里可以修改为您的博客实际链接
+            window.location.href = '/blog';
+        });
+        
+        // 关于我按钮事件
+        document.getElementById('about-btn').addEventListener('click', function() {
+            // 这里可以修改为关于我页面的链接
+            window.location.href = '/about';
+        });
+        
+        // 页面加载完成后创建雪花
+        window.addEventListener('load', createSnowflakes);
+    </script>
+</body>
+</html>

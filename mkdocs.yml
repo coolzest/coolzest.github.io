@@ -1,6 +1,6 @@
 #[Info]
 site_name: Coolzest NOTE  # 网站名称（显示在浏览器标题和顶部导航）
-site_url: https://mydomain.org/  # 网站在线访问地址（部署后替换为实际域名）
+site_url: https://coolzest.github.io/ # 网站在线访问地址（部署后替换为实际域名）
 
 plugin:
   - search  # 启用搜索功能插件
@@ -229,6 +229,8 @@ watch: #监听文件变动自动刷新（开发模式用）
 nav:
   - 个人博客:
     - 博客首页: blog/index.md
+    - 归档： blog/archives.md
+    - 分类： blog/categories.md
   - 理论学习:
     - Docker基础: container/docker.md
   - 编程开发:

@@ -10,7 +10,7 @@
 }
 
 [data-md-color-scheme="default"] {
-  background-image: url('../images/mountains-5626734.jpg') !important;
+  background-image: url('..\\images\\_2.png') !important;
   background-size: cover !important;
   background-attachment: fixed !important;
   background-repeat: no-repeat !important;
@@ -210,6 +210,7 @@
   background-color: transparent !important;
   box-shadow: none !important;
 }
+
 
 /* 导航栏字体 */
 .md-header__topic, .md-nav__link {
