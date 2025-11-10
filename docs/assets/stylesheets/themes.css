@@ -1,6 +1,8 @@
 /* ==============================================
-   浅色模式
+   主题变量定义
    ============================================== */
+
+/* 浅色模式变量 */
 [data-md-color-scheme="default"] {
   --bg-color: rgba(255, 255, 255, 0.1);
   --mask-default: rgba(255, 255, 255, 0.7);
@@ -9,106 +11,7 @@
   --container-home: rgba(255, 255, 255, 0);
 }
 
-[data-md-color-scheme="default"] {
-  background-image: url('..\\images\\_2.png') !important;
-  background-size: cover !important;
-  background-attachment: fixed !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-  background-color: rgba(255, 255, 255, 0);
-}
-
-[data-md-color-scheme="default"] html::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: var(--mask-default);
-  z-index: -1;
-  pointer-events: none;
-}
-
-[data-md-color-scheme="default"] .home-container ~ ::before {
-  background-color: var(--mask-homepage) !important;
-}
-
-[data-md-color-scheme="default"] .md-container {
-  background-color: var(--container-bg);
-  border-radius: 4px;
-}
-
-[data-md-color-scheme="default"] .home-container ~ .md-container {
-  background-color: var(--container-home) !important;
-}
-
-/* 导航栏样式 */
-[data-md-color-scheme="default"] .md-header {
-  background-color: rgba(70, 94, 233, 0.7) !important;
-  background-image: linear-gradient(to bottom, rgba(149, 98, 231, 0.55), transparent) !important;
-  opacity: 0.96 !important;
-  backdrop-filter: blur(6px) !important;
-  -webkit-backdrop-filter: blur(6px) !important;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
-  transition: all 0.3s ease !important;
-}
-
-[data-md-color-scheme="default"] .md-tabs {
-  background-color: rgba(70, 94, 233, 0.6) !important;
-  background-image: linear-gradient(to bottom, transparent, rgba(86, 108, 235, 0)) !important;
-  opacity: 0.96 !important;
-  backdrop-filter: blur(6px) !important;
-  -webkit-backdrop-filter: blur(6px) !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.03) !important;
-  transition: all 0.3s ease !important;
-}
-
-/* 文字颜色 */
-[data-md-color-scheme="default"] .md-content p,
-[data-md-color-scheme="default"] .md-content li,
-[data-md-color-scheme="default"] .md-content span,
-[data-md-color-scheme="default"] .md-content div:not(.code-block):not(.highlight) {
-  color: #222222 !important;
-}
-
-[data-md-color-scheme="default"] .md-content h1,
-[data-md-color-scheme="default"] .md-content h2,
-[data-md-color-scheme="default"] .md-content h3,
-[data-md-color-scheme="default"] .md-content h4 {
-  color: #111111 !important;
-  text-shadow: 0 0 1px rgba(0, 0, 0, 0.03) !important;
-}
-
-[data-md-color-scheme="default"] .md-content a,
-[data-md-color-scheme="default"] .md-nav__link {
-  color: #0052aa !important;
-}
-
-/* title颜色 */
-[data-md-color-scheme="default"] .md-nav__link::current {
-  color: #000000 !important;
-}
-
-/* 侧边栏样式 */
-[data-md-color-scheme="default"] .md-nav__title {
-  background: transparent !important;
-  padding: 0.6rem 0.8rem 0.2rem !important;
-  margin: 0 !important;
-  color: #000000 !important;
-  font-size: 0.9rem !important;
-  font-weight: 600 !important;
-}
-
-[data-md-color-scheme="default"] .md-nav__item--nested > .md-nav__link,
-[data-md-color-scheme="default"] .md-nav__item--active > .md-nav__link {
-  background-color: transparent !important;
-  box-shadow: none !important;
-}
-
-/* ==============================================
-   深色模式
-   ============================================== */
+/* 深色模式变量 */
 [data-md-color-scheme="slate"] {
   --bg-color: rgba(54, 53, 53, 0.5);
   --mask-default: rgba(0, 0, 0, 0.6);
@@ -117,15 +20,31 @@
   --container-home: rgba(30, 30, 30, 0.6);
 }
 
-[data-md-color-scheme="slate"] {
-  background-image: url('https://s1.imagehub.cc/images/2025/11/07/2070925996a3d87409e84c8c336e511b.png') !important;
+/* ==============================================
+   背景图片和遮罩层
+   ============================================== */
+
+/* 浅色模式背景 */
+[data-md-color-scheme="default"] {
+  background-image: url('https://cloudflare-imgbed-84u.pages.dev/file/blog/1762782527370_default_bg.png') !important;
   background-size: cover !important;
   background-attachment: fixed !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
-  /* background-color: rgba(54, 53, 53, 0); */
+  background-color: rgba(255, 255, 255, 0);
 }
 
+/* 深色模式背景 */
+[data-md-color-scheme="slate"] {
+  background-image: url('https://cloudflare-imgbed-84u.pages.dev/file/blog/1762782500534_slate_bg.png') !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+/* 遮罩层样式 */
+[data-md-color-scheme="default"] html::before,
 [data-md-color-scheme="slate"] html::before {
   content: "";
   position: fixed;
@@ -138,20 +57,50 @@
   pointer-events: none;
 }
 
+/* 首页遮罩层特殊处理 */
+[data-md-color-scheme="default"] .home-container ~ ::before {
+  background-color: var(--mask-homepage) !important;
+}
+
 [data-md-color-scheme="slate"] .home-container ~ ::before {
   background-color: var(--mask-homepage) !important;
 }
 
+/* ==============================================
+   内容容器样式
+   ============================================== */
+
+[data-md-color-scheme="default"] .md-container,
 [data-md-color-scheme="slate"] .md-container {
   background-color: var(--container-bg);
   border-radius: 4px;
+}
+
+/* 首页容器特殊处理 */
+[data-md-color-scheme="default"] .home-container ~ .md-container {
+  background-color: var(--container-home) !important;
 }
 
 [data-md-color-scheme="slate"] .home-container ~ .md-container {
   background-color: var(--container-home) !important;
 }
 
-/* 导航栏样式 */
+/* ==============================================
+   导航栏样式
+   ============================================== */
+
+/* 浅色模式导航栏 */
+[data-md-color-scheme="default"] .md-header {
+  background-color: rgba(70, 94, 233, 0.7) !important;
+  background-image: linear-gradient(to bottom, rgba(149, 98, 231, 0.55), transparent) !important;
+  opacity: 0.96 !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.3s ease !important;
+}
+
+/* 深色模式导航栏 */
 [data-md-color-scheme="slate"] .md-header {
   background-color: var(--md-header-bg-color) !important;
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), transparent) !important;
@@ -162,8 +111,18 @@
   transition: all 0.3s ease !important;
 }
 
+/* 浅色模式标签栏 */
+[data-md-color-scheme="default"] .md-tabs {
+  background-color: rgba(70, 94, 233, 0.6) !important;
+  background-image: linear-gradient(to bottom, transparent, rgba(86, 108, 235, 0)) !important;
+  opacity: 0.96 !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.03) !important;
+  transition: all 0.3s ease !important;
+}
 
-
+/* 深色模式标签栏 */
 [data-md-color-scheme="slate"] .md-tabs {
   background-color: var(--md-header-bg-color) !important;
   background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0)) !important;
@@ -174,7 +133,19 @@
   transition: all 0.3s ease !important;
 }
 
-/* 文字颜色 */
+/* ==============================================
+   内容文字颜色
+   ============================================== */
+
+/* 浅色模式正文文字 */
+[data-md-color-scheme="default"] .md-content p,
+[data-md-color-scheme="default"] .md-content li,
+[data-md-color-scheme="default"] .md-content span,
+[data-md-color-scheme="default"] .md-content div:not(.code-block):not(.highlight) {
+  color: #222222 !important;
+}
+
+/* 深色模式正文文字 */
 [data-md-color-scheme="slate"] .md-content p,
 [data-md-color-scheme="slate"] .md-content li,
 [data-md-color-scheme="slate"] .md-content span,
@@ -182,6 +153,16 @@
   color: #ffffff !important;
 }
 
+/* 浅色模式标题 */
+[data-md-color-scheme="default"] .md-content h1,
+[data-md-color-scheme="default"] .md-content h2,
+[data-md-color-scheme="default"] .md-content h3,
+[data-md-color-scheme="default"] .md-content h4 {
+  color: #111111 !important;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* 深色模式标题 */
 [data-md-color-scheme="slate"] .md-content h1,
 [data-md-color-scheme="slate"] .md-content h2,
 [data-md-color-scheme="slate"] .md-content h3,
@@ -190,12 +171,38 @@
   text-shadow: 0 0 2px rgba(255, 255, 255, 0.1) !important;
 }
 
+/* 浅色模式链接 */
+[data-md-color-scheme="default"] .md-content a,
+[data-md-color-scheme="default"] .md-nav__link {
+  color: #0052aa !important;
+}
+
+/* 深色模式链接 */
 [data-md-color-scheme="slate"] .md-content a,
 [data-md-color-scheme="slate"] .md-nav__link {
   color: #ccf0ff !important;
 }
 
-/* 侧边栏样式 */
+/* 浅色模式当前导航链接 */
+[data-md-color-scheme="default"] .md-nav__link::current {
+  color: #000000 !important;
+}
+
+/* ==============================================
+   侧边栏样式
+   ============================================== */
+
+/* 浅色模式侧边栏标题 */
+[data-md-color-scheme="default"] .md-nav__title {
+  background: transparent !important;
+  padding: 0.6rem 0.8rem 0.2rem !important;
+  margin: 0 !important;
+  color: #000000 !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+}
+
+/* 深色模式侧边栏标题 */
 [data-md-color-scheme="slate"] .md-nav__title {
   background: transparent !important;
   padding: 0.6rem 0.8rem 0.2rem !important;
@@ -205,12 +212,23 @@
   font-weight: 600 !important;
 }
 
+/* 浅色模式嵌套导航项 */
+[data-md-color-scheme="default"] .md-nav__item--nested > .md-nav__link,
+[data-md-color-scheme="default"] .md-nav__item--active > .md-nav__link {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* 深色模式嵌套导航项 */
 [data-md-color-scheme="slate"] .md-nav__item--nested > .md-nav__link,
 [data-md-color-scheme="slate"] .md-nav__item--active > .md-nav__link {
   background-color: transparent !important;
   box-shadow: none !important;
 }
 
+/* ==============================================
+   通用样式
+   ============================================== */
 
 /* 导航栏字体 */
 .md-header__topic, .md-nav__link {
