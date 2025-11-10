@@ -25,5 +25,11 @@ jobs:
           path: ~/.cache 
           restore-keys: |
             mkdocs-material-
-      - run: pip install mkdocs-material 
+      - run: |
+          pip install --upgrade pip
+          # 安装核心依赖 + 所有用到的插件
+          pip install \
+            mkdocs-material \
+            mkdocs-git-authors-plugin \  # git-authors 插件
+            mkdocs-awesome-pages-plugin  # awesome-pages 插件
       - run: mkdocs gh-deploy --force
