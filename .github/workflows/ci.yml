@@ -27,9 +27,5 @@ jobs:
             mkdocs-material-
       - run: |
           pip install --upgrade pip
-          # 安装核心依赖 + 所有用到的插件
-          pip install \
-            mkdocs-material \
-            mkdocs-git-authors-plugin \
-            mkdocs-awesome-pages-plugin
+          pip install mkdocs-material mkdocs-git-authors-plugin mkdocs-awesome-pages-plugin mkdocs-minify-plugin mkdocs-redirects mkdocs-git-revision-date-localized-plugin mkdocs-rss-plugin
       - run: mkdocs gh-deploy --force
