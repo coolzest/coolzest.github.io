@@ -210,12 +210,12 @@ extra:
   social:  # 社交图标链接（显示在页脚/顶部）
     - icon: fontawesome/brands/github
       link: https://github.com/coolzest
-    - icon: fontawesome/brands/weibo
-      link: https://weibo.com/yourusername
-      name: 微博
-    - icon: fontawesome/brands/zhihu
-      link: https://www.zhihu.com/people/yourusername
-      name: 知乎
+    # - icon: fontawesome/brands/weibo
+    #   link: https://weibo.com/yourusername
+    #   name: 微博
+    # - icon: fontawesome/brands/zhihu
+    #   link: https://www.zhihu.com/people/yourusername
+    #   name: 知乎
     - icon: fontawesome/solid/envelope
       link: http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=agkFBQYQDxkeKhsbRAkFBw
       name: 邮箱

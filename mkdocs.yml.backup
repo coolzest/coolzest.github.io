@@ -5,7 +5,6 @@ site_url: https://coolzest.github.io/ # 网站在线访问地址（部署后替�
 plugins:
   - search  # 启用搜索功能插件
   - blog
-  - awesome-pages
   - git-authors
   - minify:  # 启用HTML/CSS/JS压缩插件（优化加载速度）
       minify_html: true
@@ -22,18 +21,18 @@ plugins:
           - index.md
       enabled: !ENV [CI, false] #是否启用
       strict: true
-  # - awesome-pages  # 注释：启用Awesome Pages插件（当前未启用）
+  - awesome-pages  # 注释：启用Awesome Pages插件（当前未启用）
 
 #[UI]
 theme:
   name: material  # 使用Material for MkDocs核心主题
   custom_dir: docs/overrides  # 自定义模板目录
   # font: false  # 注释：是否禁用主题默认字体（当前未启用）
-  logo: "assets/images/logo.png"  # 顶部导航栏左侧Logo路径
+  logo: "https://cloudflare-imgbed-84u.pages.dev/file/blog/1762782543246_fav.ico"  # 顶部导航栏左侧Logo路径
   # https://s1.imagehub.cc/images/2025/01/05/64eafdf8c27f482c7ecb83003d460d6a.webp  # 注释：备用Logo图片链接
   # https://s1.imagehub.cc/images/2024/02/02/91a767e93d1a344e44c69936464c583e.png  # 注释：另一张备用Logo链接
 
-  favicon: "assets/images/fav2.ico"  # 浏览器标签页图标路径
+  favicon: "https://cloudflare-imgbed-84u.pages.dev/file/blog/1762782558973_logo.ico"  # 浏览器标签页图标路径
   # https://s1.imagehub.cc/images/2025/05/05/7ff9985e6f5baffe306907df47042787.png  # 注释：备用favicon链接
   # https://pic4.zhimg.com/v2-fee2c2622ad68aeed98a8b411a8b272b_1440w.jpg  # 注释：备用favicon链接
   # https://s2.loli.net/2024/04/06/yEOZavwMr6kTWhu.png  # 注释：备用favicon链接
@@ -58,7 +57,7 @@ theme:
         name: 切换至日间模式  # 按钮提示文字
   features: 
     - announce.dismiss # 可关闭公告栏
-    - navigation.instant # 注释：页面无刷新切换（当前未启用）
+    #- navigation.instant # 注释：页面无刷新切换（当前未启用）
     - navigation.prune # 只渲染可见导航项（优化性能）
     # - header.autohide  # 注释：自动隐藏头部（当前未启用）
     # - navigation.instant.progress # 注释：页面切换进度条（当前未启用）
@@ -172,7 +171,6 @@ extra_css:  # 额外引入的CSS样式文件
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/extra.css  # 注释：CDN引入的额外样式（当前未启用）
   # - assets/stylesheets/link.css  #友链样式
   # - stylesheets/optimize.css  # 注释：优化样式（当前未启用）
-  - assets/stylesheets/poem.css # 诗歌页面样式
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/poem.css  # 注释：CDN引入的诗歌样式（当前未启用）
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/link.css  # 注释：CDN引入的友链样式（当前未启用）
   # - stylesheets/card2.css  # 注释：卡片样式（当前未启用）
@@ -212,14 +210,14 @@ extra:
   social:  # 社交图标链接（显示在页脚/顶部）
     - icon: fontawesome/brands/github
       link: https://github.com/coolzest
-    - icon: fontawesome/brands/weibo
-      link: https://weibo.com/yourusername
-      name: 微博
-    - icon: fontawesome/brands/zhihu
-      link: https://www.zhihu.com/people/yourusername
-      name: 知乎
+    # - icon: fontawesome/brands/weibo
+    #   link: https://weibo.com/yourusername
+    #   name: 微博
+    # - icon: fontawesome/brands/zhihu
+    #   link: https://www.zhihu.com/people/yourusername
+    #   name: 知乎
     - icon: fontawesome/solid/envelope
-      link: mailto:your-email@example.com
+      link: http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=agkFBQYQDxkeKhsbRAkFBw
       name: 邮箱
 
 watch: #监听文件变动自动刷新（开发模式用）
@@ -244,6 +242,6 @@ nav:
     - MySQL基础: artificial
   - 软件使用:  #software
     - Markdown笔记: software/markdown-notes.md
-  - 邻居: friends.md
+  - 朋友: friends.md
   - 留言板: guestbook.md
   - 关于我: about.md

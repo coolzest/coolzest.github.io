@@ -27,6 +27,7 @@ comments: true
         --border-color: var(--md-default-fg-color--lightest, #eaeaea);
         --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         --code-bg: var(--md-code-bg-color, #f5f5f5);
+        --code-color: var(--md-code-fg-color, #333333);
     }
     
     /* 深色主题适配 */
@@ -40,6 +41,7 @@ comments: true
             --border-color: var(--md-default-fg-color--lightest, #444444);
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             --code-bg: var(--md-code-bg-color, #2d2d2d);
+            --code-color: var(--md-code-fg-color, #f0f0f0);
         }
     }
     
@@ -219,13 +221,14 @@ comments: true
         align-items: flex-start;
     }
     
-    /* 我的友链信息展示 */
+    /* 我的友链信息展示 - 使用Markdown代码块样式 */
     .my-info-simple {
         flex: 1;
         padding: 20px;
         background: var(--code-bg);
         border-radius: 8px;
         border: 1px solid var(--border-color);
+        overflow: hidden;
     }
     
     .my-info-simple h3 {
@@ -236,19 +239,18 @@ comments: true
         text-align: center;
     }
     
-    .my-info-simple pre {
-        background: transparent;
-        padding: 0;
-        border-radius: 0;
+    .markdown-code-block {
+        background: var(--code-bg);
+        border-radius: 4px;
+        padding: 16px;
         overflow-x: auto;
-        color: var(--text-color);
-        border: none;
-        text-align: left;
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
         font-size: 0.9rem;
-        margin: 0;
         line-height: 1.5;
-        white-space: pre-wrap;
-        word-wrap: break-word;
+        color: var(--code-color);
+        border: 1px solid var(--border-color);
+        white-space: pre;
+        margin: 0;
     }
     
     /* 页脚样式 */
@@ -308,6 +310,19 @@ comments: true
             padding: 6px 12px;
             font-size: 0.8rem;
         }
+        
+        /* 移动端优化 - 确保代码块可以横向滚动 */
+        .markdown-code-block {
+            font-size: 0.85rem;
+            padding: 12px;
+            white-space: pre;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .my-info-simple {
+            padding: 15px;
+        }
     }
     
     @media (max-width: 480px) {
@@ -325,6 +340,11 @@ comments: true
         
         .links-header p {
             font-size: 1rem;
+        }
+        
+        .markdown-code-block {
+            font-size: 0.8rem;
+            padding: 10px;
         }
     }
 </style>
@@ -472,20 +492,6 @@ comments: true
             </div>
         </div>
     </div>
-    
-    <!-- 交换友链区域 -->
-    <div class="exchange-section">
-        <div class="exchange-content">
-            <div class="my-info-simple">
-                <h3>我的友链信息</h3>
-                <pre>名称: Wcowin's Blog
-链接: https://coolzest.github.io/
-头像: https://cloudflare-imgbed-84u.pages.dev/file/blog/1762782543246_fav.ico
-简介: 与自己和解</pre>
-            </div>
-        </div>
-    </div>
-    
     <div class="links-footer">
         <p>交换友链请在下方评论区留言，提供名称、链接、头像、简介！</p>
     </div>
@@ -557,3 +563,10 @@ comments: true
         initPage();
     });
 </script>
+###我的友链信息
+```
+名称: Coolzest's Blog
+链接: https://coolzest.github.io/
+头像: https://cloudflare-imgbed-84u.pages.dev/file/blog/1762782543246_fav.ico
+简介: 与自己和解
+```
