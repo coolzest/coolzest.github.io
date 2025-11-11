@@ -5,7 +5,12 @@ site_url: https://coolzest.github.io/ # 网站在线访问地址（部署后替�
 plugins:
   - search  # 启用搜索功能插件
   - blog
-  - git-authors
+  
+  - git-authors:
+      exclude:  # 排除特定页面不显示作者信息
+        - about.md
+        - friends.md
+        - guestbook.md
   - minify:  # 启用HTML/CSS/JS压缩插件（优化加载速度）
       minify_html: true
       minify_css: true
@@ -18,7 +23,9 @@ plugins:
       fallback_to_build_date: false #许回退到git 不可用时mkdocs build执行的时间
       enable_creation_date: true #是否启用创建时间
       exclude:  #排除的页面
-          - index.md
+          - about.md
+          - friends.md
+          - guestbook.md
       enabled: !ENV [CI, false] #是否启用
       strict: true
   - awesome-pages  # 注释：启用Awesome Pages插件（当前未启用）
@@ -28,11 +35,11 @@ theme:
   name: material  # 使用Material for MkDocs核心主题
   custom_dir: docs/overrides  # 自定义模板目录
   # font: false  # 注释：是否禁用主题默认字体（当前未启用）
-  logo: "https://cloudflare-imgbed-84u.pages.dev/file/blog/1762782543246_fav.ico"  # 顶部导航栏左侧Logo路径
+  logo: "https://cloudflare-imgbed-84u.pages.dev/file/blog/1762866879241_icon_home.png"  # 顶部导航栏左侧Logo路径
   # https://s1.imagehub.cc/images/2025/01/05/64eafdf8c27f482c7ecb83003d460d6a.webp  # 注释：备用Logo图片链接
   # https://s1.imagehub.cc/images/2024/02/02/91a767e93d1a344e44c69936464c583e.png  # 注释：另一张备用Logo链接
 
-  favicon: "https://cloudflare-imgbed-84u.pages.dev/file/blog/1762782558973_logo.ico"  # 浏览器标签页图标路径
+  favicon: "https://cloudflare-imgbed-84u.pages.dev/file/blog/1762863122982_favicon.ico"  # 浏览器标签页图标路径
   # https://s1.imagehub.cc/images/2025/05/05/7ff9985e6f5baffe306907df47042787.png  # 注释：备用favicon链接
   # https://pic4.zhimg.com/v2-fee2c2622ad68aeed98a8b411a8b272b_1440w.jpg  # 注释：备用favicon链接
   # https://s2.loli.net/2024/04/06/yEOZavwMr6kTWhu.png  # 注释：备用favicon链接
@@ -41,13 +48,6 @@ theme:
     #   toggle:
     #     icon: material/link
     #     name: 关闭自动模式
-    - media: "(prefers-color-scheme: light)"  # 适配系统浅色模式
-      scheme: default # 日间模式标识
-      primary: teal # 主色（青色）
-      accent: indigo # 强调色（靛蓝色）
-      toggle:
-        icon: material/weather-sunny  # 切换按钮图标（太阳）
-        name: 切换至夜间模式  # 按钮提示文字
     - media: "(prefers-color-scheme: dark)"  # 适配系统深色模式
       scheme: slate # 夜间模式标识
       primary: black
@@ -55,6 +55,14 @@ theme:
       toggle:
         icon: material/weather-night  # 切换按钮图标（月亮）
         name: 切换至日间模式  # 按钮提示文字
+    - media: "(prefers-color-scheme: light)"  # 适配系统浅色模式
+      scheme: default # 日间模式标识
+      primary: teal # 主色（青色）
+      accent: indigo # 强调色（靛蓝色）
+      toggle:
+        icon: material/weather-sunny  # 切换按钮图标（太阳）
+        name: 切换至夜间模式  # 按钮提示文字
+        
   features: 
     - announce.dismiss # 可关闭公告栏
     #- navigation.instant # 注释：页面无刷新切换（当前未启用）
@@ -226,7 +234,7 @@ watch: #监听文件变动自动刷新（开发模式用）
 
 nav:
   - 个人博客:  #blog
-    - 博客首页: blog/index.md
+    - 博客首页: blog/blog.md
   - 理论学习:  #theory
     - Docker基础: theory/docker.md
   - 编程开发:  #program
