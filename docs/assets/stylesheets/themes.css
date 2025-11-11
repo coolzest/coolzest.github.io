@@ -26,7 +26,7 @@
 
 /* 浅色模式背景 */
 [data-md-color-scheme="default"] {
-  background-image: url('https://cloudflare-imgbed-84u.pages.dev/file/blog/1762782527370_default_bg.png') !important;
+  background-image: url('https://cloudflare-imgbed-84u.pages.dev/file/blog/1762839888074_default_bg.jpg') !important;
   background-size: cover !important;
   background-attachment: fixed !important;
   background-repeat: no-repeat !important;
@@ -36,7 +36,7 @@
 
 /* 深色模式背景 */
 [data-md-color-scheme="slate"] {
-  background-image: url('https://cloudflare-imgbed-84u.pages.dev/file/blog/1762782500534_slate_bg.png') !important;
+  background-image: url('https://cloudflare-imgbed-84u.pages.dev/file/blog/1762839991131_slate_bg.jpg') !important;
   background-size: cover !important;
   background-attachment: fixed !important;
   background-repeat: no-repeat !important;

@@ -89,21 +89,32 @@ comments: true
         border-color: var(--accent-color);
     }
     
-    /* 友链容器样式 */
+    /* 友链容器样式 - 使用更简单的flex布局 */
+    .links-content {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .link-section {
+        display: block;
+    }
+    
     .link-navigation {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        display: flex;
+        flex-wrap: wrap;
         gap: 20px;
+        justify-content: flex-start;
     }
     
     /* 通用卡片样式 */
     .link-card {
-        width: 100%;
+        width: 300px;
         height: 100px;
         font-size: 1rem;
         padding: 15px 20px;
         border-radius: 16px;
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transition: all 0.3s ease;
         display: flex;
         align-items: center;
         color: var(--text-color);
@@ -111,29 +122,11 @@ comments: true
         box-shadow: var(--shadow);
         border: 1px solid var(--border-color);
         overflow: hidden;
-        position: relative;
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-    
-    .link-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: left 0.5s;
-    }
-    
-    .link-card:hover::before {
-        left: 100%;
     }
     
     .link-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
         border-color: var(--accent-color);
     }
     
@@ -192,14 +185,12 @@ comments: true
     
     /* 分类标题样式 */
     .category-title {
-        grid-column: 1 / -1;
         font-size: 1.5rem;
         color: var(--text-color);
-        margin: 30px 0 15px;
+        margin: 0 0 15px;
         padding-bottom: 10px;
         border-bottom: 2px solid var(--border-color);
         position: relative;
-        transition: all 0.4s ease;
     }
     
     .category-title::after {
@@ -210,36 +201,9 @@ comments: true
         width: 80px;
         height: 2px;
         background: linear-gradient(to right, var(--accent-color), #8a6cf7);
-        transition: width 0.4s ease;
     }
     
-    /* 卡片隐藏状态 */
-    .link-card.hidden {
-        opacity: 0;
-        transform: translateY(10px) scale(0.95);
-        height: 0;
-        padding-top: 0;
-        padding-bottom: 0;
-        margin-top: 0;
-        margin-bottom: 0;
-        pointer-events: none;
-    }
-    
-    /* 分类标题隐藏状态 */
-    .category-title.hidden {
-        opacity: 0;
-        height: 0;
-        margin: 0;
-        padding: 0;
-        border: none;
-        overflow: hidden;
-    }
-    
-    .category-title.hidden::after {
-        width: 0;
-    }
-    
-    /* 交换友链区域 - 紧凑版 */
+    /* 交换友链区域 */
     .exchange-section {
         margin-top: 50px;
         padding: 20px;
@@ -249,33 +213,13 @@ comments: true
         border: 1px solid var(--border-color);
     }
     
-    .exchange-section h2 {
-        font-size: 1.4rem;
-        margin-bottom: 15px;
-        color: var(--text-color);
-        text-align: center;
-    }
-    
     .exchange-content {
         display: flex;
         gap: 20px;
         align-items: flex-start;
     }
     
-    .my-info {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .my-info h3 {
-        margin: 0;
-        color: var(--text-color);
-        font-size: 1.1rem;
-    }
-    
-    /* 修改：简化我的友链信息展示 */
+    /* 我的友链信息展示 */
     .my-info-simple {
         flex: 1;
         padding: 20px;
@@ -307,31 +251,6 @@ comments: true
         word-wrap: break-word;
     }
     
-    .comment-notice {
-        flex: 1;
-        padding: 20px;
-        border-radius: 8px;
-        border: 1px dashed var(--border-color);
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        background: var(--card-bg);
-    }
-    
-    .comment-notice p {
-        margin: 0;
-        color: var(--text-color);
-        font-size: 1rem;
-        line-height: 1.5;
-    }
-    
-    .comment-notice p:first-child {
-        font-size: 1.1rem;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-    
     /* 页脚样式 */
     .links-footer {
         text-align: center;
@@ -340,23 +259,6 @@ comments: true
         color: var(--text-secondary);
         font-size: 0.9rem;
         border-top: 1px solid var(--border-color);
-    }
-    
-    /* 动画效果 */
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    .link-card {
-        animation: fadeInUp 0.5s ease forwards;
-        opacity: 0;
     }
     
     /* 空头像占位符样式 */
@@ -376,8 +278,7 @@ comments: true
     /* 小屏优化 */
     @media (max-width: 768px) {
         .link-navigation {
-            grid-template-columns: 1fr;
-            gap: 15px;
+            justify-content: center;
         }
         
         .link-card {
@@ -398,6 +299,33 @@ comments: true
         .exchange-section {
             padding: 15px;
         }
+        
+        .category-nav {
+            gap: 10px;
+        }
+        
+        .category-btn {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .link-navigation {
+            gap: 15px;
+        }
+        
+        .links-header {
+            padding: 10px;
+        }
+        
+        .links-header h1 {
+            font-size: 1.8rem;
+        }
+        
+        .links-header p {
+            font-size: 1rem;
+        }
     }
 </style>
 
@@ -417,123 +345,135 @@ comments: true
     </div>
     
     <div class="links-content">
-        <h2 class="category-title">朋友博客</h2>
-        <div class="link-navigation">
-            <div class="link-card" data-category="friends">
-                <div class="avatar-placeholder">极</div>
-                <div class="card-header">
-                    <div>
-                        <a href="https://jaywhj.netlify.app/" target="_blank">极简主义</a>
+        <!-- 朋友博客 -->
+        <div class="link-section" data-category="friends">
+            <h2 class="category-title">朋友博客</h2>
+            <div class="link-navigation">
+                <div class="link-card">
+                    <div class="avatar-placeholder">极</div>
+                    <div class="card-header">
+                        <div>
+                            <a href="https://jaywhj.netlify.app/" target="_blank">极简主义</a>
+                        </div>
+                        <div class="info">追求简单与高效的生活方式</div>
                     </div>
-                    <div class="info">追求简单与高效的生活方式</div>
                 </div>
-            </div>
-            <div class="link-card" data-category="friends">
-                <img class="ava" src="https://i.stardots.io/wcowin/1750089315509.png" alt="Wcowin's blog"/>
-                <div class="card-header">
-                    <div>
-                        <a href="https://wcowin.work/" target="_blank">Wcowin's blog</a>
+                <div class="link-card">
+                    <img class="ava" src="https://i.stardots.io/wcowin/1750089315509.png" alt="Wcowin's blog"/>
+                    <div class="card-header">
+                        <div>
+                            <a href="https://wcowin.work/" target="_blank">Wcowin's blog</a>
+                        </div>
+                        <div class="info">这是一个分享技术的小站</div>
                     </div>
-                    <div class="info">这是一个分享技术的小站</div>
                 </div>
-            </div>
-            <div class="link-card" data-category="friends">
-                <div class="avatar-placeholder">T</div>
-                <div class="card-header">
-                    <div>
-                        <a href="https://example.com" target="_blank">技术狂想曲</a>
+                <div class="link-card">
+                    <div class="avatar-placeholder">T</div>
+                    <div class="card-header">
+                        <div>
+                            <a href="https://example.com" target="_blank">技术狂想曲</a>
+                        </div>
+                        <div class="info">探索前沿技术与编程艺术</div>
                     </div>
-                    <div class="info">探索前沿技术与编程艺术</div>
-                </div>
-            </div>
-        </div>
-        
-        <h2 class="category-title">技术资源</h2>
-        <div class="link-navigation">
-            <div class="link-card" data-category="tech">
-                <img class="ava" src="https://i.stardots.io/wcowin/1750220860750.jpg" alt="Macapp"/>
-                <div class="card-header">
-                    <div>
-                        <a href="https://macapp.org.cn" target="_blank">Macapp</a>
-                    </div>
-                    <div class="info">一个专注于分享Mac资源的频道</div>
-                </div>
-            </div>
-            <div class="link-card" data-category="tech">
-                <div class="avatar-placeholder">G</div>
-                <div class="card-header">
-                    <div>
-                        <a href="https://github.com" target="_blank">GitHub</a>
-                    </div>
-                    <div class="info">全球最大的代码托管平台</div>
-                </div>
-            </div>
-            <div class="link-card" data-category="tech">
-                <div class="avatar-placeholder">S</div>
-                <div class="card-header">
-                    <div>
-                        <a href="https://stackoverflow.com" target="_blank">Stack Overflow</a>
-                    </div>
-                    <div class="info">程序员问答社区</div>
                 </div>
             </div>
         </div>
         
-        <h2 class="category-title">实用工具</h2>
-        <div class="link-navigation">
-            <div class="link-card" data-category="tools">
-                <div class="avatar-placeholder">N</div>
-                <div class="card-header">
-                    <div>
-                        <a href="https://notion.so" target="_blank">Notion</a>
+        <!-- 技术资源 -->
+        <div class="link-section" data-category="tech">
+            <h2 class="category-title">技术资源</h2>
+            <div class="link-navigation">
+                <div class="link-card">
+                    <img class="ava" src="https://i.stardots.io/wcowin/1750220860750.jpg" alt="Macapp"/>
+                    <div class="card-header">
+                        <div>
+                            <a href="https://macapp.org.cn" target="_blank">Macapp</a>
+                        </div>
+                        <div class="info">一个专注于分享Mac资源的频道</div>
                     </div>
-                    <div class="info">一体化工作空间</div>
                 </div>
-            </div>
-            <div class="link-card" data-category="tools">
-                <div class="avatar-placeholder">F</div>
-                <div class="card-header">
-                    <div>
-                        <a href="https://figma.com" target="_blank">Figma</a>
+                <div class="link-card">
+                    <div class="avatar-placeholder">G</div>
+                    <div class="card-header">
+                        <div>
+                            <a href="https://github.com" target="_blank">GitHub</a>
+                        </div>
+                        <div class="info">全球最大的代码托管平台</div>
                     </div>
-                    <div class="info">协作式UI设计工具</div>
+                </div>
+                <div class="link-card">
+                    <div class="avatar-placeholder">S</div>
+                    <div class="card-header">
+                        <div>
+                            <a href="https://stackoverflow.com" target="_blank">Stack Overflow</a>
+                        </div>
+                        <div class="info">程序员问答社区</div>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <h2 class="category-title">设计灵感</h2>
-        <div class="link-navigation">
-            <div class="link-card" data-category="design">
-                <div class="avatar-placeholder">D</div>
-                <div class="card-header">
-                    <div>
-                        <a href="https://dribbble.com" target="_blank">Dribbble</a>
+        <!-- 实用工具 -->
+        <div class="link-section" data-category="tools">
+            <h2 class="category-title">实用工具</h2>
+            <div class="link-navigation">
+                <div class="link-card">
+                    <div class="avatar-placeholder">N</div>
+                    <div class="card-header">
+                        <div>
+                            <a href="https://notion.so" target="_blank">Notion</a>
+                        </div>
+                        <div class="info">一体化工作空间</div>
                     </div>
-                    <div class="info">设计师作品展示平台</div>
+                </div>
+                <div class="link-card">
+                    <div class="avatar-placeholder">F</div>
+                    <div class="card-header">
+                        <div>
+                            <a href="https://figma.com" target="_blank">Figma</a>
+                        </div>
+                        <div class="info">协作式UI设计工具</div>
+                    </div>
                 </div>
             </div>
-            <div class="link-card" data-category="design">
-                <div class="avatar-placeholder">B</div>
-                <div class="card-header">
-                    <div>
-                        <a href="https://behance.net" target="_blank">Behance</a>
+        </div>
+        
+        <!-- 设计灵感 -->
+        <div class="link-section" data-category="design">
+            <h2 class="category-title">设计灵感</h2>
+            <div class="link-navigation">
+                <div class="link-card">
+                    <div class="avatar-placeholder">D</div>
+                    <div class="card-header">
+                        <div>
+                            <a href="https://dribbble.com" target="_blank">Dribbble</a>
+                        </div>
+                        <div class="info">设计师作品展示平台</div>
                     </div>
-                    <div class="info">创意设计作品集</div>
                 </div>
-            </div>
-            <div class="link-card" data-category="design">
-                <img class="ava" src="https://i.loli.net/2020/05/14/5VyHPQqR6LWF39a.png" alt="Twitter"/>
-                <div class="card-header">
-                    <div>
-                        <a href="https://twitter.com/" target="_blank">Twitter</a>
+                <div class="link-card">
+                    <div class="avatar-placeholder">B</div>
+                    <div class="card-header">
+                        <div>
+                            <a href="https://behance.net" target="_blank">Behance</a>
+                        </div>
+                        <div class="info">创意设计作品集</div>
                     </div>
-                    <div class="info">社交分享平台</div>
+                </div>
+                <div class="link-card">
+                    <img class="ava" src="https://i.loli.net/2020/05/14/5VyHPQqR6LWF39a.png" alt="Twitter"/>
+                    <div class="card-header">
+                        <div>
+                            <a href="https://twitter.com/" target="_blank">Twitter</a>
+                        </div>
+                        <div class="info">社交分享平台</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- 交换友链区域 - 修改版 -->
+    <!-- 交换友链区域 -->
     <div class="exchange-section">
         <div class="exchange-content">
             <div class="my-info-simple">
@@ -543,7 +483,6 @@ comments: true
 头像: https://cloudflare-imgbed-84u.pages.dev/file/blog/1762782543246_fav.ico
 简介: 与自己和解</pre>
             </div>
-            
         </div>
     </div>
     
@@ -553,163 +492,68 @@ comments: true
 </div>
 
 <script>
-    // 完全稳定的友链页面功能 - 优化动画版本
-    (function() {
-        // 确保页面完全加载后初始化
-        function initLinksPage() {
-            console.log('初始化友链页面功能');
+    // 简单稳定的友链页面功能
+    document.addEventListener('DOMContentLoaded', function() {
+        // 获取所有分类按钮和分类区域
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        const linkSections = document.querySelectorAll('.link-section');
+        
+        // 初始化页面状态
+        function initPage() {
+            // 显示所有分类区域
+            linkSections.forEach(section => {
+                section.style.display = 'block';
+            });
             
-            // 获取所有必要的元素
-            const categoryBtns = document.querySelectorAll('.category-btn');
-            const cards = document.querySelectorAll('.link-card');
-            const categoryTitles = document.querySelectorAll('.category-title');
-            
-            // 重置所有状态
-            function resetState() {
-                // 移除所有隐藏状态
-                cards.forEach(card => {
-                    card.classList.remove('hidden');
-                });
-                
-                categoryTitles.forEach(title => {
-                    title.classList.remove('hidden');
-                });
-                
-                // 重置按钮状态
-                categoryBtns.forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                
-                // 设置"全部"按钮为活动状态
-                const allBtn = document.querySelector('.category-btn[data-category="all"]');
-                if (allBtn) allBtn.classList.add('active');
-            }
-            
-            // 处理分类筛选
-            function filterByCategory(category) {
-                console.log('筛选分类:', category);
-                
-                // 更新按钮状态
-                categoryBtns.forEach(btn => {
-                    if (btn.getAttribute('data-category') === category) {
-                        btn.classList.add('active');
-                    } else {
-                        btn.classList.remove('active');
-                    }
-                });
-                
-                // 筛选卡片
-                cards.forEach(card => {
-                    if (category === 'all' || card.getAttribute('data-category') === category) {
-                        // 显示卡片 - 使用CSS类控制动画
-                        card.classList.remove('hidden');
-                    } else {
-                        // 隐藏卡片 - 使用CSS类控制动画
-                        card.classList.add('hidden');
-                    }
-                });
-                
-                // 显示/隐藏分类标题
-                categoryTitles.forEach(title => {
-                    if (category === 'all') {
-                        title.classList.remove('hidden');
-                    } else {
-                        // 检查该标题下是否有匹配分类的卡片
-                        const nextSibling = title.nextElementSibling;
-                        if (nextSibling && nextSibling.classList.contains('link-navigation')) {
-                            const hasMatchingCard = Array.from(nextSibling.querySelectorAll('.link-card')).some(
-                                card => card.getAttribute('data-category') === category && !card.classList.contains('hidden')
-                            );
-                            if (hasMatchingCard) {
-                                title.classList.remove('hidden');
-                            } else {
-                                title.classList.add('hidden');
-                            }
-                        }
-                    }
-                });
-            }
-            
-            // 为所有分类按钮添加点击事件
+            // 设置"全部"按钮为活动状态
             categoryBtns.forEach(btn => {
-                // 移除可能存在的旧事件监听器
-                const newBtn = btn.cloneNode(true);
-                btn.parentNode.replaceChild(newBtn, btn);
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-category') === 'all') {
+                    btn.classList.add('active');
+                }
             });
-            
-            // 重新获取按钮并添加新的事件监听器
-            const newCategoryBtns = document.querySelectorAll('.category-btn');
-            newCategoryBtns.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const category = this.getAttribute('data-category');
-                    filterByCategory(category);
-                });
-            });
-            
-            // 卡片点击效果 - 优化为更平滑的动画
-            cards.forEach(card => {
-                card.addEventListener('click', function() {
-                    // 添加点击反馈
-                    this.style.transform = 'scale(0.98)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 150);
-                });
-            });
-            
-            // 初始化页面状态
-            resetState();
-            
-            // 添加滚动动画
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-            
-            // 观察所有卡片
-            cards.forEach(card => {
-                observer.observe(card);
-            });
-            
-            console.log('友链页面功能初始化完成');
         }
         
-        // 多种初始化方式确保功能正常
-        document.addEventListener('DOMContentLoaded', initLinksPage);
-        window.addEventListener('load', initLinksPage);
-        
-        // 如果页面是通过Ajax加载的，也尝试初始化
-        if (document.readyState === 'interactive' || document.readyState === 'complete') {
-            setTimeout(initLinksPage, 100);
+        // 处理分类筛选
+        function filterByCategory(category) {
+            // 更新按钮状态
+            categoryBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-category') === category) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // 显示/隐藏分类区域
+            linkSections.forEach(section => {
+                if (category === 'all' || section.getAttribute('data-category') === category) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
         }
         
-        // 监听URL变化（单页应用场景）
-        let currentUrl = window.location.href;
-        setInterval(() => {
-            if (window.location.href !== currentUrl) {
-                currentUrl = window.location.href;
-                setTimeout(initLinksPage, 500);
-            }
-        }, 100);
-        
-        // 监听页面可见性变化
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden) {
-                setTimeout(initLinksPage, 100);
-            }
+        // 为分类按钮添加点击事件
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const category = this.getAttribute('data-category');
+                filterByCategory(category);
+            });
         });
         
-        // 最后确保无论如何都会尝试初始化
-        setTimeout(initLinksPage, 500);
-    })();
+        // 卡片点击效果
+        const cards = document.querySelectorAll('.link-card');
+        cards.forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+        
+        // 初始化页面
+        initPage();
+    });
 </script>

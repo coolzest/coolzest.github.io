@@ -57,7 +57,7 @@ theme:
         name: 切换至日间模式  # 按钮提示文字
   features: 
     - announce.dismiss # 可关闭公告栏
-    - navigation.instant # 注释：页面无刷新切换（当前未启用）
+    #- navigation.instant # 注释：页面无刷新切换（当前未启用）
     - navigation.prune # 只渲染可见导航项（优化性能）
     # - header.autohide  # 注释：自动隐藏头部（当前未启用）
     # - navigation.instant.progress # 注释：页面切换进度条（当前未启用）
@@ -171,7 +171,6 @@ extra_css:  # 额外引入的CSS样式文件
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/extra.css  # 注释：CDN引入的额外样式（当前未启用）
   # - assets/stylesheets/link.css  #友链样式
   # - stylesheets/optimize.css  # 注释：优化样式（当前未启用）
-  - assets/stylesheets/poem.css # 诗歌页面样式
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/poem.css  # 注释：CDN引入的诗歌样式（当前未启用）
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/link.css  # 注释：CDN引入的友链样式（当前未启用）
   # - stylesheets/card2.css  # 注释：卡片样式（当前未启用）
