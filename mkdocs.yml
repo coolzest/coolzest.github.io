@@ -239,8 +239,10 @@ nav:
     - 博客首页: blog/index.md
   - 理论学习:  #theory
     - Docker基础: theory/docker.md
-  - 编程开发:  #program
-    - Docker基础: program/docker.md
+  - 技术积累:  #program
+    # - Docker基础: program/docker.md
+    - Markdown入门到精通:  #Markdown
+      - 基本语法: program/Markdown/基本语法.md
   - 网络安全:  #security
     - 远控木马:  #security/remote
       - 2121sjfk: security/remote/2024-04-22-CTF.md
