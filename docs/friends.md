@@ -358,47 +358,30 @@ comments: true
     
     <div class="category-nav">
         <button class="category-btn active" data-category="all">全部链接</button>
-        <button class="category-btn" data-category="friends">朋友博客</button>
+        <button class="category-btn" data-category="foot">我的网站</button>
         <button class="category-btn" data-category="tech">技术资源</button>
-        <button class="category-btn" data-category="tools">实用工具</button>
+        <button class="category-btn" data-category="friends">朋友博客</button>
         <button class="category-btn" data-category="design">设计灵感</button>
+        <button class="category-btn" data-category="tools">实用工具</button>
     </div>
     
     <div class="links-content">
-        <!-- 朋友博客 -->
-        <div class="link-section" data-category="friends">
-            <h2 class="category-title">朋友博客</h2>
+        <!-- 我的网站 -->
+        <div class="link-section" data-category="foot">
+            <h2 class="category-title">我的网站</h2>
             <div class="link-navigation">
                 <div class="link-card">
-                    <div class="avatar-placeholder">极</div>
+                    <img class="ava" src="https://cloudflare-imgbed-84u.pages.dev/file/blog/1762782543246_fav.ico" alt="ImgHub"/>
                     <div class="card-header">
                         <div>
-                            <a href="https://jaywhj.netlify.app/" target="_blank">极简主义</a>
+                            <a href="https://cloudflare-imgbed-84u.pages.dev/" target="_blank">ImgHub</a>
                         </div>
-                        <div class="info">追求简单与高效的生活方式</div>
-                    </div>
-                </div>
-                <div class="link-card">
-                    <img class="ava" src="https://i.stardots.io/wcowin/1750089315509.png" alt="Wcowin's blog"/>
-                    <div class="card-header">
-                        <div>
-                            <a href="https://wcowin.work/" target="_blank">Wcowin's blog</a>
-                        </div>
-                        <div class="info">这是一个分享技术的小站</div>
-                    </div>
-                </div>
-                <div class="link-card">
-                    <div class="avatar-placeholder">T</div>
-                    <div class="card-header">
-                        <div>
-                            <a href="https://example.com" target="_blank">技术狂想曲</a>
-                        </div>
-                        <div class="info">探索前沿技术与编程艺术</div>
+                        <div class="info">我的图床！</div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <!-- 技术资源 -->
         <div class="link-section" data-category="tech">
             <h2 class="category-title">技术资源</h2>
@@ -432,32 +415,41 @@ comments: true
                 </div>
             </div>
         </div>
-        
-        <!-- 实用工具 -->
-        <div class="link-section" data-category="tools">
-            <h2 class="category-title">实用工具</h2>
+
+        <!-- 朋友博客 -->
+        <div class="link-section" data-category="friends">
+            <h2 class="category-title">朋友博客</h2>
             <div class="link-navigation">
                 <div class="link-card">
-                    <div class="avatar-placeholder">N</div>
+                    <div class="avatar-placeholder">极</div>
                     <div class="card-header">
                         <div>
-                            <a href="https://notion.so" target="_blank">Notion</a>
+                            <a href="https://jaywhj.netlify.app/" target="_blank">极简主义</a>
                         </div>
-                        <div class="info">一体化工作空间</div>
+                        <div class="info">追求简单与高效的生活方式</div>
                     </div>
                 </div>
                 <div class="link-card">
-                    <div class="avatar-placeholder">F</div>
+                    <img class="ava" src="https://i.stardots.io/wcowin/1750089315509.png" alt="Wcowin's blog"/>
                     <div class="card-header">
                         <div>
-                            <a href="https://figma.com" target="_blank">Figma</a>
+                            <a href="https://wcowin.work/" target="_blank">Wcowin's blog</a>
                         </div>
-                        <div class="info">协作式UI设计工具</div>
+                        <div class="info">这是一个分享技术的小站</div>
+                    </div>
+                </div>
+                <div class="link-card">
+                    <div class="avatar-placeholder">T</div>
+                    <div class="card-header">
+                        <div>
+                            <a href="https://example.com" target="_blank">技术狂想曲</a>
+                        </div>
+                        <div class="info">探索前沿技术与编程艺术</div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <!-- 设计灵感 -->
         <div class="link-section" data-category="design">
             <h2 class="category-title">设计灵感</h2>
@@ -491,12 +483,103 @@ comments: true
                 </div>
             </div>
         </div>
+
+        <!-- 实用工具 -->
+        <div class="link-section" data-category="tools">
+            <h2 class="category-title">实用工具</h2>
+            <div class="link-navigation">
+                <div class="link-card">
+                    <div class="avatar-placeholder">N</div>
+                    <div class="card-header">
+                        <div>
+                            <a href="https://notion.so" target="_blank">Notion</a>
+                        </div>
+                        <div class="info">一体化工作空间</div>
+                    </div>
+                </div>
+                <div class="link-card">
+                    <div class="avatar-placeholder">F</div>
+                    <div class="card-header">
+                        <div>
+                            <a href="https://figma.com" target="_blank">Figma</a>
+                        </div>
+                        <div class="info">协作式UI设计工具</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="links-footer">
         <p>交换友链请在下方评论区留言，提供名称、链接、头像、简介！</p>
     </div>
 </div>
 
+<script>
+    // 简单稳定的友链页面功能
+    document.addEventListener('DOMContentLoaded', function() {
+        // 获取所有分类按钮和分类区域
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        const linkSections = document.querySelectorAll('.link-section');
+        
+        // 初始化页面状态
+        function initPage() {
+            // 显示所有分类区域
+            linkSections.forEach(section => {
+                section.style.display = 'block';
+            });
+            
+            // 设置"全部"按钮为活动状态
+            categoryBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-category') === 'all') {
+                    btn.classList.add('active');
+                }
+            });
+        }
+        
+        // 处理分类筛选
+        function filterByCategory(category) {
+            // 更新按钮状态
+            categoryBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-category') === category) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // 显示/隐藏分类区域
+            linkSections.forEach(section => {
+                if (category === 'all' || section.getAttribute('data-category') === category) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+        
+        // 为分类按钮添加点击事件
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const category = this.getAttribute('data-category');
+                filterByCategory(category);
+            });
+        });
+        
+        // 卡片点击效果
+        const cards = document.querySelectorAll('.link-card');
+        cards.forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+        
+        // 初始化页面
+        initPage();
+    });
+</script>
 <script>
     // 简单稳定的友链页面功能
     document.addEventListener('DOMContentLoaded', function() {

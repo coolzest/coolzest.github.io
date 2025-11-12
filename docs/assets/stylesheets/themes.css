@@ -134,22 +134,22 @@
 }
 
 /* ==============================================
-   内容文字颜色
+   内容文字颜色 【关键修改！】
    ============================================== */
 
-/* 浅色模式正文文字 */
+/* 浅色模式正文文字：排除代码相关的 span/code/highlight */
 [data-md-color-scheme="default"] .md-content p,
 [data-md-color-scheme="default"] .md-content li,
-[data-md-color-scheme="default"] .md-content span,
-[data-md-color-scheme="default"] .md-content div:not(.code-block):not(.highlight) {
+[data-md-color-scheme="default"] .md-content span:not(code span):not(.hljs), /* 排除代码里的 span */
+[data-md-color-scheme="default"] .md-content div:not(.code-block):not(.highlight):not(.hljs) {
   color: #222222 !important;
 }
 
-/* 深色模式正文文字 */
+/* 深色模式正文文字：排除代码相关的 span/code/highlight */
 [data-md-color-scheme="slate"] .md-content p,
 [data-md-color-scheme="slate"] .md-content li,
-[data-md-color-scheme="slate"] .md-content span,
-[data-md-color-scheme="slate"] .md-content div:not(.code-block):not(.highlight) {
+[data-md-color-scheme="slate"] .md-content span:not(code span):not(.hljs), /* 排除代码里的 span */
+[data-md-color-scheme="slate"] .md-content div:not(.code-block):not(.highlight):not(.hljs) {
   color: #ffffff !important;
 }
 
