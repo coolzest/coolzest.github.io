@@ -240,9 +240,10 @@ nav:
   - 理论学习:  #theory
     - Docker基础: theory/docker.md
   - 技术积累:  #program
-    # - Docker基础: program/docker.md
     - Markdown入门到精通:  #Markdown
       - 基本语法: program/Markdown/基本语法.md
+    - Python学习:  #python
+      - 如何将python项目打包成可执行文件？: program/python/如何将python项目打包成可执行文件.md
   - 网络安全:  #security
     - 远控木马:  #security/remote
       - 2121sjfk: security/remote/2024-04-22-CTF.md
