@@ -237,24 +237,31 @@ watch: #监听文件变动自动刷新（开发模式用）
 nav:
   - 个人博客:  #blog
     - 博客首页: blog/index.md
-  - 理论学习:  #theory
-    - Docker基础: theory/docker.md
-  - 技术积累:  #program
-    - Markdown入门到精通:  #Markdown
-      - 基本语法: program/Markdown/基本语法.md
-    - Python学习:  #python
-      - 如何将python项目打包成可执行文件？: program/python/如何将python项目打包成可执行文件.md
-  - 网络安全:  #security
-    - 远控木马:  #security/remote
-      - 2121sjfk: security/remote/2024-04-22-CTF.md
-      - 2131sjfk: security/remote/2024-08-17-远控木马.md
-    - Web安全:  #security/web
-      - XSS攻击: security/web/xss.md
-      - SQL注入: security/web/sql-injection.md
-  - 人工智能:  #artificial
-    - MySQL基础: artificial
-  - 软件使用:  #software
-    - Markdown笔记: software/markdown-notes.md
+    - myfirst: blog/posts/myfirst.md
+    - 2025-11-09: blog/posts/2025-11-09.md
+    - 2025-11-09-1: blog/posts/2025-11-09-1.md
+  - 人工智能:  #notebooks/人工智能
+    - 回归模型: notebooks/人工智能/回归模型.md
+  - 技术积累:  #notebooks/技术积累
+    - 2024-04-22-C++基础: notebooks/技术积累/2024-04-22-C++基础.md
+    - 2024-04-22-MYSQL: notebooks/技术积累/2024-04-22-MYSQL.md
+    - 2024-08-17-cmd常用命令: notebooks/技术积累/2024-08-17-cmd常用命令.md
+    - 2024-08-17-Linux常用命令: notebooks/技术积累/2024-08-17-Linux常用命令.md
+    - Markdown:  #notebooks/技术积累/Markdown
+      - 基本语法: notebooks/技术积累/Markdown/基本语法.md
+    - python学习:  #notebooks/技术积累/python学习
+      - 如何将python项目打包成可执行文件: notebooks/技术积累/python学习/如何将python项目打包成可执行文件.md
+      - 环境管理Conda指令手册: notebooks/技术积累/python学习/环境管理Conda指令手册.md
+  - 理论学习:  #notebooks/理论学习
+    - 计算机网络:  #notebooks/理论学习/计算机网络
+      - 应用层: notebooks/理论学习/计算机网络/应用层.md
+  - 网络安全:  #notebooks/网络安全
+    - 2024-04-22-CTF: notebooks/网络安全/2024-04-22-CTF.md
+    - 2024-08-17-基础 - 副本: notebooks/网络安全/2024-08-17-基础 - 副本.md
+    - 2024-08-17-远控木马: notebooks/网络安全/2024-08-17-远控木马.md
+  - 软件使用:  #notebooks/软件使用
+    - 2024-08-16-Docker: notebooks/软件使用/2024-08-16-Docker.md
+    - Markdown手册: notebooks/软件使用/Markdown手册.md
   - 朋友: friends.md
   - 留言板: guestbook.md
   - 关于我: about.md
