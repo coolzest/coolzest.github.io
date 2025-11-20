@@ -170,6 +170,9 @@ extra_css:  # 额外引入的CSS样式文件
   - assets/stylesheets/tech-style.css # 技术文档样式
   - assets/stylesheets/rounded.css # 页面圆角样式
 
+  - https://cdn.jsdelivr.net/npm/codemirror@5.65.2/theme/dracula.css  # 可选主题
+
+
   # - stylesheets/highlight-search.css  # 注释：搜索高亮样式（当前未启用）
  
   # - stylesheets/tech-style.css  # 注释：重复配置，已启用一次
@@ -214,7 +217,12 @@ extra_javascript:  # 额外引入的JavaScript文件
   - assets/javascripts/background.js # 动态背景脚本
   - assets/javascripts/tech-script.js # 技术文档交互脚本
   - assets/javascripts/rounded.js # 页面圆角脚本
-  - assets/javascripts//click-copy-math.js # 公式复制脚本
+  - assets/javascripts/click-copy-math.js # 公式复制脚本
+
+  - https://cdn.jsdelivr.net/npm/codemirror@5.65.2/lib/codemirror.js
+  - https://cdn.jsdelivr.net/npm/codemirror@5.65.2/mode/python/python.js  # 按需添加语言模式
+  - https://cdn.jsdelivr.net/npm/codemirror@5.65.2/addon/edit/closetag.js  # 可选插件（自动闭合标签）
+
   
 extra:
   social:  # 社交图标链接（显示在页脚/顶部）
@@ -254,7 +262,11 @@ nav:
       - 环境管理Conda指令手册: notebooks/技术积累/python学习/环境管理Conda指令手册.md
   - 理论学习:  #notebooks/理论学习
     - 计算机网络:  #notebooks/理论学习/计算机网络
+      - 传输层: notebooks/理论学习/计算机网络/传输层.md
       - 应用层: notebooks/理论学习/计算机网络/应用层.md
+      - 概述: notebooks/理论学习/计算机网络/概述.md
+      - 物理层: notebooks/理论学习/计算机网络/物理层.md
+      - 网络层: notebooks/理论学习/计算机网络/网络层.md
   - 网络安全:  #notebooks/网络安全
     - 2024-04-22-CTF: notebooks/网络安全/2024-04-22-CTF.md
     - 2024-08-17-基础 - 副本: notebooks/网络安全/2024-08-17-基础 - 副本.md
