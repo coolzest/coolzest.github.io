@@ -170,6 +170,7 @@ extra_css:  # 额外引入的CSS样式文件
   - assets/stylesheets/tech-style.css # 技术文档样式
   - assets/stylesheets/rounded.css # 页面圆角样式
 
+  - https://cdn.jsdelivr.net/npm/codemirror@5.65.2/lib/codemirror.css
   - https://cdn.jsdelivr.net/npm/codemirror@5.65.2/theme/dracula.css  # 可选主题
 
 
@@ -245,9 +246,6 @@ watch: #监听文件变动自动刷新（开发模式用）
 nav:
   - 个人博客:  #blog
     - 博客首页: blog/index.md
-    - myfirst: blog/posts/myfirst.md
-    - 2025-11-09: blog/posts/2025-11-09.md
-    - 2025-11-09-1: blog/posts/2025-11-09-1.md
   - 人工智能:  #notebooks/人工智能
     - 回归模型: notebooks/人工智能/回归模型.md
   - 技术积累:  #notebooks/技术积累
