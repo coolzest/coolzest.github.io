@@ -1,0 +1,213 @@
+/* ==============================================
+   全局变量（所有模式共用）
+   ============================================== */
+:root {
+  /* 主色调 */
+  --md-primary-fg-color: #16988d;
+  --md-primary-fg-color--light: #047650;
+  --md-primary-fg-color--dark: #518FC1;
+  --md-primary-fg-color-rgb: 22, 152, 141;
+  
+  /* 布局变量 */
+  --rcorners-border-radius: 25px;
+  --rcorners-small-radius: 12px;
+  --button-border-radius: 12px;
+  --grid-gap: 10px;
+  --grid-padding: 10px;
+  --rcorners-padding: 20px;
+  
+  /* 颜色变量 */
+  --rcorners-border-color: #518FC1;
+  --rcorners-light-border: 2px solid rgba(68,138,255,.1);
+  --grid-bg-color: #2196F3;
+  --grid-item-bg-color: rgba(255, 255, 255, 0.8);
+  
+  /* 间距变量 */
+  --button-padding: 15px 32px;
+  --button-margin: 4px 2px;
+  --button-font-size: 16px;
+  --grid-item-padding: 20px 0;
+  --grid-item-font-size: 30px;
+  
+  /* 动画变量 */
+  --transition-default: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  
+  /* 模式通用变量 */
+  --bg-color: rgba(255, 255, 255, 0.1);
+  --mask-default: rgba(255, 255, 255, 0.15);
+  --mask-homepage: rgba(255, 255, 255, 0.05);
+  --container-bg: rgba(255, 255, 255, 0.10);
+  --container-home: rgba(255, 255, 255, 0.9);
+}
+
+/* ==============================================
+   全局基础样式
+   ============================================== */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background-color: rgba(73, 177, 245, 0.2);
+  border-radius: 2em;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #49b1f5;
+  background-image: -webkit-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.4) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.4) 75%,
+    transparent 75%,
+    transparent
+  );
+  border-radius: 10px;
+}
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+/* 选中文本样式 */
+::-moz-selection {
+  color: #fff;
+  background-color: #49b1f5;
+}
+::selection {
+  color: #fff;
+  background-color: #49b1f5;
+}
+
+/* 基础组件补充 */
+nav.md-nav--secondary ul {
+  border-left: 1px solid lightblue;
+}
+
+.md-search__input {
+  font-family: inherit !important;
+}
+
+.version-info {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* 1. 覆盖主题侧边栏背景色变量（根源解决） */
+:root {
+  --md-sidebar-bg-color: transparent !important; /* 覆盖主题默认侧边栏背景 */
+  --md-sidebar-bg-color--light: transparent !important; /* 亮色主题 */
+  --md-sidebar-bg-color--dark: transparent !important; /* 暗色主题 */
+}
+
+/* 2. 强制清除右侧侧边栏所有层级的背景 */
+.md-sidebar--secondary,
+.md-sidebar--secondary .md-sidebar__inner,
+.md-sidebar--secondary .md-sidebar__scrollwrap,
+.md-sidebar--secondary .md-nav--secondary,
+.md-nav__title,
+.md-nav--secondary .md-nav__list {
+  background-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important; /* 清除所有阴影 */
+  border: none !important; /* 清除所有边框 */
+}
+
+/* 3. 清除目录项的背景（包括hover/focus状态） */
+.md-nav--secondary .md-nav__link,
+.md-nav--secondary .md-nav__link:hover,
+.md-nav--secondary .md-nav__link:focus,
+.md-nav--secondary .md-nav__item--active .md-nav__link {
+  background-color: transparent !important;
+}
+
+/* 4. 响应式适配：确保在所有屏幕尺寸下生效 */
+@media (min-width: 76.25em) {
+  .md-sidebar--secondary {
+    background-color: transparent !important;
+  }
+}
+
+/* 5. 清除目录标题的内边距和边框（避免空白区域视觉误判） */
+.md-nav__title {
+  padding: 0.5rem 0 !important; /* 减少标题栏内边距，避免空白 */
+  border-bottom: none !important; /* 清除标题栏底部边框 */
+}
+
+/* 6. 确保滚动容器无额外样式 */
+.md-sidebar--secondary .md-sidebar__scrollwrap::-webkit-scrollbar-track {
+  background: transparent !important; /* 滚动条轨道也透明 */
+}
+/* 响应式适配：确保在所有屏幕尺寸下生效 */
+@media (min-width: 76.25em) {
+  .md-container .md-sidebar--secondary {
+    background-color: transparent !important;
+  }
+}
+/* 性能优化 */
+@media (prefers-reduced-motion: reduce) {
+  .heart, .buttonxuan2, .buttonxuan3,
+  .buttonxuan2 span, .buttonxuan3 span,
+  .buttonxuan2 span:after, .buttonxuan3 span:after,
+  .mask, .reward-container button,
+  .oneclip-announcement-content {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+body {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* ==============================================
+   通用响应式设计
+   ============================================== */
+@media only screen and (max-width: 768px) {
+  #rcorners4, #rcorners5 {
+    border: none;
+    width: 100%;
+  }
+  
+  .md-announce {
+    padding: 10px 12px;
+  }
+  .md-announce__content {
+    font-size: 13px;
+  }
+  
+  div.hide {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .grid-container {
+    grid-template-areas: 
+      "header" "menu" "main" "right" "footer";
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 针对二级导航栏容器设置居中 */
+.md-header__inner .md-tabs {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+/* 确保标签项在居中容器内正常排列，并增大间隔 */
+.md-tabs__list {
+  display: flex;
+  justify-content: center;
+  gap: 2.8rem; /* 标签项间隔（可自定义数值） */
+}
+

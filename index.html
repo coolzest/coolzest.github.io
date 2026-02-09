@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coolzest Notebooks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Serif SC', serif;
+            color: #fff;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            background: url('https://cloudflare-imgbed-84u.pages.dev/file/blog/1762839898275_home_bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* 暗色遮罩层 */
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 10, 20, 0.6);
+            z-index: 1;
+        }
+        
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 3;
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+        }
+        
+        .title {
+            margin-bottom: 2rem;
+            animation: fadeInDown 1.5s ease-out;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+            color: #fff;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .quote {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            animation: fadeIn 2s ease-out 0.5s both;
+            color: #e6f7ff;
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+            font-weight: 300;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            animation: fadeInUp 1.5s ease-out 1s both;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 14px 35px;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            font-weight: 300;
+            min-width: 140px;
+        }
+        
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 雪花特效 */
+        .snow-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .snowflake {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            top: -10px;
+            animation: fall linear infinite;
+        }
+        
+        /* 缓慢粒子特效容器 */
+        .particles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            background: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        
+        /* 动画定义 */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fall {
+            from {
+                transform: translateY(-10px);
+            }
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            .quote {
+                font-size: 1.3rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .btn {
+                width: 200px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .quote {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 缓慢粒子特效容器 -->
+    <div class="particles-container" id="particles-container"></div>
+    
+    <!-- 雪花特效 -->
+    <div class="snow-container" id="snow-container"></div>
+    
+    <!-- 主要内容 -->
+    <div class="container">
+        <div class="title">
+            <h1>Welcome Coolzest Notebooks</h1>
+            <div class="subtitle">记录思考与灵感的地方</div>
+        </div>
+        
+        <div class="quote">
+            人同树，越是贪恋阳光，越是深根黑暗。
+        </div>
+        
+        <div class="buttons">
+            <button class="btn" id="blog-btn">进入博客</button>
+            <button class="btn" id="guestbook-btn">留言板</button>
+            <button class="btn" id="about-btn">关于我</button>
+        </div>
+    </div>
+
+    <script>
+        // 创建雪花特效
+        function createSnowflakes() {
+            const container = document.getElementById('snow-container');
+            const snowflakeCount = 100;
+            
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                
+                const size = Math.random() * 5 + 2;
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                
+                const startX = Math.random() * 100;
+                snowflake.style.left = `${startX}vw`;
+                
+                const opacity = Math.random() * 0.7 + 0.3;
+                snowflake.style.opacity = opacity;
+                
+                const duration = Math.random() * 10 + 5;
+                const delay = Math.random() * -20;
+                
+                snowflake.style.animation = `fall ${duration}s linear ${delay}s infinite`;
+                
+                container.appendChild(snowflake);
+            }
+        }
+        
+        // 创建缓慢粒子特效
+        function createSlowParticleEffect() {
+            const container = document.getElementById('particles-container');
+            let lastParticleTime = 0;
+            const particleInterval = 200; // 增加生成间隔，减少密度
+            
+            document.addEventListener('mousemove', function(e) {
+                const currentTime = Date.now();
+                if (currentTime - lastParticleTime < particleInterval) return;
+                
+                lastParticleTime = currentTime;
+                
+                // 创建1-2个粒子
+                const particleCount = 1 + Math.floor(Math.random() * 3);
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    
+                    // 更小的粒子大小
+                    const size = Math.random() * 3 + 2;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    
+                    // 更柔和的颜色
+                    const colors = [
+                        'rgba(255, 255, 255, 0.6)',
+                        'rgba(230, 240, 255, 0.5)',
+                        'rgba(220, 235, 255, 0.4)'
+                    ];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.background = color;
+                    
+                    // 设置位置
+                    const offsetX = (Math.random() - 0.5) * 40;
+                    const offsetY = (Math.random() - 0.5) * 40;
+                    particle.style.left = `${e.clientX + offsetX}px`;
+                    particle.style.top = `${e.clientY + offsetY}px`;
+                    
+                    // 更缓慢的移动
+                    const moveX = (Math.random() - 0.5) * 40; // 减少移动距离
+                    const moveY = (Math.random() - 0.5) * 40 - 20; // 稍微向上偏移
+                    const duration = 3 + Math.random() * 2; // 增加动画时间
+                    
+                    container.appendChild(particle);
+                    
+                    // 使用CSS动画而不是transition，实现更平滑的效果
+                    particle.style.transition = `all ${duration}s ease-out`;
+                    
+                    // 触发动画
+                    setTimeout(() => {
+                        particle.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                        particle.style.opacity = '0';
+                    }, 10);
+                    
+                    // 移除元素
+                    setTimeout(() => {
+                        if (particle.parentNode === container) {
+                            container.removeChild(particle);
+                        }
+                    }, duration * 1000);
+                }
+            });
+            
+            // 添加自动生成的缓慢粒子
+            setInterval(() => {
+                if (Math.random() > 0.5) { // 50%的几率生成
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight;
+                    
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    
+                    const size = Math.random() * 2 + 2;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    
+                    const colors = [
+                        'rgba(255, 255, 255, 0.4)',
+                        'rgba(230, 240, 255, 0.3)',
+                        'rgba(220, 235, 255, 0.2)'
+                    ];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.background = color;
+                    
+                    particle.style.left = `${x}px`;
+                    particle.style.top = `${y}px`;
+                    
+                    const moveX = (Math.random() - 0.5) * 30;
+                    const moveY = (Math.random() - 0.5) * 30 - 15;
+                    const duration = 4 + Math.random() * 3;
+                    
+                    container.appendChild(particle);
+                    
+                    particle.style.transition = `all ${duration}s ease-out`;
+                    
+                    setTimeout(() => {
+                        particle.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                        particle.style.opacity = '0';
+                    }, 10);
+                    
+                    setTimeout(() => {
+                        if (particle.parentNode === container) {
+                            container.removeChild(particle);
+                        }
+                    }, duration * 1000);
+                }
+            }, 3000);
+        }
+        
+        // 进入博客按钮事件
+        document.getElementById('blog-btn').addEventListener('click', function() {
+            window.location.href = '/blog';
+        });
+        
+        // 留言板按钮事件
+        document.getElementById('guestbook-btn').addEventListener('click', function() {
+            window.location.href = '/guestbook';
+        });
+        
+        // 关于我按钮事件
+        document.getElementById('about-btn').addEventListener('click', function() {
+            window.location.href = '/about';
+        });
+        
+        // 页面加载完成后创建特效
+        window.addEventListener('load', function() {
+            createSnowflakes();
+            createSlowParticleEffect();
+        });
+    </script>
+</body>
+</html>
