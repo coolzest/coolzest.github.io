@@ -31,45 +31,33 @@ plugins:
   - awesome-pages  # 注释：启用Awesome Pages插件（当前未启用）
   
 
-#[UI]
 theme:
-  name: material  # 使用Material for MkDocs核心主题
-  custom_dir: docs/overrides  # 自定义模板目录
-  # font: false  # 注释：是否禁用主题默认字体（当前未启用）
-  logo: "https://cloudflare-imgbed-84u.pages.dev/file/blog/1762866879241_icon_home.png"  # 顶部导航栏左侧Logo路径
-  # https://s1.imagehub.cc/images/2025/01/05/64eafdf8c27f482c7ecb83003d460d6a.webp  # 注释：备用Logo图片链接
-  # https://s1.imagehub.cc/images/2024/02/02/91a767e93d1a344e44c69936464c583e.png  # 注释：另一张备用Logo链接
+  name: material
+  custom_dir: docs/overrides
 
-  favicon: "https://cloudflare-imgbed-84u.pages.dev/file/blog/1762863122982_favicon.ico"  # 浏览器标签页图标路径
-  # https://s1.imagehub.cc/images/2025/05/05/7ff9985e6f5baffe306907df47042787.png  # 注释：备用favicon链接
-  # https://pic4.zhimg.com/v2-fee2c2622ad68aeed98a8b411a8b272b_1440w.jpg  # 注释：备用favicon链接
-  # https://s2.loli.net/2024/04/06/yEOZavwMr6kTWhu.png  # 注释：备用favicon链接
-  palette:  # 主题配色方案（支持浅色/深色模式自动切换）
-    # - media: "(prefers-color-scheme)"  # 注释：启用系统自动配色模式（当前未启用）
-    #   toggle:
-    #     icon: material/link
-    #     name: 关闭自动模式
-    - media: "(prefers-color-scheme: dark)"  # 适配系统深色模式
-      scheme: slate # 夜间模式标识
-      primary: black
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue grey
       accent: indigo
       toggle:
-        icon: material/weather-night  # 切换按钮图标（月亮）
-        name: 切换至日间模式  # 按钮提示文字
-    - media: "(prefers-color-scheme: light)"  # 适配系统浅色模式
-      scheme: default # 日间模式标识
-      primary: teal # 主色（青色）
-      accent: indigo # 强调色（靛蓝色）
+        icon: material/weather-night
+        name: 切换至日间模式
+
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue grey
+      accent: indigo
       toggle:
-        icon: material/weather-sunny  # 切换按钮图标（太阳）
-        name: 切换至夜间模式  # 按钮提示文字
+        icon: material/weather-sunny
+        name: 切换至夜间模式
         
   features: 
     - announce.dismiss # 可关闭公告栏
     #- navigation.instant # 注释：页面无刷新切换（当前未启用）
     - navigation.prune # 只渲染可见导航项（优化性能）
     # - header.autohide  # 注释：自动隐藏头部（当前未启用）
-    # - navigation.instant.progress # 注释：页面切换进度条（当前未启用）
+    - navigation.instant.progress # 注释：页面切换进度条（当前未启用）
     # - navigation.prune # 注释：重复配置，已启用一次
     - navigation.tracking # 滚动时URL锚点自动更新（定位当前章节）
     - navigation.tabs # 一级导航显示为顶部Tab（核心导航样式）
@@ -89,7 +77,7 @@ theme:
     - content.code.select # 代码块一键全选
     # - content.action.edit # 注释：编辑按钮（当前未启用）
     # - content.action.view # 注释：查看源码按钮（当前未启用）
-    - content.code.annotate # 代码注释
+    # - content.code.annotate # 代码注释
     #- navigation.instant  # 注释：启用无刷新导航（当前未启用，需配合其他配置）
     - navigation.instant.prefetch  # 预加载提升体验（可选但推荐）
     - navigation.sections  # 确保导航结构正确（避免链接解析问题）
@@ -97,7 +85,7 @@ theme:
   icon:
     repo: fontawesome/brands/github #右上角图标（GitHub）
     previous: fontawesome/solid/angle-left # 上一页按钮图标（左箭头）
-    # top: fontawesome/solid/angles-up  # 注释：返回顶部按钮图标（当前未启用）
+    top: fontawesome/solid/angles-up  # 注释：返回顶部按钮图标（当前未启用）
     alternate: fontawesome/solid/language # 语言切换图标
   
 edit_uri: edit/main/docs # 编辑按钮跳转的链接（指向GitHub仓库编辑页）
@@ -147,11 +135,11 @@ markdown_extensions:  # Markdown语法扩展（增强文档编写能力）
   - toc:
       permalink: true # 固定标题位置为当前位置（添加锚点）
       # baselevel: 2  # 注释：设置目录基准层级（当前未启用）
-      # toc_depth: 3  # 注释：控制标题层级深度（当前未启用）
+      toc_depth: 3  # 注释：控制标题层级深度（当前未启用）
   - pymdownx.highlight: # 代码块高亮配置
       anchor_linenums: true # 为行号添加锚点
       linenums: true # 显示行号
-      auto_title: true # 显示编程语言名称
+      auto_title: false # 不显示编程语言名称
   - pymdownx.emoji: # 支持Emoji表情
       emoji_index: !!python/name:material.extensions.emoji.twemoji # 使用Twitter Emoji库
       emoji_generator: !!python/name:material.extensions.emoji.to_svg # 生成SVG格式Emoji
@@ -162,16 +150,17 @@ markdown_extensions:  # Markdown语法扩展（增强文档编写能力）
   # - neoteroi.timeline  # 注释：时间线扩展（当前未启用）
 
 extra_css:  # 额外引入的CSS样式文件
-  - assets/stylesheets/base.css # 基础样式
-  - assets/stylesheets/themes.css # 主题配色样式
-  - assets/stylesheets/components.css # 组件样式（按钮、卡片等）
-  - assets/stylesheets/animations.css # 动画样式
-  - assets/stylesheets/home.css # 主页专属样式
-  - assets/stylesheets/tech-style.css # 技术文档样式
-  - assets/stylesheets/rounded.css # 页面圆角样式
-
-  - https://cdn.jsdelivr.net/npm/codemirror@5.65.2/lib/codemirror.css
-  - https://cdn.jsdelivr.net/npm/codemirror@5.65.2/theme/dracula.css  # 可选主题
+  # - assets/stylesheets/base.css # 基础样式
+  # - assets/stylesheets/themes.css # 主题配色样式
+  # - assets/stylesheets/components.css # 组件样式（按钮、卡片等）
+  # - assets/stylesheets/animations.css # 动画样式
+  # - assets/stylesheets/home.css # 主页专属样式
+  # - assets/stylesheets/tech-style.css # 技术文档样式
+  # - assets/stylesheets/rounded.css # 页面圆角样式
+  # - assets/stylesheets/font.css  #字体样式
+  # - https://cdn.jsdelivr.net/npm/codemirror@5.65.2/lib/codemirror.css
+  # - https://cdn.jsdelivr.net/npm/codemirror@5.65.2/theme/dracula.css  # 可选主题
+  - assets/stylesheets/test.css  # 诗歌样式
 
 
   # - stylesheets/highlight-search.css  # 注释：搜索高亮样式（当前未启用）
@@ -201,7 +190,7 @@ extra_css:  # 额外引入的CSS样式文件
   # - https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css  # 注释：分享功能样式（当前未启用）
   # - https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css  # 注释：霞鹜文楷字体（当前未启用）
   # - https://static.zeoseven.com/zsft/292/main/result.css # 注释：自定义字体（当前未启用）
-  - assets/stylesheets/font.css  #字体样式
+  
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/ziti.css # 注释：CDN引入的字体（当前未启用）
   # - https://fontsapi.zeoseven.com/292/main/result.css  # 注释：字体（当前未启用）
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/ziti.css?display=swap  # 注释：字体（当前未启用）
@@ -214,12 +203,13 @@ extra_css:  # 额外引入的CSS样式文件
   # - https://cdn.jsdelivr.net/gh/Wcowin/Wcowin.github.io@main/docs/stylesheets/poem.css  # 注释：重复配置，已启用一次
   
 extra_javascript:  # 额外引入的JavaScript文件
-  - assets/javascripts/animations.js # 全局动画脚本
-  - assets/javascripts/background.js # 动态背景脚本
-  - assets/javascripts/tech-script.js # 技术文档交互脚本
-  - assets/javascripts/rounded.js # 页面圆角脚本
+  - assets/javascripts/custom.js # 基础脚本
+  # - assets/javascripts/animations.js # 全局动画脚本
+  # - assets/javascripts/background.js # 动态背景脚本
+  # - assets/javascripts/tech-script.js # 技术文档交互脚本
+  # - assets/javascripts/rounded.js # 页面圆角脚本
   - assets/javascripts/click-copy-math.js # 公式复制脚本
-
+  # - assets/javascripts/nav-collapse.js
   - https://cdn.jsdelivr.net/npm/codemirror@5.65.2/lib/codemirror.js
   - https://cdn.jsdelivr.net/npm/codemirror@5.65.2/mode/python/python.js  # 按需添加语言模式
   - https://cdn.jsdelivr.net/npm/codemirror@5.65.2/addon/edit/closetag.js  # 可选插件（自动闭合标签）

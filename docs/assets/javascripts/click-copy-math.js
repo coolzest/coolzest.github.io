@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
       /* 代码文本色：继承主题的代码文本色（确保黑色主题下清晰） */
       color: var(--md-code-fg-color);
       transition: background 0.2s;
+      position: relative;
     `;
     code.title = "点击复制代码";
 
@@ -42,11 +43,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // 提示框样式保持不变（不影响代码展示）
   function showTip(element, text, color) {
+    const existing = element.querySelector('.copy-tip');
+    if (existing) {
+      existing.remove();
+    }
     const tip = document.createElement('span');
+    tip.className = 'copy-tip';
     tip.textContent = text;
     tip.style.cssText = `
       position: absolute;
-      margin-left: 8px;
+      left: 100%;
+      top: 50%;
+      transform: translate(8px, -50%);
       padding: 2px 6px;
       background: ${color};
       color: white;
@@ -55,11 +63,11 @@ document.addEventListener('DOMContentLoaded', function() {
       z-index: 1000;
       opacity: 0;
       transition: opacity 0.2s;
+      white-space: nowrap;
+      pointer-events: none;
     `;
 
-    const parent = element.parentNode;
-    parent.style.position = 'relative';
-    parent.appendChild(tip);
+    element.appendChild(tip);
 
     setTimeout(() => tip.style.opacity = 1, 10);
     setTimeout(() => {
