@@ -366,33 +366,53 @@ a:hover:after {
   left: 50%;
   bottom: 0;
   transform: translateX(-50%);
-  width: 252px;
+  width: 300px;
   height: 4px;
   background:
-    linear-gradient(90deg, #4f7cff 0%, #12c2b3 100%) left center / 106px 4px no-repeat,
-    linear-gradient(90deg, #4f7cff 0%, #12c2b3 100%) right center / 106px 4px no-repeat;
+    linear-gradient(90deg, #4f7cff 0%, #12c2b3 100%) left center / 132px 4px no-repeat,
+    linear-gradient(90deg, #4f7cff 0%, #12c2b3 100%) right center / 132px 4px no-repeat;
   border-radius: 999px;
   box-shadow: none;
+  z-index: 0;
 }
 [data-md-color-scheme="slate"] .md-typeset h1::after {
   background:
-    linear-gradient(90deg, #79a6ff 0%, #79b8ff 100%) left center / 106px 4px no-repeat,
-    linear-gradient(90deg, #79a6ff 0%, #79b8ff 100%) right center / 106px 4px no-repeat;
+    linear-gradient(90deg, #79a6ff 0%, #79b8ff 100%) left center / 132px 4px no-repeat,
+    linear-gradient(90deg, #79a6ff 0%, #79b8ff 100%) right center / 132px 4px no-repeat;
   box-shadow: none;
 }
 .md-typeset h1::before {
   content: '';
   position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 18px;
-  height: 2px;
-  background: #4f7cff;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -4px;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #7ec8ff 38%, #4f7cff 100%);
   border-radius: 999px;
-  opacity: 0.8;
+  opacity: 1;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 3px rgba(79, 124, 255, 0.12);
+  z-index: 1;
 }
-[data-md-color-scheme="slate"] .md-typeset h1::after {
-  background: linear-gradient(90deg, #4f7cff 0%, #79b8ff 100%);
+[data-md-color-scheme="slate"] .md-typeset h1::before {
+  background: radial-gradient(circle at 35% 35%, #f8fbff 0%, #8dd9ff 38%, #79a6ff 100%);
+  border-color: #1f2128;
+  box-shadow: 0 0 0 3px rgba(121, 184, 255, 0.16);
+}
+
+@media (max-width: 767px) {
+  .md-typeset h1::after {
+    width: 220px;
+    background-size: 92px 3px, 92px 3px;
+    height: 3px;
+  }
+  .md-typeset h1::before {
+    width: 10px;
+    height: 10px;
+    bottom: -3px;
+  }
 }
 
 .md-typeset h2 {
@@ -2328,4 +2348,3 @@ figcaption {
   color: #111827 !important;
   border-color: rgba(17, 24, 39, 0.12) !important;
 }
-
