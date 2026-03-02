@@ -248,6 +248,7 @@ nav:
     - python学习:  #notebooks/技术积累/python学习
       - 如何将python项目打包成可执行文件: notebooks/技术积累/python学习/如何将python项目打包成可执行文件.md
       - 环境管理Conda指令手册: notebooks/技术积累/python学习/环境管理Conda指令手册.md
+    - 软件对抗: notebooks/技术积累/软件对抗.md
   - 理论学习:  #notebooks/理论学习
     - 计算机网络:  #notebooks/理论学习/计算机网络
       - 传输层: notebooks/理论学习/计算机网络/传输层.md

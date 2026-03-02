@@ -112,9 +112,9 @@ comments: true
     /* 通用卡片样式 */
     .link-card {
         width: 300px;
-        height: 100px;
+        min-height: 100px;
         font-size: 1rem;
-        padding: 15px 20px;
+        padding: 10px 10px;
         border-radius: 16px;
         transition: all 0.3s ease;
         display: flex;
@@ -157,6 +157,14 @@ comments: true
         overflow: hidden;
         width: auto;
         flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .link-card .card-header > div {
+        min-width: 0;
     }
     
     .link-card .card-header a {
@@ -165,6 +173,7 @@ comments: true
         text-decoration: none;
         transition: color 0.3s;
         display: block;
+        width: 100%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -178,10 +187,15 @@ comments: true
     .link-card .card-header .info {
         color: var(--text-secondary);
         font-size: 14px;
+        line-height: 1.35;
         min-width: 0;
         overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        white-space: normal;
+        word-break: break-word;
+        overflow-wrap: anywhere;
         margin-top: 5px;
     }
     

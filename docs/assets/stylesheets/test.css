@@ -292,6 +292,17 @@ a:hover:after {
   transition: all var(--speed-normal) ease;
 }
 
+/* 左侧主栏链接下划线内缩，避免贴到圆角边缘 */
+.md-sidebar--primary .md-nav__link:after {
+  left: 10px;
+  bottom: 4px;
+  width: 0;
+}
+.md-sidebar--primary .md-nav__link:hover:after,
+.md-sidebar--primary .md-nav__link--active:after {
+  width: calc(100% - 20px);
+}
+
 .md-nav__link:hover {
   background: rgba(18, 194, 179, 0.12);
   color: var(--ct-text, #1f2937) !important;
@@ -339,6 +350,7 @@ a:hover:after {
   margin-bottom: 2rem;
   padding-bottom: 0.9rem;
   position: relative;
+  text-align: center;
 }
 
 [data-md-color-scheme="slate"] .md-typeset h1 {
@@ -351,15 +363,22 @@ a:hover:after {
 .md-typeset h1::after {
   content: '';
   position: absolute;
-  left: 0;
+  left: 50%;
   bottom: 0;
-  width: 68%;
-  height: 3px;
-  background: linear-gradient(90deg, #4f7cff 0%, #12c2b3 100%);
+  transform: translateX(-50%);
+  width: 252px;
+  height: 4px;
+  background:
+    linear-gradient(90deg, #4f7cff 0%, #12c2b3 100%) left center / 106px 4px no-repeat,
+    linear-gradient(90deg, #4f7cff 0%, #12c2b3 100%) right center / 106px 4px no-repeat;
   border-radius: 999px;
+  box-shadow: none;
 }
 [data-md-color-scheme="slate"] .md-typeset h1::after {
-  background: linear-gradient(90deg, #4f7cff 0%, #79b8ff 100%);
+  background:
+    linear-gradient(90deg, #79a6ff 0%, #79b8ff 100%) left center / 106px 4px no-repeat,
+    linear-gradient(90deg, #79a6ff 0%, #79b8ff 100%) right center / 106px 4px no-repeat;
+  box-shadow: none;
 }
 .md-typeset h1::before {
   content: '';
@@ -1729,7 +1748,11 @@ figcaption {
   color: #e5e7eb !important;
 }
 .md-tabs__link:hover {
-  color: inherit !important;
+  color: black !important;
+  background: transparent !important;
+}
+[data-md-color-scheme="slate"] .md-tabs__link:hover {
+  color: rgb(255, 255, 255) !important;
   background: transparent !important;
 }
 .md-tabs__link--active::after {
