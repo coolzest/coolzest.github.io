@@ -251,11 +251,12 @@ nav:
     - 软件对抗: notebooks/技术积累/软件对抗.md
   - 理论学习:  #notebooks/理论学习
     - 计算机网络:  #notebooks/理论学习/计算机网络
-      - 传输层: notebooks/理论学习/计算机网络/传输层.md
-      - 应用层: notebooks/理论学习/计算机网络/应用层.md
       - 概述: notebooks/理论学习/计算机网络/概述.md
       - 物理层: notebooks/理论学习/计算机网络/物理层.md
+      - 数据链路层: notebooks/理论学习/计算机网络/数据链路层.md
       - 网络层: notebooks/理论学习/计算机网络/网络层.md
+      - 传输层: notebooks/理论学习/计算机网络/传输层.md
+      - 应用层: notebooks/理论学习/计算机网络/应用层.md
   - 网络安全:  #notebooks/网络安全
     - 2024-04-22-CTF: notebooks/网络安全/2024-04-22-CTF.md
     - 2024-08-17-基础 - 副本: notebooks/网络安全/2024-08-17-基础 - 副本.md
