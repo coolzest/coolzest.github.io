@@ -2019,7 +2019,9 @@ figcaption {
   padding-top: 0.4rem !important;
 }
 .md-sidebar--secondary .md-nav__item > .md-nav__link {
-  margin: 0.04rem 0.2rem !important;
+  margin: 0.02rem 0.2rem !important;
+  font-size: 0.875rem !important;
+  line-height: 1.2 !important;
 }
 .md-sidebar--secondary .md-nav__list .md-nav__list {
   margin-left: 0.6rem;
