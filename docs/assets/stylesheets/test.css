@@ -1560,6 +1560,45 @@ figcaption {
   padding-top: 0rem !important;
 }
 
+/* 右侧目录：更窄（inner 与外层一致）、缩小文字并减小上下间距 */
+.md-sidebar--secondary {
+  width: 300px !important;
+  min-width: 300px !important;
+  max-width: 300px !important;
+}
+.md-sidebar--secondary .md-sidebar__scrollwrap,
+.md-sidebar--secondary .md-sidebar__inner,
+.md-sidebar--secondary .md-nav--secondary {
+  width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* 让内层容器也跟着变窄（避免内边距撑开） */
+.md-sidebar--secondary .md-sidebar__inner {
+  width: 100% !important;
+  max-width: 300px !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.md-sidebar--secondary .md-nav__list {
+  padding-top: 0.3rem !important;
+}
+.md-sidebar--secondary .md-nav__item {
+  margin: 0.18rem 0 !important;
+}
+.md-sidebar--secondary .md-nav__link {
+  font-size: 0.58rem !important;
+  line-height: 1.35 !important;
+  padding: 0.14rem 0.5rem !important;
+}
+.md-sidebar--secondary .md-nav__link .md-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* 正文隔线（更有层次） */
 /* 正文主体区间：整块"文章区间"边界 */
 .md-main__inner .md-content {
@@ -2020,8 +2059,8 @@ figcaption {
 }
 .md-sidebar--secondary .md-nav__item > .md-nav__link {
   margin: 0.02rem 0.2rem !important;
-  font-size: 0.875rem !important;
-  line-height: 1.2 !important;
+  font-size: 0.72rem !important;
+  line-height: 1.15 !important;
 }
 .md-sidebar--secondary .md-nav__list .md-nav__list {
   margin-left: 0.6rem;

@@ -1,5 +1,7 @@
 # Conda 个人速查手册（Windows版）
-
+<pre>
+conda create -n &lt;<span contenteditable="true">env_name</span>&gt; python=3.10
+</pre>
 
 ## 一、基础初始化（解决conda未识别/验证安装）
 | 功能                 | 指令                                                                 |
