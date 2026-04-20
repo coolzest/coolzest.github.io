@@ -1,0 +1,77 @@
+/* ==============================================
+   主题切换动画
+   ============================================== */
+.theme-switching {
+  transition: background-color 0.6s ease, color 0.6s ease !important;
+}
+.theme-switching .md-container {
+  opacity: 0.4 !important;
+  transform: scale(0.98) !important;
+  transition: opacity 0.6s ease, transform 0.6s ease !important;
+}
+.md-header, .md-button, .md-nav__item {
+  transition: 
+    background-color 0.6s ease,
+    color 0.6s ease,
+    box-shadow 0.6s ease,
+    transform 0.6s ease !important;
+}
+
+/* 页面跳转动画 */
+.md-content {
+  position: relative;
+  overflow: hidden;
+  min-height: 500px;
+  transition: opacity 0.3s ease;
+}
+
+.md-content--out {
+  animation: fadeOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+  animation-fill-mode: forwards !important;
+}
+@keyframes fadeOut {
+  0% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(-80px); }
+}
+
+.md-content--in {
+  animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+  animation-fill-mode: forwards !important;
+  opacity: 0;
+  transform: translateX(80px);
+}
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateX(80px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* 顶部横栏过渡动画 */
+.md-announce, .md-tabs, .md-nav--primary .md-nav__list {
+  transition: 
+    background-color 0.6s ease, 
+    color 0.6s ease, 
+    border-color 0.6s ease, 
+    box-shadow 0.6s ease !important;
+}
+
+.theme-switching .md-announce,
+.theme-switching .md-tabs,
+.theme-switching .md-nav--primary .md-nav__list {
+  transition: 
+    background-color 0.6s ease, 
+    color 0.6s ease, 
+    border-color 0.6s ease, 
+    box-shadow 0.6s ease !important;
+}
+
+/* 心跳动画 */
+@keyframes heart {
+  0%, 40%, 80%, 100% { transform: scale(1); }
+  20%, 60% { transform: scale(1.15); }
+}
+.heart {
+  animation: heart 1000ms infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
