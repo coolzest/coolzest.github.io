@@ -118,6 +118,22 @@
   to { transform: rotate(360deg); }
 }
 
+/* Editable placeholders inside normal code blocks */
+.code-blank-enabled [data-code-blank] {
+  color: var(--md-accent-fg-color);
+  font: inherit;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 0.18em;
+  cursor: text;
+}
+
+.code-blank-enabled [data-code-blank]:focus {
+  outline: none;
+  color: var(--md-primary-fg-color--light);
+  text-decoration-style: solid;
+}
+
 @keyframes pulse {
   0% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.05); opacity: 0.8; }
@@ -2187,6 +2203,19 @@ figcaption {
 }
 
 /* Collapsed folder-style primary navigation */
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary {
+    width: 13.4rem !important;
+    min-width: 13.4rem !important;
+  }
+
+  .md-sidebar--primary .md-sidebar__scrollwrap,
+  .md-sidebar--primary .md-sidebar__inner,
+  .md-sidebar--primary .md-nav--primary {
+    width: 100% !important;
+  }
+}
+
 .md-sidebar--primary .md-nav__item--nested > .md-nav {
   display: none !important;
 }
@@ -2205,8 +2234,7 @@ figcaption {
   color: var(--md-accent-fg-color) !important;
 }
 
-[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__link--passed:not(.md-nav__link--active),
-[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__link:visited:not(.md-nav__link--active):not(:hover) {
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__link--passed:not(.md-nav__link--active) {
   color: var(--md-default-fg-color--light) !important;
 }
 
@@ -2219,7 +2247,304 @@ figcaption {
   color: var(--md-accent-fg-color) !important;
 }
 
-[data-md-color-scheme="slate"] .md-sidebar--secondary .md-nav__link--passed:not(.md-nav__link--active),
-[data-md-color-scheme="slate"] .md-sidebar--secondary .md-nav__link:visited:not(.md-nav__link--active):not(:hover) {
+[data-md-color-scheme="slate"] .md-sidebar--secondary .md-nav__link--passed:not(.md-nav__link--active) {
   color: var(--md-default-fg-color--light) !important;
+}
+
+/* ========================================
+   Sidebar readability refinements
+   更适合中文长目录的左右侧栏微调
+   ======================================== */
+
+@media screen and (min-width: 76.25em) {
+  .md-grid {
+    max-width: 1560px !important;
+  }
+
+  .md-sidebar--primary {
+    width: 17rem !important;
+    min-width: 17rem !important;
+    max-width: 17rem !important;
+  }
+
+  .md-sidebar--primary .md-sidebar__scrollwrap,
+  .md-sidebar--primary .md-sidebar__inner,
+  .md-sidebar--primary .md-nav--primary {
+    width: 100% !important;
+    max-width: 15rem !important;
+  }
+}
+
+/* 左侧目录：减少无效留白，把空间留给标题文字 */
+.md-sidebar--primary .md-sidebar__scrollwrap {
+  margin-top: 0.35rem !important;
+  margin-left: 0.1rem !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.md-sidebar--primary .md-sidebar__inner {
+  padding-left: 0.15rem !important;
+  padding-right: 0.1rem !important;
+}
+
+.md-sidebar--primary .md-nav__title {
+  margin: 0 0.15rem 0.25rem !important;
+  padding: 0.45rem 0.55rem !important;
+}
+
+.md-sidebar--primary .md-nav__list {
+  padding-left: 0 !important;
+}
+
+.md-sidebar--primary .md-nav__item {
+  margin: 0.02rem 0 !important;
+}
+
+.md-sidebar--primary .md-nav__link {
+  margin: 0.03rem 0.12rem !important;
+  padding: 0.32rem 0.4rem !important;
+  line-height: 1.28 !important;
+  border-radius: 6px !important;
+}
+
+/* 左侧目录：长中文标题完整显示，最多用换行而不是截断 */
+.md-sidebar--primary .md-nav__link .md-ellipsis {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+/* 左侧目录：压缩子级缩进，避免每一级都吃掉太多宽度 */
+.md-sidebar--primary .md-nav .md-nav {
+  margin-left: 0.22rem !important;
+  padding-left: 0.35rem !important;
+  border-left: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+[data-md-color-scheme="slate"] .md-sidebar--primary .md-nav .md-nav {
+  border-left-color: rgba(148, 163, 184, 0.22);
+}
+
+/* 左侧目录：折叠/展开按钮缩窄，减少占用标题可读空间 */
+.md-sidebar--primary .md-nav__container {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.05rem !important;
+  margin: 0.03rem 0.12rem !important;
+}
+
+.md-sidebar--primary .md-nav__container > a.md-nav__link {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding-right: 0.2rem !important;
+}
+
+.md-sidebar--primary .md-nav__container > label.md-nav__link {
+  flex: 0 0 1.05rem !important;
+  width: 1.05rem !important;
+  min-width: 1.05rem !important;
+  margin: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  justify-content: center !important;
+}
+
+.md-sidebar--primary .md-nav__container .md-nav__icon,
+.md-sidebar--primary .md-nav__container .md-icon {
+  width: 0.9rem !important;
+  height: 0.9rem !important;
+  margin: 0.1rem auto 0 !important;
+}
+
+.md-sidebar--primary .md-nav__item--nested > label.md-nav__link:not(.md-nav__container) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 0.95rem !important;
+  column-gap: 0.08rem !important;
+  align-items: start !important;
+}
+
+.md-sidebar--primary .md-nav__item--nested > label.md-nav__link:not(.md-nav__container) > .md-ellipsis {
+  min-width: 0 !important;
+}
+
+.md-sidebar--primary .md-nav__item--nested > label.md-nav__link:not(.md-nav__container) > .md-nav__icon,
+.md-sidebar--primary .md-nav__item--nested > label.md-nav__link:not(.md-nav__container) > .md-icon {
+  width: 0.9rem !important;
+  height: 0.9rem !important;
+  margin: 0.1rem auto 0 !important;
+}
+
+/* 右侧目录：浅色主题下当前章节避开蓝色系，提高对比度 */
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__link {
+  color: #334155 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__link--passed:not(.md-nav__link--active) {
+  color: #64748b !important;
+}
+
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__link:hover {
+  color: #0f766e !important;
+  background: rgba(15, 118, 110, 0.08) !important;
+}
+
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__link--active,
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__item--active > .md-nav__link {
+  color: #9a3412 !important;
+  background: rgba(251, 146, 60, 0.16) !important;
+  border-left: 3px solid #f97316 !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+}
+
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__link--active::before,
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__item--active > .md-nav__link::before {
+  color: #f97316 !important;
+}
+
+/* 深色主题保持清晰，但不使用抢眼渐变背景 */
+[data-md-color-scheme="slate"] .md-sidebar--secondary .md-nav__link--active,
+[data-md-color-scheme="slate"] .md-sidebar--secondary .md-nav__item--active > .md-nav__link {
+  color: #fbbf24 !important;
+  background: rgba(251, 191, 36, 0.1) !important;
+  border-left: 3px solid #fbbf24 !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+}
+
+/* 左侧目录折中版：保留可读留白，同时用略小字号容纳长标题 */
+.md-sidebar--primary .md-sidebar__inner {
+  padding-left: 0.35rem !important;
+  padding-right: 0.25rem !important;
+}
+
+.md-sidebar--primary .md-nav__title {
+  margin: 0 0.25rem 0.35rem !important;
+  padding: 0.48rem 0.65rem !important;
+}
+
+.md-sidebar--primary .md-nav__link {
+  margin: 0.04rem 0.22rem !important;
+  padding: 0.34rem 0.55rem !important;
+  font-size: 0.72rem !important;
+  line-height: 1.32 !important;
+}
+
+.md-sidebar--primary .md-nav__link .md-ellipsis,
+.md-sidebar--primary .md-nav__link svg {
+  font-size: 0.72rem !important;
+}
+
+.md-sidebar--primary .md-nav .md-nav {
+  margin-left: 0.32rem !important;
+  padding-left: 0.45rem !important;
+}
+
+.md-sidebar--primary .md-nav__container {
+  gap: 0.12rem !important;
+  margin: 0.04rem 0.22rem !important;
+}
+
+.md-sidebar--primary .md-nav__container > label.md-nav__link {
+  flex-basis: 1.12rem !important;
+  width: 1.12rem !important;
+  min-width: 1.12rem !important;
+}
+
+.md-sidebar--primary .md-nav__item--nested > label.md-nav__link:not(.md-nav__container) {
+  grid-template-columns: minmax(0, 1fr) 1.05rem !important;
+  column-gap: 0.12rem !important;
+}
+
+/* 左侧目录外侧留白：避免整栏贴住屏幕边缘 */
+@media screen and (min-width: 76.25em) {
+  .md-main__inner.md-grid {
+    box-sizing: border-box !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .md-sidebar--primary {
+    margin-left: 0.15rem !important;
+  }
+}
+
+/* 顶部二级标签栏：固定高度，禁止纵向滚动，确保 active 横线可见 */
+.md-tabs {
+  height: 2.5rem !important;
+  min-height: 2.5rem !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+  border-bottom: 1px solid var(--ct-border, #e5e7eb) !important;
+}
+
+[data-md-color-scheme="slate"] .md-tabs {
+  border-bottom-color: #303030 !important;
+}
+
+.md-tabs > .md-grid {
+  height: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+}
+
+.md-tabs__list {
+  height: 100% !important;
+  min-height: 0 !important;
+  align-items: stretch !important;
+  overflow-x: visible !important;
+  overflow-y: hidden !important;
+}
+
+.md-tabs__item {
+  display: flex !important;
+  align-items: stretch !important;
+  height: 100% !important;
+}
+
+.md-tabs__link,
+.md-tabs__link--active {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+  margin: 0 0.18rem !important;
+  padding: 0 0.95rem !important;
+  line-height: 1.2 !important;
+}
+
+.md-tabs__link::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 0.75rem !important;
+  right: 0.75rem !important;
+  bottom: 0 !important;
+  width: auto !important;
+  height: 3px !important;
+  border-radius: 999px 999px 0 0 !important;
+  background: transparent !important;
+  transition: background 180ms ease !important;
+}
+
+.md-tabs__link:hover::after {
+  background: rgba(18, 194, 179, 0.35) !important;
+}
+
+.md-tabs__link--active::after {
+  background: #12c2b3 !important;
+}
+
+[data-md-color-scheme="slate"] .md-tabs__link:hover::after {
+  background: rgba(121, 184, 255, 0.35) !important;
+}
+
+[data-md-color-scheme="slate"] .md-tabs__link--active::after {
+  background: #79b8ff !important;
 }

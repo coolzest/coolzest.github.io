@@ -4,9 +4,11 @@ site_url: https://coolzest.github.io/ # 网站在线访问地址（部署后替�
 
 plugins:
   - search  # 启用搜索功能插件
+  - awesome-pages  # 启用Awesome Pages插件
   - blog:  # 启用博客功能插件
       blog_dir: notebooks/6_博客
   - git-authors:
+      add_co_authors: true # 识别提交信息里的 Co-authored-by 协同作者
       exclude:  # 排除特定页面不显示作者信息
         - about.md
         - friends.md
@@ -16,10 +18,9 @@ plugins:
       minify_css: true
       minify_js: true
   - git-revision-date-localized: # 启用Git修订日期插件
-      type: timeago #时间类型
-      custom_format: '%d. %B %Y'  # 时间格式
-      timezone: Europe/Amsterdam #时区
-      locale: en #首选语言
+      type: date # 固定日期显示，避免每次构建显示成新的相对时间
+      timezone: Asia/Shanghai #时区
+      locale: zh #首选语言
       fallback_to_build_date: false #许回退到git 不可用时mkdocs build执行的时间
       enable_creation_date: true #是否启用创建时间
       exclude:  #排除的页面
@@ -28,8 +29,6 @@ plugins:
         - guestbook.md
       enabled: !ENV [CI, false]  #是否启用
       strict: true
-
-  - awesome-pages  # 注释：启用Awesome Pages插件（当前未启用）
 
 theme:
   name: material
@@ -237,35 +236,132 @@ watch: #监听文件变动自动刷新（开发模式用）
 
 nav:
   - 技术积累:
-      - 2024-04-22-C++基础: notebooks/1_技术积累/2024-04-22-C++基础.md
-      - 2024-04-22-MYSQL: notebooks/1_技术积累/2024-04-22-MYSQL.md
-      - 2024-08-17-cmd常用命令: notebooks/1_技术积累/2024-08-17-cmd常用命令.md
-      - 2024-08-17-Linux常用命令: notebooks/1_技术积累/2024-08-17-Linux常用命令.md
-      - Markdown:
-          - 基本语法: notebooks/1_技术积累/Markdown/基本语法.md
-      - python学习:
-          - 如何将python项目打包成可执行文件: notebooks/1_技术积累/python学习/如何将python项目打包成可执行文件.md
-          - 环境管理Conda指令手册: notebooks/1_技术积累/python学习/环境管理Conda指令手册.md
-      - 软件对抗: notebooks/1_技术积累/软件对抗.md
+      - C++ 基础: notebooks/1_技术积累/2024-04-22-C++基础.md
+      - C++ 基础补充: notebooks/1_技术积累/2024-04-22-C++基础补充.md
+      - CMD 常用命令: notebooks/1_技术积累/2024-08-17-cmd常用命令.md
+      - Linux 常用命令: notebooks/1_技术积累/2024-08-17-Linux常用命令.md
+      - Python 学习:
+          - Conda 个人速查手册（Windows 版）: notebooks/1_技术积累/python学习/环境管理Conda指令手册.md
+          - Python 项目打包为可执行文件: notebooks/1_技术积累/python学习/如何将python项目打包成可执行文件.md
+      - 数据库:
+          - MySQL 基础: notebooks/1_技术积累/数据库/2024-04-22-MYSQL.md
   - 理论学习:
+      - 英语:
+          - 六级单词词根记忆: notebooks/2_理论学习/英语/六级单词词根记忆.md
+          - 六级词根拆词系列:
+              - 01 graph / scrib / script：记录与书写: notebooks/2_理论学习/英语/六级词根拆词系列/01_graph_scrib_script_记录与书写.md
+              - 02 photo / vis / spect：光、看见与观察: notebooks/2_理论学习/英语/六级词根拆词系列/02_photo_vis_spect_光看见与观察.md
+              - 03 tele / trans / port：远程、穿越与搬运: notebooks/2_理论学习/英语/六级词根拆词系列/03_tele_trans_port_远程穿越与搬运.md
+              - 04 tract / duc / mit：拉、引导与发送: notebooks/2_理论学习/英语/六级词根拆词系列/04_tract_duc_mit_拉引导与发送.md
+              - 05 press / ject / flect：压、投射与弯曲: notebooks/2_理论学习/英语/六级词根拆词系列/05_press_ject_flect_压力投射与弯曲.md
+              - 06 form / struct / fac：形状、结构与制造: notebooks/2_理论学习/英语/六级词根拆词系列/06_form_struct_fac_形状结构与制造.md
+              - 07 cede / ceed / grad：走、让步与等级: notebooks/2_理论学习/英语/六级词根拆词系列/07_cede_ceed_grad_走让步与等级.md
+              - 08 log / lingu / ver：语言、逻辑与真实: notebooks/2_理论学习/英语/六级词根拆词系列/08_log_lingu_ver_语言逻辑与真实.md
+              - 09 bio / viv / gen：生命、活力与产生: notebooks/2_理论学习/英语/六级词根拆词系列/09_bio_viv_gen_生命活力与产生.md
+              - 10 cred / fid / prob：相信、信任与证明: notebooks/2_理论学习/英语/六级词根拆词系列/10_cred_fid_prob_相信信任与证明.md
+              - 11 fin / term / lim：边界、结束与限制: notebooks/2_理论学习/英语/六级词根拆词系列/11_fin_term_lim_边界结束与限制.md
+              - 12 六级写作高频替换词：按词根理解: notebooks/2_理论学习/英语/六级词根拆词系列/12_六级写作高频替换词.md
+              - 13 dict / dic / claim：说、指出与宣称: notebooks/2_理论学习/英语/六级词根拆词系列/13_dict_dic_claim_说指出与宣称.md
+              - 14 voc / phon / son：声音、呼喊与声响: notebooks/2_理论学习/英语/六级词根拆词系列/14_voc_phon_son_声音呼喊与声响.md
+              - 15 sens / sent / path：感觉、情绪与同情: notebooks/2_理论学习/英语/六级词根拆词系列/15_sens_sent_path_感觉情绪与同情.md
+              - 16 cogn / gnos / sci：知道、认识与科学: notebooks/2_理论学习/英语/六级词根拆词系列/16_cogn_gnos_sci_知道认识与科学.md
+              - 17 cap / cept / tain：抓住、接受与保持: notebooks/2_理论学习/英语/六级词根拆词系列/17_cap_cept_tain_抓住接受与保持.md
+              - 18 ten / tend / tent：伸展、倾向与紧张: notebooks/2_理论学习/英语/六级词根拆词系列/18_ten_tend_tent_伸展倾向与紧张.md
+              - 19 pend / pens / pond：悬挂、称量与花费: notebooks/2_理论学习/英语/六级词根拆词系列/19_pend_pens_pond_悬挂称量与花费.md
+              - 20 stat / stit / sist：站立、状态与制度: notebooks/2_理论学习/英语/六级词根拆词系列/20_stat_stit_sist_站立状态与制度.md
+              - 21 mov / mot / mob：移动、动机与流动: notebooks/2_理论学习/英语/六级词根拆词系列/21_mov_mot_mob_移动动机与流动.md
+              - 22 flu / flux / fus：流动、涌出与融合: notebooks/2_理论学习/英语/六级词根拆词系列/22_flu_flux_fus_流动涌出与融合.md
+              - 23 pel / puls / driv：推动、驱赶与冲动: notebooks/2_理论学习/英语/六级词根拆词系列/23_pel_puls_driv_推动驱赶与冲动.md
+              - 24 rupt / frag / fract：破裂、碎片与脆弱: notebooks/2_理论学习/英语/六级词根拆词系列/24_rupt_frag_fract_破裂碎片与脆弱.md
+              - 25 soci / commun / civ：社会、共同体与公民: notebooks/2_理论学习/英语/六级词根拆词系列/25_soci_commun_civ_社会共同体与公民.md
+              - 26 demo / popul / polit：人民、人口与政治: notebooks/2_理论学习/英语/六级词根拆词系列/26_demo_popul_polit_人民人口与政治.md
+              - 27 eco / nom / merc：经济、规则与商业: notebooks/2_理论学习/英语/六级词根拆词系列/27_eco_nom_merc_经济规则与商业.md
+              - 28 chron / temp / dur：时间、暂时与持续: notebooks/2_理论学习/英语/六级词根拆词系列/28_chron_temp_dur_时间暂时与持续.md
+              - 29 loc / terr / urb：地点、土地与城市: notebooks/2_理论学习/英语/六级词根拆词系列/29_loc_terr_urb_地点土地与城市.md
+              - 30 numer / quant / equ：数字、数量与平等: notebooks/2_理论学习/英语/六级词根拆词系列/30_numer_quant_equ_数字数量与平等.md
+              - 31 ann / enn / peri：年份、周期与周年: notebooks/2_理论学习/英语/六级词根拆词系列/31_ann_enn_peri_年份周期与周年.md
+              - 32 nov / innov / renov：新、创新与更新: notebooks/2_理论学习/英语/六级词根拆词系列/32_nov_innov_renov_新创新与更新.md
+              - 33 vers / vert / vari：转向、变化与多样: notebooks/2_理论学习/英语/六级词根拆词系列/33_vers_vert_vari_转向变化与多样.md
+              - 34 cur / curs / cour：跑、流动与课程: notebooks/2_理论学习/英语/六级词根拆词系列/34_cur_curs_cour_跑流动与课程.md
+              - 35 circ / cycl / ring：圆、循环与周期: notebooks/2_理论学习/英语/六级词根拆词系列/35_circ_cycl_ring_圆循环与周期.md
+              - 36 meter / metr / meas：测量、尺度与标准: notebooks/2_理论学习/英语/六级词根拆词系列/36_meter_metr_meas_测量尺度与标准.md
+          - 英语单词串记: notebooks/2_理论学习/英语/单词串记.md
       - 计算机网络:
-          - 数据链路层: notebooks/2_理论学习/计算机网络/数据链路层.md
-          - 传输层: notebooks/2_理论学习/计算机网络/1 传输层.md
-          - 概述: notebooks/2_理论学习/计算机网络/1.1 概述.md
-          - 应用层: notebooks/2_理论学习/计算机网络/1.3 应用层.md
-          - 网络层: notebooks/2_理论学习/计算机网络/2 网络层.md
-          - 物理层: notebooks/2_理论学习/计算机网络/3.1 物理层.md
+          - 计算机网络概述: notebooks/2_理论学习/计算机网络/01_计算机网络概述.md
+          - 物理层: notebooks/2_理论学习/计算机网络/02_物理层.md
+          - 数据链路层: notebooks/2_理论学习/计算机网络/03_数据链路层.md
+          - 网络层: notebooks/2_理论学习/计算机网络/04_网络层.md
+          - 传输层: notebooks/2_理论学习/计算机网络/05_传输层.md
+          - 应用层: notebooks/2_理论学习/计算机网络/06_应用层.md
   - 人工智能:
-      - 回归模型: notebooks/3_人工智能/回归模型.md
+      - notebooks/3_人工智能/index.md
+      - 01 人工智能是什么: notebooks/3_人工智能/01_人工智能是什么.md
+      - 02 机器学习的基本流程: notebooks/3_人工智能/02_机器学习的基本流程.md
+      - 03 数据与特征: notebooks/3_人工智能/03_数据与特征.md
+      - 04 回归与分类: notebooks/3_人工智能/04_回归与分类.md
+      - 05 训练评估与过拟合: notebooks/3_人工智能/05_训练评估与过拟合.md
+      - 06 神经网络与大模型: notebooks/3_人工智能/06_神经网络与大模型.md
   - 软件使用:
-      - 2024-08-16-Docker: notebooks/4_软件使用/2024-08-16-Docker.md
-      - Markdown手册: notebooks/4_软件使用/Markdown手册.md
+      - Docker 使用指南: notebooks/4_软件使用/2024-08-16-Docker.md
+      - Markdown 手册: notebooks/4_软件使用/Markdown手册.md
   - 网络安全:
-      - 2024-04-22-CTF: notebooks/5_网络安全/2024-04-22-CTF.md
-      - 2024-08-17-基础 - 副本: notebooks/5_网络安全/2024-08-17-基础 - 副本.md
-      - 2024-08-17-远控木马: notebooks/5_网络安全/2024-08-17-远控木马.md
+      - 软件安全与对抗:
+          - notebooks/5_网络安全/1_软件安全与对抗/index.md
+          - 01 可执行文件与装载: notebooks/5_网络安全/1_软件安全与对抗/01_可执行文件与装载.md
+          - 02 虚拟内存与地址空间: notebooks/5_网络安全/1_软件安全与对抗/02_虚拟内存与地址空间.md
+          - 03 栈与函数调用: notebooks/5_网络安全/1_软件安全与对抗/03_栈与函数调用.md
+          - 04 堆与动态内存: notebooks/5_网络安全/1_软件安全与对抗/04_堆与动态内存.md
+          - 05 漏洞与防护基础: notebooks/5_网络安全/1_软件安全与对抗/05_漏洞与防护基础.md
+      - 网络安全基础: notebooks/5_网络安全/2024-08-17-网络安全基础.md
+      - 远控木马: notebooks/5_网络安全/2024-08-17-远控木马.md
+      - http:
+          - notebooks/5_网络安全/http/index.md
+          - HTTP 概述: notebooks/5_网络安全/http/01_HTTP_概述.md
+          - HTTP 的发展: notebooks/5_网络安全/http/02_HTTP_的发展.md
+          - HTTP 消息: notebooks/5_网络安全/http/03_HTTP_消息.md
+          - 典型的 HTTP 会话: notebooks/5_网络安全/http/04_典型的_HTTP_会话.md
+          - HTTP/1.x 的连接管理: notebooks/5_网络安全/http/05_HTTP1.x_的连接管理.md
+          - HTTP Cookie: notebooks/5_网络安全/http/06_HTTP_Cookie.md
+          - HTTP 缓存: notebooks/5_网络安全/http/07_HTTP_缓存.md
+          - HTTP 协议中的数据压缩: notebooks/5_网络安全/http/08_HTTP_协议中的数据压缩.md
+          - 压缩字典传输: notebooks/5_网络安全/http/09_Compression_Dictionary_Transport.md
+          - HTTP 条件请求: notebooks/5_网络安全/http/10_HTTP_条件请求.md
+          - HTTP 范围请求: notebooks/5_网络安全/http/11_HTTP_范围请求.md
+          - 内容协商: notebooks/5_网络安全/http/12_内容协商.md
+          - HTTP 身份验证: notebooks/5_网络安全/http/13_HTTP_身份验证.md
+          - 跨源资源共享（CORS）: notebooks/5_网络安全/http/14_跨源资源共享（CORS）.md
+          - 内容安全策略（CSP）: notebooks/5_网络安全/http/15_内容安全策略（CSP）.md
+          - 跨源资源策略（CORP）: notebooks/5_网络安全/http/16_Cross-Origin_Resource_Policy_(CORP).md
+          - 权限策略: notebooks/5_网络安全/http/17_权限策略.md
+          - HTTP 的重定向: notebooks/5_网络安全/http/18_HTTP_的重定向.md
+          - 代理服务器与隧道: notebooks/5_网络安全/http/19_代理服务器与隧道.md
+          - 协议升级机制: notebooks/5_网络安全/http/20_协议升级机制.md
+          - MIME 类型（IANA 媒体类型）: notebooks/5_网络安全/http/21_MIME_类型（IANA_媒体类型）.md
+          - 使用用户代理字段进行浏览器检测: notebooks/5_网络安全/http/22_使用用户代理字段进行浏览器检测.md
+          - HTTP 客户端提示（Client Hint）: notebooks/5_网络安全/http/23_HTTP_客户端提示（Client_Hint）.md
+          - User-Agent 缩减: notebooks/5_网络安全/http/24_User-Agent_reduction.md
+          - Fetch 元数据: notebooks/5_网络安全/http/25_Fetch_metadata.md
+          - 无凭据 iframe: notebooks/5_网络安全/http/26_IFrame_credentialless.md
+          - 网络错误日志（NEL）: notebooks/5_网络安全/http/27_Network_Error_Logging_(NEL).md
   - 博客:
       - notebooks/6_博客/index.md
   - 朋友: notebooks/7_朋友.md
-  - 留言: notebooks/8_留言.md
+  - 留言板: notebooks/8_留言.md
   - 关于我: notebooks/9_关于我.md
+  - Linux开发:
+      - notebooks/10_Linux开发/index.md
+      - DPDK:
+          - notebooks/10_Linux开发/1_DPDK/index.md
+          - DPDK 系统开发指南: notebooks/10_Linux开发/1_DPDK/01_DPDK系统开发指南.md
+          - DPDK 总览与适用场景: notebooks/10_Linux开发/1_DPDK/02_DPDK总览与适用场景.md
+          - DPDK 开发环境准备: notebooks/10_Linux开发/1_DPDK/03_开发环境准备.md
+          - Hugepage 与 DPDK 内存模型: notebooks/10_Linux开发/1_DPDK/04_Hugepage与内存模型.md
+          - 网卡绑定与 EAL 启动参数: notebooks/10_Linux开发/1_DPDK/05_网卡绑定与EAL启动参数.md
+          - EAL 初始化与 lcore 编程模型: notebooks/10_Linux开发/1_DPDK/06_EAL初始化与lcore模型.md
+          - mempool、mbuf、ring 与 timer: notebooks/10_Linux开发/1_DPDK/07_mempool_mbuf_ring_timer.md
+          - ethdev 端口初始化与收发包: notebooks/10_Linux开发/1_DPDK/08_ethdev端口初始化与收发包.md
+          - 处理模型、多队列、多核与 NUMA: notebooks/10_Linux开发/1_DPDK/09_处理模型与多核NUMA.md
+          - Offload 与流表查找: notebooks/10_Linux开发/1_DPDK/10_Offload与流表查找.md
+          - testpmd 调试与可观测性: notebooks/10_Linux开发/1_DPDK/11_testpmd调试与可观测性.md
+          - 性能优化与生产化: notebooks/10_Linux开发/1_DPDK/12_性能优化与生产化.md
+          - 学习练习与参考资料: notebooks/10_Linux开发/1_DPDK/13_学习练习与参考资料.md

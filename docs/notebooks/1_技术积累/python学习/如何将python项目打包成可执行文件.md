@@ -1,9 +1,16 @@
 ---
-title: 如何将python项目打包成可执行文件？
+title: Python 项目打包为可执行文件
+categories:
+  - 技术积累
+  - Python
+tags:
+  - Python
+  - PyInstaller
+  - 打包
 comments: true
 ---
 
-# 如何将python项目打包成可执行文件？
+# Python 项目打包为可执行文件
 
 ## 打包成没有黑框（无控制台窗口）
 ```bash

@@ -1,4 +1,16 @@
-# Conda 个人速查手册（Windows版）
+---
+title: Conda 个人速查手册（Windows 版）
+categories:
+  - 技术积累
+  - Python
+tags:
+  - Python
+  - Conda
+  - 环境管理
+comments: true
+---
+
+# Conda 个人速查手册（Windows 版）
 <pre>
 conda create -n &lt;<span contenteditable="true">env_name</span>&gt; python=3.10
 </pre>
