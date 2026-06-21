@@ -25,6 +25,9 @@
       --sht-side: #287f74;
       --sht: #74b5ac;
       --sht-alt: #82bfb6;
+      --file-group: #2f5f80;
+      --exec-group: #244a5a;
+      --link-group: #455b66;
     }
 
     * { box-sizing: border-box; }
@@ -46,6 +49,50 @@
     .row {
       display: grid;
       grid-template-columns: 210px minmax(0, 1fr);
+    }
+
+    .structure-group {
+      display: grid;
+      grid-template-columns: 116px minmax(0, 1fr);
+    }
+
+    .structure-group .row {
+      grid-template-columns: 210px minmax(0, 1fr);
+    }
+
+    .group-title {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 10px 8px;
+      color: #fff;
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      text-align: center;
+      font-family: "Microsoft YaHei", sans-serif;
+    }
+
+    .group-title strong {
+      font-size: 17px;
+      line-height: 1.2;
+    }
+
+    .group-title small {
+      display: block;
+      margin-top: 8px;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .file-header-group .group-title { background: var(--file-group); }
+    .execution-view-group .group-title { background: var(--exec-group); }
+    .linking-view-group .group-title { background: var(--link-group); }
+
+    .structure-group .side-title {
+      border-left: 0;
     }
 
     .side-title,
@@ -197,6 +244,9 @@
       html,
       body { min-width: 1024px; }
       .row { grid-template-columns: 180px minmax(0, 1fr); }
+      .structure-group { grid-template-columns: 96px minmax(0, 1fr); }
+      .structure-group .row { grid-template-columns: 180px minmax(0, 1fr); }
+      .group-title strong { font-size: 15px; }
       .side-title strong { font-size: 18px; }
       .field b { font-size: 12px; }
       .field small,
@@ -218,41 +268,55 @@
 </head>
 <body>
   <main class="elf-diagram" aria-label="ELF 文件完整结构">
-    <section class="row elf-header">
-      <header class="side-title">
-        <strong>ELF HEADER</strong>
-        <small>Elf32_Ehdr: 52B</small>
-        <small>Elf64_Ehdr: 64B</small>
-        <span>文件身份<br>＋<br>入口地址<br>＋<br>两张表的位置</span>
-      </header>
-      <div class="fields cols-12">
-        <div class="field span-3"><b>e_ident[0..3]</b><small>0x7F · "ELF"</small></div>
-        <div class="field span-2"><b>EI_CLASS</b><small>ELF32 / ELF64</small></div>
-        <div class="field span-2"><b>EI_DATA</b><small>小端 / 大端</small></div>
-        <div class="field span-2"><b>EI_VERSION</b><small>格式版本</small></div>
-        <div class="field span-2"><b>EI_OSABI</b><small>目标 ABI</small></div>
-        <div class="field span-1"><b>EI_ABIVERSION</b></div>
+    <section class="structure-group file-header-group" aria-label="ELF 文件头">
+      <aside class="group-title">
+        <strong>FILE<br>HEADER</strong>
+        <small>ELF 入口</small>
+      </aside>
+      <div class="group-content">
+        <section class="row elf-header">
+          <header class="side-title">
+            <strong>ELF HEADER</strong>
+            <small>Elf32_Ehdr: 52B</small>
+            <small>Elf64_Ehdr: 64B</small>
+            <span>文件身份<br>＋<br>入口地址<br>＋<br>两张表的位置</span>
+          </header>
+          <div class="fields cols-12">
+            <div class="field span-3"><b>e_ident[0..3]</b><small>0x7F · "ELF"</small></div>
+            <div class="field span-2"><b>EI_CLASS</b><small>ELF32 / ELF64</small></div>
+            <div class="field span-2"><b>EI_DATA</b><small>小端 / 大端</small></div>
+            <div class="field span-2"><b>EI_VERSION</b><small>格式版本</small></div>
+            <div class="field span-2"><b>EI_OSABI</b><small>目标 ABI</small></div>
+            <div class="field span-1"><b>EI_ABIVERSION</b></div>
 
-        <div class="field span-2"><b>e_type</b><small>REL / EXEC / DYN / CORE</small></div>
-        <div class="field span-2"><b>e_machine</b><small>x86 · x86-64 · ARM …</small></div>
-        <div class="field span-2"><b>e_version</b></div>
-        <div class="field span-3"><b>e_entry</b><small>程序入口虚拟地址</small></div>
-        <div class="field span-3"><b>e_flags</b><small>处理器相关标志</small></div>
+            <div class="field span-2"><b>e_type</b><small>REL / EXEC / DYN / CORE</small></div>
+            <div class="field span-2"><b>e_machine</b><small>x86 · x86-64 · ARM …</small></div>
+            <div class="field span-2"><b>e_version</b></div>
+            <div class="field span-3"><b>e_entry</b><small>程序入口虚拟地址</small></div>
+            <div class="field span-3"><b>e_flags</b><small>处理器相关标志</small></div>
 
-        <div class="field span-3"><b>e_phoff</b><small>Program Header Table 文件偏移</small></div>
-        <div class="field span-3"><b>e_shoff</b><small>Section Header Table 文件偏移</small></div>
-        <div class="field span-2"><b>e_ehsize</b><small>ELF Header 大小</small></div>
-        <div class="field span-2"><b>e_phentsize</b><small>程序头项大小</small></div>
-        <div class="field span-2"><b>e_phnum</b><small>程序头项数量</small></div>
+            <div class="field span-3"><b>e_phoff</b><small>Program Header Table 文件偏移</small></div>
+            <div class="field span-3"><b>e_shoff</b><small>Section Header Table 文件偏移</small></div>
+            <div class="field span-2"><b>e_ehsize</b><small>ELF Header 大小</small></div>
+            <div class="field span-2"><b>e_phentsize</b><small>程序头项大小</small></div>
+            <div class="field span-2"><b>e_phnum</b><small>程序头项数量</small></div>
 
-        <div class="field span-3"><b>e_shentsize</b><small>节头项大小</small></div>
-        <div class="field span-3"><b>e_shnum</b><small>节头项数量</small></div>
-        <div class="field span-3"><b>e_shstrndx</b><small>节名字符串表索引</small></div>
-        <div class="field span-3"><b>e_ident[9..15]</b><small>填充 / 保留</small></div>
+            <div class="field span-3"><b>e_shentsize</b><small>节头项大小</small></div>
+            <div class="field span-3"><b>e_shnum</b><small>节头项数量</small></div>
+            <div class="field span-3"><b>e_shstrndx</b><small>节名字符串表索引</small></div>
+            <div class="field span-3"><b>e_ident[9..15]</b><small>填充 / 保留</small></div>
+          </div>
+        </section>
       </div>
     </section>
 
-    <section class="row program-table">
+    <section class="structure-group execution-view-group" aria-label="ELF 执行加载视图">
+      <aside class="group-title">
+        <strong>EXECUTION<br>VIEW</strong>
+        <small>加载器视角</small>
+      </aside>
+      <div class="group-content">
+        <section class="row program-table">
       <header class="side-title">
         <strong>PROGRAM<br>HEADER TABLE</strong>
         <small>执行视图 · Segment</small>

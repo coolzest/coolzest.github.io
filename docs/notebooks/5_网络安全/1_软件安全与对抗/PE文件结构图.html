@@ -27,6 +27,9 @@
       --section: #72b3aa;
       --section-alt: #80beb5;
       --raw-side: #485d69;
+      --dos-group: #2f5f80;
+      --nt-group: #244a5a;
+      --section-group: #455b66;
     }
 
     * {
@@ -53,6 +56,51 @@
     .row {
       display: grid;
       grid-template-columns: 210px minmax(0, 1fr);
+    }
+
+    .structure-group {
+      display: grid;
+      grid-template-columns: 116px minmax(0, 1fr);
+    }
+
+    .structure-group .row {
+      grid-template-columns: 210px minmax(0, 1fr);
+    }
+
+    .group-title {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 10px 8px;
+      color: #fff;
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      text-align: center;
+      font-family: "Microsoft YaHei", sans-serif;
+    }
+
+    .group-title strong {
+      font-size: 17px;
+      line-height: 1.2;
+    }
+
+    .group-title small {
+      display: block;
+      margin-top: 8px;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .dos-layout-group .group-title { background: var(--dos-group); }
+    .nt-headers-group .group-title { background: var(--nt-group); }
+    .section-layout-group .group-title { background: var(--section-group); }
+
+    .structure-group .side-title,
+    .structure-group .full-band {
+      border-left: 0;
     }
 
     .side-title,
@@ -123,7 +171,9 @@
     .span-5 { grid-column: span 5; }
     .span-6 { grid-column: span 6; }
     .span-7 { grid-column: span 7; }
+    .span-8 { grid-column: span 8; }
     .span-10 { grid-column: span 10; }
+    .span-12 { grid-column: span 12; }
 
     .dos-header .side-title {
       min-height: 70px;
@@ -160,7 +210,9 @@
       background: #557f49;
     }
 
-    .coff-header .side-title {
+    .coff-header .side-title,
+    .optional-header .side-title,
+    .data-directories .side-title {
       background: var(--coff-side);
     }
 
@@ -173,10 +225,6 @@
       background: var(--coff-dark);
     }
 
-    .optional-header .side-title {
-      background: var(--optional-side);
-    }
-
     .optional-header .field {
       min-height: 48px;
     }
@@ -187,10 +235,6 @@
     .image-base { background: var(--image-base); }
     .windows { background: var(--windows); }
     .windows-light { background: var(--windows-light); }
-
-    .data-directories .side-title {
-      background: var(--directory-side);
-    }
 
     .directory-grid .field {
       min-height: 55px;
@@ -280,6 +324,18 @@
         grid-template-columns: 180px minmax(0, 1fr);
       }
 
+      .structure-group {
+        grid-template-columns: 96px minmax(0, 1fr);
+      }
+
+      .structure-group .row {
+        grid-template-columns: 180px minmax(0, 1fr);
+      }
+
+      .group-title strong {
+        font-size: 15px;
+      }
+
       .side-title strong {
         font-size: 18px;
       }
@@ -316,41 +372,55 @@
 </head>
 <body>
   <main class="pe-diagram" aria-label="PE 文件完整结构">
-    <section class="row dos-header">
-      <header class="side-title">
-        <strong>DOS HEADER</strong>
-        <small>IMAGE_DOS_HEADER · 64B</small>
-      </header>
-      <div class="fields cols-10">
-        <div class="field span-2">
-          <b>e_magic = "MZ"</b>
-          <small>0x5A4D</small>
-        </div>
-        <div class="field span-5">
-          <b>DOS 兼容字段 / 保留字段</b>
-          <small>e_cblp … e_res2[10]</small>
-        </div>
-        <div class="field span-3">
-          <b>e_lfanew</b>
-          <small>NT Headers 的文件偏移</small>
-        </div>
+    <section class="structure-group dos-layout-group" aria-label="DOS 兼容区">
+      <aside class="group-title">
+        <strong>DOS<br>COMPAT</strong>
+        <small>兼容入口</small>
+      </aside>
+      <div class="group-content">
+        <section class="row dos-header">
+          <header class="side-title">
+            <strong>DOS HEADER</strong>
+            <small>IMAGE_DOS_HEADER · 64B</small>
+          </header>
+          <div class="fields cols-10">
+            <div class="field span-2">
+              <b>e_magic = "MZ"</b>
+              <small>0x5A4D</small>
+            </div>
+            <div class="field span-5">
+              <b>DOS 兼容字段 / 保留字段</b>
+              <small>e_cblp … e_res2[10]</small>
+            </div>
+            <div class="field span-3">
+              <b>e_lfanew</b>
+              <small>NT Headers 的文件偏移</small>
+            </div>
+          </div>
+        </section>
+
+        <section class="full-band dos-stub">
+          <strong>DOS STUB / RICH HEADER（可选）</strong>
+        </section>
       </div>
     </section>
 
-    <section class="full-band dos-stub">
-      <strong>DOS STUB / RICH HEADER（可选）</strong>
-    </section>
-
-    <section class="row pe-signature">
-      <header class="side-title">
-        <strong>PE SIGNATURE</strong>
-      </header>
-      <div class="fields">
-        <div class="field">
-          <b>PE Signature = "PE\0\0" = 0x00004550 （4 bytes）</b>
-        </div>
-      </div>
-    </section>
+    <section class="structure-group nt-headers-group" aria-label="PE 文件头 / NT Headers">
+      <aside class="group-title">
+        <strong>PE FILE<br>HEADER</strong>
+        <small>NT Headers</small>
+      </aside>
+      <div class="group-content">
+        <section class="row pe-signature">
+          <header class="side-title">
+            <strong>PE SIGNATURE</strong>
+          </header>
+          <div class="fields">
+            <div class="field">
+              <b>PE Signature = "PE\0\0" = 0x00004550 （4 bytes）</b>
+            </div>
+          </div>
+        </section>
 
     <section class="row coff-header">
       <header class="side-title">
@@ -440,41 +510,54 @@
         <div class="field"><b>15 Reserved</b><small>保留</small></div>
       </div>
     </section>
-
-    <section class="row section-table">
-      <header class="side-title">
-        <strong>SECTION<br>TABLE</strong>
-        <small>N × 40 bytes</small>
-      </header>
-      <div class="fields cols-10">
-        <div class="field span-2"><b>Name[8]</b></div>
-        <div class="field span-2"><b>VirtualSize</b><small>内存大小</small></div>
-        <div class="field span-2"><b>VirtualAddress</b><small>节 RVA</small></div>
-        <div class="field span-2"><b>SizeOfRawData</b><small>磁盘大小</small></div>
-        <div class="field span-2"><b>PointerToRawData</b><small>文件偏移</small></div>
-        <div class="field span-2"><b>PointerToRelocations</b><small>通常为 0</small></div>
-        <div class="field span-2"><b>PointerToLinenumbers</b><small>通常为 0</small></div>
-        <div class="field span-1"><b>NumberOfRelocations</b><small>通常为 0</small></div>
-        <div class="field span-1"><b>NumberOfLinenumbers</b><small>通常为 0</small></div>
-        <div class="field span-4"><b>Characteristics</b><small>代码/数据属性与 R/W/X 权限</small></div>
       </div>
     </section>
 
-    <section class="row section-data">
-      <header class="side-title">
-        <strong>SECTION<br>RAW DATA</strong>
-        <small>各节实际内容</small>
-      </header>
-      <div class="fields cols-10">
-        <div class="field text-section span-2"><b>.text</b><small>代码 · 入口点 · R-X</small></div>
-        <div class="field rdata-section span-2"><b>.rdata</b><small>只读数据 · R--</small></div>
-        <div class="field data-section span-2"><b>.data / .bss</b><small>全局数据 · RW-</small></div>
-        <div class="field idata-section span-2"><b>.idata / .edata</b><small>导入 / 导出</small></div>
-        <div class="field resource-section span-2"><b>.rsrc / .reloc</b><small>资源 / 重定位</small></div>
-        <div class="field other-sections span-10">
-          <b>其他节：.pdata · .tls · .debug · 自定义节 …</b>
-          <small>文件末尾还可能存在 Overlay；Security Directory 使用文件偏移定位数字签名</small>
-        </div>
+    <section class="structure-group section-layout-group" aria-label="PE 节表与节数据">
+      <aside class="group-title">
+        <strong>SECTION<br>LAYOUT</strong>
+        <small>节表与内容</small>
+      </aside>
+      <div class="group-content">
+        <section class="row section-table">
+          <header class="side-title">
+            <strong>SECTION<br>TABLE</strong>
+            <small>N × 40 bytes</small>
+          </header>
+          <div class="fields cols-10">
+            <div class="field span-2"><b>Name[8]</b></div>
+            <div class="field span-2"><b>VirtualSize</b><small>内存大小</small></div>
+            <div class="field span-2"><b>VirtualAddress</b><small>节 RVA</small></div>
+            <div class="field span-2"><b>SizeOfRawData</b><small>磁盘大小</small></div>
+            <div class="field span-2"><b>PointerToRawData</b><small>文件偏移</small></div>
+            <div class="field span-2"><b>PointerToRelocations</b><small>通常为 0</small></div>
+            <div class="field span-2"><b>PointerToLinenumbers</b><small>通常为 0</small></div>
+            <div class="field span-1"><b>NumberOfRelocations</b><small>通常为 0</small></div>
+            <div class="field span-1"><b>NumberOfLinenumbers</b><small>通常为 0</small></div>
+            <div class="field span-4"><b>Characteristics</b><small>代码/数据属性与 R/W/X 权限</small></div>
+          </div>
+        </section>
+
+        <section class="row section-data">
+          <header class="side-title">
+            <strong>SECTION<br>RAW DATA</strong>
+            <small>各节实际内容</small>
+          </header>
+          <div class="fields cols-12">
+            <div class="field text-section span-2"><b>.text</b><small>代码 · 入口点 · R-X</small></div>
+            <div class="field rdata-section span-2"><b>.rdata</b><small>只读数据 · R--</small></div>
+            <div class="field data-section span-2"><b>.data</b><small>已初始化数据 · RW-</small></div>
+            <div class="field data-section span-2"><b>.bss</b><small>未初始化数据 · 补零</small></div>
+            <div class="field idata-section span-2"><b>.idata</b><small>导入信息</small></div>
+            <div class="field idata-section span-2"><b>.edata</b><small>导出信息</small></div>
+            <div class="field resource-section span-2"><b>.rsrc</b><small>资源数据</small></div>
+            <div class="field resource-section span-2"><b>.reloc</b><small>基址重定位</small></div>
+            <div class="field other-sections span-8">
+              <b>其他节：.pdata · .tls · .debug · 自定义节 …</b>
+              <small>文件末尾还可能存在 Overlay；Security Directory 使用文件偏移定位数字签名</small>
+            </div>
+          </div>
+        </section>
       </div>
     </section>
   </main>
@@ -482,11 +565,13 @@
   <script>
     (() => {
       const descriptions = {
+        "DOS COMPAT": "为了兼容 DOS 时代留下的入口区域，包含 DOS Header、DOS Stub，以及某些工具链写入的 Rich Header。",
         "DOS HEADER": "PE 文件最前面的 DOS 头，固定为 64 字节。现代 Windows 主要使用其中的 MZ 标志和 e_lfanew。",
         "e_magic = \"MZ\"": "DOS 头魔数，值为 0x5A4D。解析器通常先检查它，以判断文件是否可能为 PE。",
         "DOS 兼容字段 / 保留字段": "来自早期 DOS 可执行文件格式的字段。现代 PE 加载过程通常不会使用其中大部分内容。",
         "e_lfanew": "位于 DOS 头偏移 0x3C，保存 PE Signature 相对于文件开头的偏移。",
         "DOS STUB / RICH HEADER（可选）": "DOS Stub 是兼容 DOS 的小程序；Rich Header 常包含微软编译工具链信息，但并非 PE 标准的必需结构。",
+        "PE FILE HEADER": "PE 文件头区域，也就是 NT Headers，包含 PE Signature、COFF File Header、Optional Header 和其中的 Data Directories。",
         "PE SIGNATURE": "由 4 字节 PE\\0\\0 构成，用于标识 NT Headers 的开始位置。",
         "COFF FILE HEADER": "描述目标 CPU、节数量、Optional Header 大小以及文件整体属性，固定为 20 字节。",
         "Machine": "目标处理器架构，例如 0x014C 表示 x86，0x8664 表示 x64。",
@@ -544,6 +629,7 @@
         "13 Delay Import": "描述延迟加载的 DLL 与函数，仅在首次使用时进行解析。",
         "14 CLR": "存在该目录通常表示这是托管的 .NET 映像。",
         "15 Reserved": "保留目录，规范要求为空。",
+        "SECTION LAYOUT": "节布局区域，用节表描述每个 Section 的文件位置、内存位置、大小和权限，随后是各节实际内容。",
         "SECTION TABLE": "由多个 IMAGE_SECTION_HEADER 组成，每项 40 字节，将节的磁盘布局和内存布局联系起来。",
         "Name[8]": "最多 8 字节的节名，例如 .text、.data、.rsrc。",
         "VirtualSize": "节装入内存后实际需要的大小，未对齐。",
@@ -557,20 +643,23 @@
         "SECTION RAW DATA": "节表之后保存各节的实际字节内容；每节起始位置通常按 FileAlignment 对齐。",
         ".text": "通常保存可执行机器代码，入口点一般位于该节。",
         ".rdata": "通常保存只读常量、RTTI、导入相关只读数据等。",
-        ".data / .bss": ".data 保存已初始化可写数据；.bss 表示未初始化数据，常在内存中补零。",
-        ".idata / .edata": ".idata 常保存导入信息，.edata 常保存导出信息；实际链接器也可能将它们合并进其他节。",
-        ".rsrc / .reloc": ".rsrc 保存资源，.reloc 保存基址重定位信息。"
+        ".data": "保存已初始化的可写全局变量和静态变量，通常具备读写权限。",
+        ".bss": "表示未初始化或零初始化数据，磁盘中通常不存实际字节，装载到内存后补零。",
+        ".idata": "常保存导入描述符、导入名称表和导入地址表等导入相关信息。",
+        ".edata": "常保存导出表，用于描述 DLL 对外导出的函数、名称和序号。",
+        ".rsrc": "保存图标、菜单、字符串、版本信息、对话框等资源数据。",
+        ".reloc": "保存基址重定位信息，供加载器在映像不能装入首选 ImageBase 时修正地址。"
       };
 
       const normalize = text => text.replace(/\s+/g, " ").trim();
-      const targets = document.querySelectorAll(".field, .side-title, .full-band");
+      const targets = document.querySelectorAll(".field, .side-title, .group-title, .full-band");
       const tooltip = document.getElementById("pe-tooltip");
       let activeTarget = null;
 
       targets.forEach(target => {
         const label = target.querySelector("b, strong");
         if (!label) return;
-        const key = normalize(label.textContent);
+        const key = normalize(label.innerText || label.textContent);
         const description = descriptions[key];
         if (!description) return;
 
