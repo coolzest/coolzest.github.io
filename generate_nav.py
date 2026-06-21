@@ -47,6 +47,7 @@ CURRENT_PORT = PORT
 ROOT_DIR = "docs/notebooks"
 MKDOCS_YML = "mkdocs.yml"
 NOTEBOOKS_DIR = ROOT_DIR
+NAV_DOCUMENT_EXTENSIONS = {".md", ".html"}
 BLOG_POSTS_DIR = "docs/notebooks/6_博客/posts"
 FRIENDS_FILE = "docs/notebooks/7_朋友.md"
 APP_ICON_FILE = "app_assets/coolzest_note.ico"
@@ -348,12 +349,14 @@ def collect_files(root_dir):
         dirnames.sort(key=sort_key)
         filenames.sort(key=sort_key)
         for filename in filenames:
-            if filename.lower().endswith(".md"):
-                rel_path = os.path.relpath(os.path.join(dirpath, filename), root_dir)
-                rel_path = rel_path.replace(os.sep, "/")
-                if rel_path.startswith("6_博客/posts/"):
-                    continue
-                files.append(rel_path)
+            if Path(filename).suffix.lower() not in NAV_DOCUMENT_EXTENSIONS:
+                continue
+
+            rel_path = os.path.relpath(os.path.join(dirpath, filename), root_dir)
+            rel_path = rel_path.replace(os.sep, "/")
+            if rel_path.startswith("6_博客/posts/"):
+                continue
+            files.append(rel_path)
     return files
 
 
@@ -376,6 +379,32 @@ def read_front_matter_title(root_dir, rel_path):
     return title_match.group(1).strip().strip("\"'")
 
 
+def read_html_title(root_dir, rel_path):
+    path = os.path.join(root_dir, rel_path)
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            content = f.read(65536)
+    except (OSError, UnicodeError):
+        return None
+
+    title_match = re.search(r"<title\b[^>]*>(.*?)</title>", content, re.IGNORECASE | re.DOTALL)
+    if not title_match:
+        return None
+
+    title = re.sub(r"<[^>]+>", "", title_match.group(1))
+    title = html.unescape(title)
+    return re.sub(r"\s+", " ", title).strip() or None
+
+
+def read_document_title(root_dir, rel_path):
+    extension = Path(rel_path).suffix.lower()
+    if extension == ".md":
+        return read_front_matter_title(root_dir, rel_path)
+    if extension == ".html":
+        return read_html_title(root_dir, rel_path)
+    return None
+
+
 def build_nav(files, root_dir):
     tree = {}
     for rel_path in files:
@@ -384,10 +413,9 @@ def build_nav(files, root_dir):
         for part in parts[:-1]:
             prefix, name = parse_prefix(part)
             current = current.setdefault((prefix, name), {})
-        prefix, name = parse_prefix(parts[-1])
-        name = name[:-3] if name.endswith(".md") else name
+        prefix, name = parse_prefix(Path(parts[-1]).stem)
         if name.lower() != "index":
-            name = read_front_matter_title(root_dir, rel_path) or name
+            name = read_document_title(root_dir, rel_path) or name
         current[(prefix, name)] = "notebooks/" + rel_path
 
     def build_tree(node):
@@ -449,6 +477,47 @@ def find_conda():
     return "conda"
 
 
+def find_conda_env_python():
+    executable_name = "python.exe" if os.name == "nt" else "python"
+    candidates = []
+
+    conda_exe = os.environ.get("CONDA_EXE")
+    if conda_exe:
+        conda_root = Path(conda_exe).resolve().parent.parent
+        candidates.append(conda_root / "envs" / CONDA_ENV / executable_name)
+
+    candidates.extend(
+        [
+            Path.home() / "miniconda3" / "envs" / CONDA_ENV / executable_name,
+            Path.home() / "anaconda3" / "envs" / CONDA_ENV / executable_name,
+        ]
+    )
+
+    for candidate in candidates:
+        if candidate.exists():
+            return str(candidate)
+    return None
+
+
+def mkdocs_command(*arguments):
+    env_python = find_conda_env_python()
+    if env_python:
+        return [env_python, "-s", "-m", "mkdocs", *arguments]
+
+    return [
+        find_conda(),
+        "run",
+        "--no-capture-output",
+        "-n",
+        CONDA_ENV,
+        "python",
+        "-s",
+        "-m",
+        "mkdocs",
+        *arguments,
+    ]
+
+
 class MkDocsServer:
     def __init__(self, log_callback, status_callback, url_callback=None):
         self.log_callback = log_callback
@@ -477,18 +546,11 @@ class MkDocsServer:
             if self.url_callback is not None:
                 self.url_callback(site_url())
 
-            conda = find_conda()
-            command = [
-                conda,
-                "run",
-                "--no-capture-output",
-                "-n",
-                CONDA_ENV,
-                "mkdocs",
+            command = mkdocs_command(
                 "serve",
                 "-a",
                 f"{HOST}:{port}",
-            ]
+            )
             self.log("启动命令：" + " ".join(f'"{part}"' if " " in part else part for part in command))
 
             creationflags = 0
@@ -1161,7 +1223,7 @@ class MkDocsApp:
         try:
             count = generate_nav()
             self.nav_count_var.set(str(count))
-            self.enqueue_log(f"导航已更新：{count} 个 Markdown 文件。")
+            self.enqueue_log(f"导航已更新：{count} 个文档文件。")
             self.refresh_blog_posts()
             self.refresh_friend_links()
         except Exception as exc:
@@ -1184,7 +1246,7 @@ class MkDocsApp:
             try:
                 count = generate_nav()
                 self.root.after(0, self.nav_count_var.set, str(count))
-                self.enqueue_log(f"重载完成：导航已更新，包含 {count} 个 Markdown 文件。")
+                self.enqueue_log(f"重载完成：导航已更新，包含 {count} 个文档文件。")
                 if not self.server.is_running():
                     self.enqueue_log("服务未运行，正在启动。")
                     self.server.start()
@@ -1419,9 +1481,9 @@ class MkDocsApp:
         try:
             count = generate_nav()
             self.root.after(0, self.nav_count_var.set, str(count))
-            self.enqueue_log(f"发布前已更新导航：{count} 个 Markdown 文件。")
+            self.enqueue_log(f"发布前已更新导航：{count} 个文档文件。")
 
-            self._run_logged([find_conda(), "run", "--no-capture-output", "-n", CONDA_ENV, "mkdocs", "build"])
+            self._run_logged(mkdocs_command("build"))
             self._remove_build_output()
 
             status = self._capture_command(["git", "status", "--porcelain", "--", "docs", MKDOCS_YML, "generate_nav.py", ".github"])
@@ -1549,12 +1611,12 @@ class MkDocsApp:
 
 def run_nav_only():
     count = generate_nav()
-    print(f"导航已更新：{count} 个 Markdown 文件。")
+    print(f"导航已更新：{count} 个文档文件。")
 
 
 def run_serve_only():
     count = generate_nav()
-    print(f"导航已更新：{count} 个 Markdown 文件。")
+    print(f"导航已更新：{count} 个文档文件。")
     server = MkDocsServer(print, print)
     server.start()
     try:

@@ -99,6 +99,7 @@ markdown_extensions:  # Markdown语法扩展（增强文档编写能力）
   - admonition # 支持提示框（警告、信息等）
   - def_list # 支持定义列表
   - footnotes # 支持脚注
+  - md_in_html # 支持HTML中嵌套Markdown
   # - callouts  # 注释：自定义提示框扩展（当前未启用）
   - md_in_html # 支持HTML中嵌套Markdown
   - markdown.extensions.abbr # 支持Markdown文件上方自定义标题标签等
@@ -325,43 +326,45 @@ nav:
       - Markdown 手册: notebooks/4_软件使用/Markdown手册.md
   - 网络安全:
       - 软件安全与对抗:
-          - notebooks/5_网络安全/1_软件安全与对抗/index.md
           - 01 可执行文件与装载: notebooks/5_网络安全/1_软件安全与对抗/01_可执行文件与装载.md
           - 02 虚拟内存与地址空间: notebooks/5_网络安全/1_软件安全与对抗/02_虚拟内存与地址空间.md
           - 03 栈与函数调用: notebooks/5_网络安全/1_软件安全与对抗/03_栈与函数调用.md
           - 04 堆与动态内存: notebooks/5_网络安全/1_软件安全与对抗/04_堆与动态内存.md
           - 05 漏洞与防护基础: notebooks/5_网络安全/1_软件安全与对抗/05_漏洞与防护基础.md
+          - ELF 文件结构图: notebooks/5_网络安全/1_软件安全与对抗/ELF文件结构图.html
+          - PE 文件结构图: notebooks/5_网络安全/1_软件安全与对抗/PE文件结构图.html
+          - 虚拟内存、物理内存与 TLB 地址转换全景图: notebooks/5_网络安全/1_软件安全与对抗/虚拟内存地址转换与快表.html
       - 网络安全基础: notebooks/5_网络安全/2024-08-17-网络安全基础.md
       - 远控木马: notebooks/5_网络安全/2024-08-17-远控木马.md
-      - http:
-          - notebooks/5_网络安全/http/index.md
-          - HTTP 概述: notebooks/5_网络安全/http/01_HTTP_概述.md
-          - HTTP 的发展: notebooks/5_网络安全/http/02_HTTP_的发展.md
-          - HTTP 消息: notebooks/5_网络安全/http/03_HTTP_消息.md
-          - 典型的 HTTP 会话: notebooks/5_网络安全/http/04_典型的_HTTP_会话.md
-          - HTTP/1.x 的连接管理: notebooks/5_网络安全/http/05_HTTP1.x_的连接管理.md
-          - HTTP Cookie: notebooks/5_网络安全/http/06_HTTP_Cookie.md
-          - HTTP 缓存: notebooks/5_网络安全/http/07_HTTP_缓存.md
-          - HTTP 协议中的数据压缩: notebooks/5_网络安全/http/08_HTTP_协议中的数据压缩.md
-          - 压缩字典传输: notebooks/5_网络安全/http/09_Compression_Dictionary_Transport.md
-          - HTTP 条件请求: notebooks/5_网络安全/http/10_HTTP_条件请求.md
-          - HTTP 范围请求: notebooks/5_网络安全/http/11_HTTP_范围请求.md
-          - 内容协商: notebooks/5_网络安全/http/12_内容协商.md
-          - HTTP 身份验证: notebooks/5_网络安全/http/13_HTTP_身份验证.md
-          - 跨源资源共享（CORS）: notebooks/5_网络安全/http/14_跨源资源共享（CORS）.md
-          - 内容安全策略（CSP）: notebooks/5_网络安全/http/15_内容安全策略（CSP）.md
-          - 跨源资源策略（CORP）: notebooks/5_网络安全/http/16_Cross-Origin_Resource_Policy_(CORP).md
-          - 权限策略: notebooks/5_网络安全/http/17_权限策略.md
-          - HTTP 的重定向: notebooks/5_网络安全/http/18_HTTP_的重定向.md
-          - 代理服务器与隧道: notebooks/5_网络安全/http/19_代理服务器与隧道.md
-          - 协议升级机制: notebooks/5_网络安全/http/20_协议升级机制.md
-          - MIME 类型（IANA 媒体类型）: notebooks/5_网络安全/http/21_MIME_类型（IANA_媒体类型）.md
-          - 使用用户代理字段进行浏览器检测: notebooks/5_网络安全/http/22_使用用户代理字段进行浏览器检测.md
-          - HTTP 客户端提示（Client Hint）: notebooks/5_网络安全/http/23_HTTP_客户端提示（Client_Hint）.md
-          - User-Agent 缩减: notebooks/5_网络安全/http/24_User-Agent_reduction.md
-          - Fetch 元数据: notebooks/5_网络安全/http/25_Fetch_metadata.md
-          - 无凭据 iframe: notebooks/5_网络安全/http/26_IFrame_credentialless.md
-          - 网络错误日志（NEL）: notebooks/5_网络安全/http/27_Network_Error_Logging_(NEL).md
+      - http协议:
+          - notebooks/5_网络安全/http协议/index.md
+          - HTTP 概述: notebooks/5_网络安全/http协议/01_HTTP_概述.md
+          - HTTP 的发展: notebooks/5_网络安全/http协议/02_HTTP_的发展.md
+          - HTTP 消息: notebooks/5_网络安全/http协议/03_HTTP_消息.md
+          - 典型的 HTTP 会话: notebooks/5_网络安全/http协议/04_典型的_HTTP_会话.md
+          - HTTP/1.x 的连接管理: notebooks/5_网络安全/http协议/05_HTTP1.x_的连接管理.md
+          - HTTP Cookie: notebooks/5_网络安全/http协议/06_HTTP_Cookie.md
+          - HTTP 缓存: notebooks/5_网络安全/http协议/07_HTTP_缓存.md
+          - HTTP 协议中的数据压缩: notebooks/5_网络安全/http协议/08_HTTP_协议中的数据压缩.md
+          - 压缩字典传输: notebooks/5_网络安全/http协议/09_Compression_Dictionary_Transport.md
+          - HTTP 条件请求: notebooks/5_网络安全/http协议/10_HTTP_条件请求.md
+          - HTTP 范围请求: notebooks/5_网络安全/http协议/11_HTTP_范围请求.md
+          - 内容协商: notebooks/5_网络安全/http协议/12_内容协商.md
+          - HTTP 身份验证: notebooks/5_网络安全/http协议/13_HTTP_身份验证.md
+          - 跨源资源共享（CORS）: notebooks/5_网络安全/http协议/14_跨源资源共享（CORS）.md
+          - 内容安全策略（CSP）: notebooks/5_网络安全/http协议/15_内容安全策略（CSP）.md
+          - 跨源资源策略（CORP）: notebooks/5_网络安全/http协议/16_Cross-Origin_Resource_Policy_(CORP).md
+          - 权限策略: notebooks/5_网络安全/http协议/17_权限策略.md
+          - HTTP 的重定向: notebooks/5_网络安全/http协议/18_HTTP_的重定向.md
+          - 代理服务器与隧道: notebooks/5_网络安全/http协议/19_代理服务器与隧道.md
+          - 协议升级机制: notebooks/5_网络安全/http协议/20_协议升级机制.md
+          - MIME 类型（IANA 媒体类型）: notebooks/5_网络安全/http协议/21_MIME_类型（IANA_媒体类型）.md
+          - 使用用户代理字段进行浏览器检测: notebooks/5_网络安全/http协议/22_使用用户代理字段进行浏览器检测.md
+          - HTTP 客户端提示（Client Hint）: notebooks/5_网络安全/http协议/23_HTTP_客户端提示（Client_Hint）.md
+          - User-Agent 缩减: notebooks/5_网络安全/http协议/24_User-Agent_reduction.md
+          - Fetch 元数据: notebooks/5_网络安全/http协议/25_Fetch_metadata.md
+          - 无凭据 iframe: notebooks/5_网络安全/http协议/26_IFrame_credentialless.md
+          - 网络错误日志（NEL）: notebooks/5_网络安全/http协议/27_Network_Error_Logging_(NEL).md
   - 博客:
       - notebooks/6_博客/index.md
   - 朋友: notebooks/7_朋友.md

@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ELF 文件结构图</title>
+  <style>
+    :root {
+      --line: #1d2d38;
+      --elf-side: #447da9;
+      --elf: #83afd1;
+      --elf-alt: #73a2c7;
+      --program-side: #34643f;
+      --program: #75a268;
+      --program-alt: #638f57;
+      --segment-side: #956f09;
+      --segment: #c99d22;
+      --segment-alt: #b88913;
+      --dynamic-side: #91453f;
+      --dynamic: #ac554d;
+      --dynamic-alt: #9b4943;
+      --section-side: #654786;
+      --section: #aa94c9;
+      --section-alt: #b7a2d2;
+      --sht-side: #287f74;
+      --sht: #74b5ac;
+      --sht-alt: #82bfb6;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      margin: 0;
+      min-width: 1180px;
+      background: #fff;
+    }
+
+    body {
+      color: #122536;
+      font-family: "Cascadia Mono", Consolas, "Microsoft YaHei", monospace;
+    }
+
+    .elf-diagram { width: 100%; }
+
+    .row {
+      display: grid;
+      grid-template-columns: 210px minmax(0, 1fr);
+    }
+
+    .side-title,
+    .field,
+    .full-band {
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .side-title,
+    .field {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 8px 7px;
+      text-align: center;
+    }
+
+    .side-title {
+      color: #fff;
+      border-left: 1px solid var(--line);
+    }
+
+    .side-title strong {
+      font-family: "Microsoft YaHei", sans-serif;
+      font-size: 21px;
+      line-height: 1.2;
+    }
+
+    .side-title small {
+      display: block;
+      margin-top: 7px;
+      font-size: 11px;
+    }
+
+    .side-title span {
+      margin-top: 20px;
+      font-size: 12px;
+      line-height: 1.75;
+    }
+
+    .field b {
+      overflow-wrap: anywhere;
+      font-size: 14px;
+      line-height: 1.15;
+    }
+
+    .field small {
+      display: block;
+      margin-top: 5px;
+      font-size: 11px;
+      line-height: 1.2;
+    }
+
+    .fields { display: grid; }
+    .cols-8 { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+    .cols-10 { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+    .cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+
+    .span-1 { grid-column: span 1; }
+    .span-2 { grid-column: span 2; }
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-8 { grid-column: span 8; }
+    .span-10 { grid-column: span 10; }
+    .span-12 { grid-column: span 12; }
+
+    .elf-header .side-title { background: var(--elf-side); }
+    .elf-header .field { min-height: 55px; background: var(--elf); }
+    .elf-header .field:nth-child(even) { background: var(--elf-alt); }
+    .elf-header .field:nth-child(6) b { font-size: 10px; }
+
+    .program-table .side-title { background: var(--program-side); }
+    .program-table .field { min-height: 61px; background: var(--program); }
+    .program-table .field:nth-child(even) { background: var(--program-alt); }
+
+    .segment-data .side-title { background: var(--segment-side); }
+    .segment-data .field { min-height: 64px; background: var(--segment); }
+    .segment-data .field:nth-child(even) { background: var(--segment-alt); }
+
+    .dynamic-data .side-title { background: var(--dynamic-side); }
+    .dynamic-data .field { min-height: 58px; background: var(--dynamic); }
+    .dynamic-data .field:nth-child(even) { background: var(--dynamic-alt); }
+
+    .section-data .side-title { background: var(--section-side); }
+    .section-data .field { min-height: 61px; background: var(--section); }
+    .section-data .field:nth-child(even) { background: var(--section-alt); }
+
+    .section-table .side-title { background: var(--sht-side); }
+    .section-table .field { min-height: 61px; background: var(--sht); }
+    .section-table .field:nth-child(even) { background: var(--sht-alt); }
+
+    .full-band {
+      min-height: 45px;
+      padding: 11px;
+      color: #fff;
+      background: #4b5f6c;
+      border-left: 1px solid var(--line);
+      text-align: center;
+      font-family: "Microsoft YaHei", sans-serif;
+      font-size: 18px;
+    }
+
+    .null-section { background: #d9e2e7 !important; }
+    .text-section { background: #a8cee4 !important; }
+    .rodata-section { background: #c5d9e3 !important; }
+    .data-section { background: #a9d8c7 !important; }
+    .dynamic-section { background: #e0c89f !important; }
+    .symbol-section { background: #c8b9dd !important; }
+    .debug-section { background: #d8e1e6 !important; }
+
+    .tooltip-target {
+      position: relative;
+      cursor: help;
+      outline: none;
+      transition: filter .12s ease, box-shadow .12s ease;
+    }
+
+    .tooltip-target:hover,
+    .tooltip-target:focus-visible {
+      z-index: 2;
+      filter: brightness(1.08);
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .72);
+    }
+
+    #elf-tooltip {
+      position: fixed;
+      z-index: 9999;
+      display: none;
+      max-width: 370px;
+      padding: 10px 13px;
+      color: #fff;
+      background: rgba(20, 37, 54, .96);
+      border: 1px solid rgba(255, 255, 255, .28);
+      border-radius: 7px;
+      box-shadow: 0 7px 24px rgba(0, 0, 0, .25);
+      font-family: "Microsoft YaHei", sans-serif;
+      font-size: 13px;
+      line-height: 1.55;
+      text-align: left;
+      pointer-events: none;
+    }
+
+    @media (max-width: 1250px) {
+      html,
+      body { min-width: 1024px; }
+      .row { grid-template-columns: 180px minmax(0, 1fr); }
+      .side-title strong { font-size: 18px; }
+      .field b { font-size: 12px; }
+      .field small,
+      .side-title small { font-size: 10px; }
+    }
+
+    @media print {
+      @page { size: landscape; margin: 0; }
+      html,
+      body {
+        min-width: 0;
+        width: 100%;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      #elf-tooltip { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="elf-diagram" aria-label="ELF 文件完整结构">
+    <section class="row elf-header">
+      <header class="side-title">
+        <strong>ELF HEADER</strong>
+        <small>Elf32_Ehdr: 52B</small>
+        <small>Elf64_Ehdr: 64B</small>
+        <span>文件身份<br>＋<br>入口地址<br>＋<br>两张表的位置</span>
+      </header>
+      <div class="fields cols-12">
+        <div class="field span-3"><b>e_ident[0..3]</b><small>0x7F · "ELF"</small></div>
+        <div class="field span-2"><b>EI_CLASS</b><small>ELF32 / ELF64</small></div>
+        <div class="field span-2"><b>EI_DATA</b><small>小端 / 大端</small></div>
+        <div class="field span-2"><b>EI_VERSION</b><small>格式版本</small></div>
+        <div class="field span-2"><b>EI_OSABI</b><small>目标 ABI</small></div>
+        <div class="field span-1"><b>EI_ABIVERSION</b></div>
+
+        <div class="field span-2"><b>e_type</b><small>REL / EXEC / DYN / CORE</small></div>
+        <div class="field span-2"><b>e_machine</b><small>x86 · x86-64 · ARM …</small></div>
+        <div class="field span-2"><b>e_version</b></div>
+        <div class="field span-3"><b>e_entry</b><small>程序入口虚拟地址</small></div>
+        <div class="field span-3"><b>e_flags</b><small>处理器相关标志</small></div>
+
+        <div class="field span-3"><b>e_phoff</b><small>Program Header Table 文件偏移</small></div>
+        <div class="field span-3"><b>e_shoff</b><small>Section Header Table 文件偏移</small></div>
+        <div class="field span-2"><b>e_ehsize</b><small>ELF Header 大小</small></div>
+        <div class="field span-2"><b>e_phentsize</b><small>程序头项大小</small></div>
+        <div class="field span-2"><b>e_phnum</b><small>程序头项数量</small></div>
+
+        <div class="field span-3"><b>e_shentsize</b><small>节头项大小</small></div>
+        <div class="field span-3"><b>e_shnum</b><small>节头项数量</small></div>
+        <div class="field span-3"><b>e_shstrndx</b><small>节名字符串表索引</small></div>
+        <div class="field span-3"><b>e_ident[9..15]</b><small>填充 / 保留</small></div>
+      </div>
+    </section>
+
+    <section class="row program-table">
+      <header class="side-title">
+        <strong>PROGRAM<br>HEADER TABLE</strong>
+        <small>执行视图 · Segment</small>
+        <span>Elf32_Phdr: 32B/项<br>Elf64_Phdr: 56B/项</span>
+      </header>
+      <div class="fields cols-12">
+        <div class="field span-2"><b>p_type</b><small>段类型</small></div>
+        <div class="field span-2"><b>p_flags</b><small>R / W / X 权限</small></div>
+        <div class="field span-2"><b>p_offset</b><small>段的文件偏移</small></div>
+        <div class="field span-3"><b>p_vaddr</b><small>段的虚拟地址</small></div>
+        <div class="field span-3"><b>p_paddr</b><small>物理地址，通常忽略</small></div>
+
+        <div class="field span-3"><b>p_filesz</b><small>段在文件中的大小</small></div>
+        <div class="field span-3"><b>p_memsz</b><small>段在内存中的大小</small></div>
+        <div class="field span-3"><b>p_align</b><small>文件与内存对齐</small></div>
+        <div class="field span-3"><b>Program Header × e_phnum</b><small>每项描述一个 Segment</small></div>
+      </div>
+    </section>
+
+    <section class="row segment-data">
+      <header class="side-title">
+        <strong>SEGMENTS</strong>
+        <small>加载器使用的映射单位</small>
+      </header>
+      <div class="fields cols-12">
+        <div class="field span-2"><b>PT_PHDR</b><small>程序头表自身</small></div>
+        <div class="field span-2"><b>PT_INTERP</b><small>动态链接器路径</small></div>
+        <div class="field span-3"><b>PT_LOAD (R-X)</b><small>代码与只读数据</small></div>
+        <div class="field span-3"><b>PT_LOAD (RW-)</b><small>可写数据与 .bss</small></div>
+        <div class="field span-2"><b>PT_DYNAMIC</b><small>动态链接信息</small></div>
+
+        <div class="field span-2"><b>PT_NOTE</b><small>辅助说明信息</small></div>
+        <div class="field span-2"><b>PT_TLS</b><small>线程局部存储</small></div>
+        <div class="field span-3"><b>PT_GNU_EH_FRAME</b><small>异常展开索引</small></div>
+        <div class="field span-3"><b>PT_GNU_STACK</b><small>栈权限要求</small></div>
+        <div class="field span-2"><b>PT_GNU_RELRO</b><small>重定位后只读区域</small></div>
+      </div>
+    </section>
+
+    <section class="row dynamic-data">
+      <header class="side-title">
+        <strong>DYNAMIC<br>LINKING DATA</strong>
+        <small>动态链接相关结构</small>
+      </header>
+      <div class="fields cols-12">
+        <div class="field span-2"><b>.interp</b><small>动态链接器路径</small></div>
+        <div class="field span-2"><b>.dynamic</b><small>DT_* 动态项</small></div>
+        <div class="field span-2"><b>.dynsym</b><small>动态符号表</small></div>
+        <div class="field span-2"><b>.dynstr</b><small>动态字符串表</small></div>
+        <div class="field span-2"><b>.gnu.hash / .hash</b><small>符号查找哈希表</small></div>
+        <div class="field span-2"><b>.gnu.version*</b><small>符号版本信息</small></div>
+
+        <div class="field span-3"><b>.rela.dyn / .rel.dyn</b><small>普通动态重定位</small></div>
+        <div class="field span-3"><b>.rela.plt / .rel.plt</b><small>PLT 动态重定位</small></div>
+        <div class="field span-2"><b>.plt</b><small>过程链接表</small></div>
+        <div class="field span-2"><b>.got / .got.plt</b><small>全局偏移表</small></div>
+        <div class="field span-2"><b>DT_NEEDED</b><small>依赖的共享库</small></div>
+      </div>
+    </section>
+
+    <section class="row section-data">
+      <header class="side-title">
+        <strong>SECTION DATA</strong>
+        <small>链接视图 · Section</small>
+        <span>内容区域<br>由节头表描述</span>
+      </header>
+      <div class="fields cols-12">
+        <div class="field null-section span-2"><b>Section 0</b><small>SHT_NULL</small></div>
+        <div class="field text-section span-2"><b>.text</b><small>程序代码 · AX</small></div>
+        <div class="field text-section span-2"><b>.init / .fini</b><small>初始化 / 终止代码</small></div>
+        <div class="field rodata-section span-2"><b>.rodata</b><small>只读数据 · A</small></div>
+        <div class="field data-section span-2"><b>.data</b><small>已初始化数据 · WA</small></div>
+        <div class="field data-section span-2"><b>.bss</b><small>未初始化数据 · NOBITS</small></div>
+
+        <div class="field dynamic-section span-2"><b>.init_array</b><small>构造函数指针</small></div>
+        <div class="field dynamic-section span-2"><b>.fini_array</b><small>析构函数指针</small></div>
+        <div class="field dynamic-section span-2"><b>.eh_frame</b><small>异常展开信息</small></div>
+        <div class="field symbol-section span-2"><b>.symtab</b><small>完整符号表</small></div>
+        <div class="field symbol-section span-2"><b>.strtab</b><small>符号字符串表</small></div>
+        <div class="field symbol-section span-2"><b>.shstrtab</b><small>节名字符串表</small></div>
+
+        <div class="field debug-section span-12">
+          <b>其他节：.comment · .note.* · .debug_* · .tdata · .tbss · 自定义节 …</b>
+          <small>Section 的顺序和名称并非固定；同一个 Segment 可以包含多个 Section</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="row section-table">
+      <header class="side-title">
+        <strong>SECTION<br>HEADER TABLE</strong>
+        <small>链接器和分析工具使用</small>
+        <span>Elf32_Shdr: 40B/项<br>Elf64_Shdr: 64B/项</span>
+      </header>
+      <div class="fields cols-12">
+        <div class="field span-2"><b>sh_name</b><small>.shstrtab 中的索引</small></div>
+        <div class="field span-2"><b>sh_type</b><small>节类型</small></div>
+        <div class="field span-2"><b>sh_flags</b><small>W / A / X 等标志</small></div>
+        <div class="field span-3"><b>sh_addr</b><small>装载后的虚拟地址</small></div>
+        <div class="field span-3"><b>sh_offset</b><small>节的文件偏移</small></div>
+
+        <div class="field span-2"><b>sh_size</b><small>节的大小</small></div>
+        <div class="field span-2"><b>sh_link</b><small>关联节索引</small></div>
+        <div class="field span-2"><b>sh_info</b><small>附加类型信息</small></div>
+        <div class="field span-2"><b>sh_addralign</b><small>地址对齐</small></div>
+        <div class="field span-2"><b>sh_entsize</b><small>固定条目大小</small></div>
+        <div class="field span-2"><b>Section Header × e_shnum</b><small>每项描述一个 Section</small></div>
+      </div>
+    </section>
+
+    <section class="full-band">
+      <strong>Program Header 描述“如何装入内存”；Section Header 描述“文件内容如何组织和链接”</strong>
+    </section>
+  </main>
+
+  <div id="elf-tooltip" role="tooltip"></div>
+  <script>
+    (() => {
+      const descriptions = {
+        "ELF HEADER": "ELF 文件的总入口，描述位数、字节序、目标架构、入口地址以及程序头表和节头表的位置。",
+        "e_ident[0..3]": "ELF 魔数，固定为 0x7F 45 4C 46，即 0x7F 后跟 ASCII 字符 ELF。",
+        "EI_CLASS": "指示文件为 32 位 ELFCLASS32 或 64 位 ELFCLASS64，并影响后续结构的字段宽度。",
+        "EI_DATA": "指定多字节整数采用小端序还是大端序。",
+        "EI_VERSION": "ELF 标识版本，当前规范通常为 EV_CURRENT。",
+        "EI_OSABI": "标识目标操作系统 ABI，例如 System V、GNU/Linux 或 FreeBSD。",
+        "EI_ABIVERSION": "目标 ABI 的版本号，许多 System V ELF 文件中为 0。",
+        "e_type": "文件类型：ET_REL 为可重定位目标文件，ET_EXEC 为可执行文件，ET_DYN 为共享对象或 PIE，ET_CORE 为核心转储。",
+        "e_machine": "目标指令集架构，例如 EM_386、EM_X86_64、EM_ARM 或 EM_AARCH64。",
+        "e_version": "ELF 文件格式版本，通常为 EV_CURRENT。",
+        "e_entry": "进程开始执行时的入口虚拟地址。共享库或无入口目标文件中可以为 0。",
+        "e_flags": "处理器相关标志，其含义由目标架构定义。",
+        "e_phoff": "Program Header Table 相对于文件开头的偏移；没有程序头表时为 0。",
+        "e_shoff": "Section Header Table 相对于文件开头的偏移；被剥离或无节头表时可以为 0。",
+        "e_ehsize": "ELF Header 自身的字节大小。",
+        "e_phentsize": "单个 Program Header 项的字节大小。",
+        "e_phnum": "Program Header Table 中的项目数量。",
+        "e_shentsize": "单个 Section Header 项的字节大小。",
+        "e_shnum": "Section Header Table 中的项目数量。",
+        "e_shstrndx": "保存节名的字符串表 .shstrtab 在节头表中的索引。",
+        "e_ident[9..15]": "ELF 标识数组中的填充和保留字节，通常为 0。",
+        "PROGRAM HEADER TABLE": "执行视图的核心结构。加载器按这里的描述将文件区域映射成内存 Segment。",
+        "p_type": "Segment 类型，例如 PT_LOAD、PT_DYNAMIC、PT_INTERP 或 PT_TLS。",
+        "p_flags": "Segment 的访问权限组合：PF_R、PF_W 和 PF_X。",
+        "p_offset": "Segment 数据相对于文件开头的偏移。",
+        "p_vaddr": "Segment 映射到进程虚拟地址空间后的起始虚拟地址。",
+        "p_paddr": "物理地址字段。在常见用户态系统中通常没有实际意义。",
+        "p_filesz": "Segment 在文件中占用的字节数。",
+        "p_memsz": "Segment 映射到内存后占用的字节数。大于 p_filesz 的部分由加载器补零，常用于 .bss。",
+        "p_align": "Segment 的对齐要求。可装载段通常要求 p_vaddr 与 p_offset 对页大小同余。",
+        "Program Header × e_phnum": "程序头表包含 e_phnum 个项目，每项独立描述一个 Segment。",
+        "SEGMENTS": "操作系统加载器真正关心的映射单位。一个 Segment 通常包含若干属性兼容的 Section。",
+        "PT_PHDR": "描述 Program Header Table 本身在内存中的位置。",
+        "PT_INTERP": "保存动态链接器路径，例如 /lib64/ld-linux-x86-64.so.2。",
+        "PT_LOAD (R-X)": "可装载且通常可读、可执行的代码段，常包含 ELF Header、.text 和 .rodata。",
+        "PT_LOAD (RW-)": "可装载且可写的数据段，常包含 .data、.dynamic、.got 和 .bss。",
+        "PT_DYNAMIC": "指向动态链接信息数组，供动态链接器解析依赖、重定位和符号表。",
+        "PT_NOTE": "保存 ABI 标记、Build ID 等辅助说明信息。",
+        "PT_TLS": "描述线程局部存储模板，包括初始化数据与内存大小。",
+        "PT_GNU_EH_FRAME": "指向 .eh_frame_hdr，用于快速定位异常展开信息。",
+        "PT_GNU_STACK": "声明进程栈所需权限。缺少执行权限通常表示启用不可执行栈。",
+        "PT_GNU_RELRO": "指定完成动态重定位后应改为只读的内存区域，用于保护 GOT 等数据。",
+        "DYNAMIC LINKING DATA": "动态链接器用于查找依赖库、解析符号并完成重定位的一组 Section 和动态项。",
+        ".interp": "以字符串形式保存动态链接器解释器路径。",
+        ".dynamic": "由 Elf*_Dyn 项组成，保存 DT_NEEDED、DT_STRTAB、DT_SYMTAB 等动态链接标签。",
+        ".dynsym": "运行时可见的动态符号表，通常比 .symtab 精简。",
+        ".dynstr": "保存动态符号名称、共享库名称等字符串。",
+        ".gnu.hash / .hash": "用于加速动态符号名称查找的哈希表。",
+        ".gnu.version*": "保存动态符号的版本需求、版本定义和版本索引。",
+        ".rela.dyn / .rel.dyn": "保存不经过 PLT 的动态重定位项。RELA 显式保存加数，REL 从目标位置读取加数。",
+        ".rela.plt / .rel.plt": "保存与 PLT/GOT 函数调用相关的动态重定位项。",
+        ".plt": "过程链接表，为外部函数调用提供跳板，支持延迟绑定。",
+        ".got / .got.plt": "全局偏移表，保存运行时解析后的地址和位置无关代码所需指针。",
+        "DT_NEEDED": "动态项之一，记录运行时依赖的共享库名称。",
+        "SECTION DATA": "Section 是链接和静态分析视角的内容容器，按代码、数据、符号、字符串等用途组织。",
+        "Section 0": "节头表第 0 项固定为 SHT_NULL，表示无效节，并可参与扩展编号。",
+        ".text": "保存主要可执行机器代码，通常带 SHF_ALLOC 和 SHF_EXECINSTR 标志。",
+        ".init / .fini": "保存传统的进程初始化和终止代码。",
+        ".rodata": "保存字符串常量、只读表等只读数据。",
+        ".data": "保存已初始化的可写全局变量和静态变量。",
+        ".bss": "保存未初始化或零初始化数据的大小信息，类型通常为 SHT_NOBITS，几乎不占用文件空间。",
+        ".init_array": "构造函数指针数组，运行时在 main 之前依次调用。",
+        ".fini_array": "析构函数指针数组，进程终止时依次调用。",
+        ".eh_frame": "保存 DWARF 调用帧和异常展开信息。",
+        ".symtab": "完整静态符号表，常在 strip 后被删除，不一定参与运行时动态链接。",
+        ".strtab": "与 .symtab 等结构配套的普通字符串表。",
+        ".shstrtab": "保存所有 Section 名称，由 e_shstrndx 指定。",
+        "SECTION HEADER TABLE": "链接视图的索引表，每项描述一个 Section 的名称、类型、地址、文件偏移和大小。",
+        "sh_name": "Section 名称在 .shstrtab 中的字符串偏移。",
+        "sh_type": "Section 类型，例如 SHT_PROGBITS、SHT_NOBITS、SHT_SYMTAB 或 SHT_RELA。",
+        "sh_flags": "Section 属性标志，例如 SHF_WRITE、SHF_ALLOC 和 SHF_EXECINSTR。",
+        "sh_addr": "Section 被装入内存后的虚拟地址；不可装载节通常为 0。",
+        "sh_offset": "Section 内容相对于文件开头的偏移。",
+        "sh_size": "Section 的字节大小。SHT_NOBITS 的大小不计入文件占用。",
+        "sh_link": "关联的另一个 Section 索引，具体含义由 sh_type 决定。",
+        "sh_info": "额外类型信息，例如关联符号索引或重定位目标节索引。",
+        "sh_addralign": "Section 在文件或内存中的对齐要求。",
+        "sh_entsize": "若 Section 由固定大小条目组成，该字段保存单个条目的大小。",
+        "Section Header × e_shnum": "节头表包含 e_shnum 个项目，每项独立描述一个 Section。"
+      };
+
+      const normalize = text => text.replace(/\s+/g, " ").trim();
+      const tooltip = document.getElementById("elf-tooltip");
+      const targets = document.querySelectorAll(".field, .side-title, .full-band");
+      let activeTarget = null;
+
+      targets.forEach(target => {
+        const label = target.querySelector("b, strong");
+        if (!label) return;
+        const key = normalize(label.textContent);
+        const description = descriptions[key];
+        if (!description) return;
+        target.classList.add("tooltip-target");
+        target.dataset.tip = description;
+        target.tabIndex = 0;
+        target.removeAttribute("title");
+      });
+
+      function placeTooltip(target, event) {
+        const margin = 14;
+        const rect = target.getBoundingClientRect();
+        tooltip.style.display = "block";
+        const x = event && Number.isFinite(event.clientX)
+          ? event.clientX + margin
+          : rect.left + rect.width / 2;
+        const y = event && Number.isFinite(event.clientY)
+          ? event.clientY + margin
+          : rect.bottom + margin;
+        tooltip.style.left = `${Math.max(8, Math.min(x, window.innerWidth - tooltip.offsetWidth - 8))}px`;
+        tooltip.style.top = `${Math.max(8, Math.min(y, window.innerHeight - tooltip.offsetHeight - 8))}px`;
+      }
+
+      function showTooltip(target, event) {
+        if (!target.dataset.tip) return;
+        activeTarget = target;
+        tooltip.textContent = target.dataset.tip;
+        placeTooltip(target, event);
+      }
+
+      function hideTooltip() {
+        activeTarget = null;
+        tooltip.style.display = "none";
+      }
+
+      document.addEventListener("pointerover", event => {
+        const target = event.target.closest(".tooltip-target");
+        if (target) showTooltip(target, event);
+      });
+      document.addEventListener("pointermove", event => {
+        if (activeTarget) placeTooltip(activeTarget, event);
+      });
+      document.addEventListener("pointerout", event => {
+        const target = event.target.closest(".tooltip-target");
+        if (target && !target.contains(event.relatedTarget)) hideTooltip();
+      });
+      document.addEventListener("focusin", event => {
+        const target = event.target.closest(".tooltip-target");
+        if (target) showTooltip(target);
+      });
+      document.addEventListener("focusout", event => {
+        if (event.target.closest(".tooltip-target")) hideTooltip();
+      });
+      window.addEventListener("scroll", hideTooltip, true);
+      window.addEventListener("resize", hideTooltip);
+    })();
+  </script>
+</body>
+</html>
