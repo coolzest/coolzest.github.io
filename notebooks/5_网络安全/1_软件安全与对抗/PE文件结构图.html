@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PE 文件结构图</title>
+  <style>
+    :root {
+      --line: #1d2d38;
+      --dos-side: #4f91c8;
+      --dos: #8bb7dc;
+      --dos-stub: #72a7d4;
+      --coff-side: #315f39;
+      --coff: #719760;
+      --coff-dark: #5f8952;
+      --optional-side: #936f07;
+      --standard: #c89d20;
+      --standard-dark: #bb8d10;
+      --standard-deep: #a97d09;
+      --image-base: #9c6322;
+      --windows: #984740;
+      --windows-light: #aa514a;
+      --directory-side: #624487;
+      --directory: #a58fc7;
+      --directory-alt: #b19bcf;
+      --section-side: #287f74;
+      --section: #72b3aa;
+      --section-alt: #80beb5;
+      --raw-side: #485d69;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-width: 1180px;
+      background: #fff;
+    }
+
+    body {
+      padding: 0;
+      color: #122536;
+      font-family: "Cascadia Mono", Consolas, "Microsoft YaHei", monospace;
+    }
+
+    .pe-diagram {
+      width: 100%;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 210px minmax(0, 1fr);
+    }
+
+    .side-title,
+    .field,
+    .full-band {
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .side-title,
+    .field {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 8px 7px;
+      text-align: center;
+    }
+
+    .side-title {
+      color: #fff;
+      border-left: 1px solid var(--line);
+    }
+
+    .side-title strong {
+      font-family: "Microsoft YaHei", sans-serif;
+      font-size: 21px;
+      line-height: 1.2;
+    }
+
+    .side-title small {
+      margin-top: 7px;
+    }
+
+    .side-title span {
+      margin-top: 24px;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .field b {
+      overflow-wrap: anywhere;
+      font-size: 14px;
+      line-height: 1.15;
+    }
+
+    .field small,
+    .side-title small {
+      display: block;
+      margin-top: 5px;
+      font-size: 11px;
+      line-height: 1.2;
+    }
+
+    .fields {
+      display: grid;
+    }
+
+    .cols-8 { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+    .cols-10 { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+    .cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+
+    .span-1 { grid-column: span 1; }
+    .span-2 { grid-column: span 2; }
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-7 { grid-column: span 7; }
+    .span-10 { grid-column: span 10; }
+
+    .dos-header .side-title {
+      min-height: 70px;
+      background: var(--dos-side);
+    }
+
+    .dos-header .field {
+      min-height: 70px;
+      background: var(--dos);
+    }
+
+    .full-band {
+      min-height: 50px;
+      padding: 11px;
+      color: #fff;
+      text-align: center;
+      font-family: "Microsoft YaHei", sans-serif;
+      font-size: 22px;
+    }
+
+    .dos-stub {
+      background: var(--dos-stub);
+      border-left: 1px solid var(--line);
+    }
+
+    .pe-signature .side-title {
+      min-height: 43px;
+      background: var(--coff-side);
+    }
+
+    .pe-signature .field {
+      min-height: 43px;
+      color: #0d2116;
+      background: #557f49;
+    }
+
+    .coff-header .side-title {
+      background: var(--coff-side);
+    }
+
+    .coff-header .field {
+      min-height: 55px;
+      background: var(--coff);
+    }
+
+    .coff-header .field:nth-child(n + 6) {
+      background: var(--coff-dark);
+    }
+
+    .optional-header .side-title {
+      background: var(--optional-side);
+    }
+
+    .optional-header .field {
+      min-height: 48px;
+    }
+
+    .standard { background: var(--standard); }
+    .standard-dark { background: var(--standard-dark); }
+    .standard-deep { background: var(--standard-deep); }
+    .image-base { background: var(--image-base); }
+    .windows { background: var(--windows); }
+    .windows-light { background: var(--windows-light); }
+
+    .data-directories .side-title {
+      background: var(--directory-side);
+    }
+
+    .directory-grid .field {
+      min-height: 55px;
+      background: var(--directory);
+    }
+
+    .directory-grid .field:nth-child(even) {
+      background: var(--directory-alt);
+    }
+
+    .directory-grid .field b {
+      font-size: 12px;
+    }
+
+    .section-table .side-title {
+      background: var(--section-side);
+    }
+
+    .section-table .field {
+      min-height: 63px;
+      background: var(--section);
+    }
+
+    .section-table .field:nth-child(even) {
+      background: var(--section-alt);
+    }
+
+    .section-table .field:nth-child(8) b,
+    .section-table .field:nth-child(9) b {
+      font-size: 11px;
+    }
+
+    .section-data .side-title {
+      background: var(--raw-side);
+    }
+
+    .section-data .field {
+      min-height: 67px;
+    }
+
+    .text-section { background: #a7cee4; }
+    .rdata-section { background: #c3d7e1; }
+    .data-section { background: #a8d8c7; }
+    .idata-section { background: #dfc8a0; }
+    .resource-section { background: #c7b8dc; }
+    .other-sections { background: #dae4e9; }
+
+    .tooltip-target {
+      position: relative;
+      cursor: help;
+      outline: none;
+      transition: filter .12s ease, box-shadow .12s ease;
+    }
+
+    .tooltip-target:hover,
+    .tooltip-target:focus-visible {
+      z-index: 2;
+      filter: brightness(1.08);
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .72);
+    }
+
+    #pe-tooltip {
+      position: fixed;
+      z-index: 9999;
+      display: none;
+      max-width: 360px;
+      padding: 10px 13px;
+      color: #fff;
+      background: rgba(20, 37, 54, .96);
+      border: 1px solid rgba(255, 255, 255, .28);
+      border-radius: 7px;
+      box-shadow: 0 7px 24px rgba(0, 0, 0, .25);
+      font-family: "Microsoft YaHei", sans-serif;
+      font-size: 13px;
+      line-height: 1.55;
+      text-align: left;
+      pointer-events: none;
+    }
+
+    @media (max-width: 1250px) {
+      html,
+      body {
+        min-width: 1024px;
+      }
+
+      .row {
+        grid-template-columns: 180px minmax(0, 1fr);
+      }
+
+      .side-title strong {
+        font-size: 18px;
+      }
+
+      .field b {
+        font-size: 12px;
+      }
+
+      .field small,
+      .side-title small {
+        font-size: 10px;
+      }
+    }
+
+    @media print {
+      @page {
+        size: landscape;
+        margin: 0;
+      }
+
+      html,
+      body {
+        min-width: 0;
+        width: 100%;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+
+      #pe-tooltip {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="pe-diagram" aria-label="PE 文件完整结构">
+    <section class="row dos-header">
+      <header class="side-title">
+        <strong>DOS HEADER</strong>
+        <small>IMAGE_DOS_HEADER · 64B</small>
+      </header>
+      <div class="fields cols-10">
+        <div class="field span-2">
+          <b>e_magic = "MZ"</b>
+          <small>0x5A4D</small>
+        </div>
+        <div class="field span-5">
+          <b>DOS 兼容字段 / 保留字段</b>
+          <small>e_cblp … e_res2[10]</small>
+        </div>
+        <div class="field span-3">
+          <b>e_lfanew</b>
+          <small>NT Headers 的文件偏移</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="full-band dos-stub">
+      <strong>DOS STUB / RICH HEADER（可选）</strong>
+    </section>
+
+    <section class="row pe-signature">
+      <header class="side-title">
+        <strong>PE SIGNATURE</strong>
+      </header>
+      <div class="fields">
+        <div class="field">
+          <b>PE Signature = "PE\0\0" = 0x00004550 （4 bytes）</b>
+        </div>
+      </div>
+    </section>
+
+    <section class="row coff-header">
+      <header class="side-title">
+        <strong>COFF FILE<br>HEADER</strong>
+        <small>IMAGE_FILE_HEADER · 20B</small>
+      </header>
+      <div class="fields cols-10">
+        <div class="field span-2"><b>Machine</b></div>
+        <div class="field span-2"><b>NumberOfSections</b><small>节的数量</small></div>
+        <div class="field span-2"><b>TimeDateStamp</b></div>
+        <div class="field span-2"><b>PointerToSymbolTable</b><small>通常为 0</small></div>
+        <div class="field span-2"><b>NumberOfSymbols</b><small>通常为 0</small></div>
+        <div class="field span-3"><b>SizeOfOptionalHeader</b></div>
+        <div class="field span-7"><b>Characteristics</b></div>
+      </div>
+    </section>
+
+    <section class="row optional-header">
+      <header class="side-title">
+        <strong>OPTIONAL<br>HEADER</strong>
+        <small>PE32: 224B</small>
+        <small>PE32+: 240B</small>
+        <span>标准字段<br>＋<br>Windows 字段<br>＋<br>Data Directories</span>
+      </header>
+      <div class="fields cols-12">
+        <div class="field standard span-2"><b>Magic</b><small>10Bh / 20Bh</small></div>
+        <div class="field standard span-2"><b>MajorLinkerVersion</b></div>
+        <div class="field standard span-2"><b>MinorLinkerVersion</b></div>
+        <div class="field standard span-3"><b>SizeOfCode</b></div>
+        <div class="field standard span-3"><b>SizeOfInitializedData</b></div>
+
+        <div class="field standard-dark span-3"><b>SizeOfUninitializedData</b></div>
+        <div class="field standard-dark span-5"><b>AddressOfEntryPoint</b><small>RVA</small></div>
+        <div class="field standard-dark span-4"><b>BaseOfCode</b><small>RVA</small></div>
+
+        <div class="field standard-deep span-6"><b>BaseOfData</b><small>仅 PE32 存在 · RVA</small></div>
+        <div class="field image-base span-6"><b>ImageBase</b></div>
+
+        <div class="field windows span-6"><b>SectionAlignment</b></div>
+        <div class="field windows span-6"><b>FileAlignment</b></div>
+
+        <div class="field windows-light span-3"><b>MajorOperatingSystemVersion</b></div>
+        <div class="field windows-light span-3"><b>MinorOperatingSystemVersion</b></div>
+        <div class="field windows-light span-3"><b>MajorImageVersion</b></div>
+        <div class="field windows-light span-3"><b>MinorImageVersion</b></div>
+
+        <div class="field windows span-3"><b>MajorSubsystemVersion</b></div>
+        <div class="field windows span-3"><b>MinorSubsystemVersion</b></div>
+        <div class="field windows span-6"><b>Win32VersionValue = 0</b></div>
+
+        <div class="field windows-light span-3"><b>SizeOfImage</b></div>
+        <div class="field windows-light span-3"><b>SizeOfHeaders</b></div>
+        <div class="field windows-light span-2"><b>CheckSum</b></div>
+        <div class="field windows-light span-2"><b>Subsystem</b></div>
+        <div class="field windows-light span-2"><b>DllCharacteristics</b></div>
+
+        <div class="field windows span-2"><b>SizeOfStackReserve</b></div>
+        <div class="field windows span-2"><b>SizeOfStackCommit</b></div>
+        <div class="field windows span-2"><b>SizeOfHeapReserve</b></div>
+        <div class="field windows span-2"><b>SizeOfHeapCommit</b></div>
+        <div class="field windows span-2"><b>LoaderFlags</b></div>
+        <div class="field windows span-2"><b>NumberOfRvaAndSizes</b></div>
+      </div>
+    </section>
+
+    <section class="row data-directories">
+      <header class="side-title">
+        <strong>DATA<br>DIRECTORIES</strong>
+        <small>16 × (RVA + Size)</small>
+      </header>
+      <div class="fields cols-8 directory-grid">
+        <div class="field"><b>0 Export</b><small>导出表</small></div>
+        <div class="field"><b>1 Import</b><small>导入表</small></div>
+        <div class="field"><b>2 Resource</b><small>资源表</small></div>
+        <div class="field"><b>3 Exception</b><small>异常表</small></div>
+        <div class="field"><b>4 Security</b><small>证书表</small></div>
+        <div class="field"><b>5 Base Reloc</b><small>重定位表</small></div>
+        <div class="field"><b>6 Debug</b><small>调试目录</small></div>
+        <div class="field"><b>7 Architecture</b><small>保留</small></div>
+        <div class="field"><b>8 GlobalPtr</b><small>保留</small></div>
+        <div class="field"><b>9 TLS</b><small>线程存储</small></div>
+        <div class="field"><b>10 Load Config</b><small>加载配置</small></div>
+        <div class="field"><b>11 Bound Import</b><small>绑定导入</small></div>
+        <div class="field"><b>12 IAT</b><small>导入地址表</small></div>
+        <div class="field"><b>13 Delay Import</b><small>延迟导入</small></div>
+        <div class="field"><b>14 CLR</b><small>.NET 头</small></div>
+        <div class="field"><b>15 Reserved</b><small>保留</small></div>
+      </div>
+    </section>
+
+    <section class="row section-table">
+      <header class="side-title">
+        <strong>SECTION<br>TABLE</strong>
+        <small>N × 40 bytes</small>
+      </header>
+      <div class="fields cols-10">
+        <div class="field span-2"><b>Name[8]</b></div>
+        <div class="field span-2"><b>VirtualSize</b><small>内存大小</small></div>
+        <div class="field span-2"><b>VirtualAddress</b><small>节 RVA</small></div>
+        <div class="field span-2"><b>SizeOfRawData</b><small>磁盘大小</small></div>
+        <div class="field span-2"><b>PointerToRawData</b><small>文件偏移</small></div>
+        <div class="field span-2"><b>PointerToRelocations</b><small>通常为 0</small></div>
+        <div class="field span-2"><b>PointerToLinenumbers</b><small>通常为 0</small></div>
+        <div class="field span-1"><b>NumberOfRelocations</b><small>通常为 0</small></div>
+        <div class="field span-1"><b>NumberOfLinenumbers</b><small>通常为 0</small></div>
+        <div class="field span-4"><b>Characteristics</b><small>代码/数据属性与 R/W/X 权限</small></div>
+      </div>
+    </section>
+
+    <section class="row section-data">
+      <header class="side-title">
+        <strong>SECTION<br>RAW DATA</strong>
+        <small>各节实际内容</small>
+      </header>
+      <div class="fields cols-10">
+        <div class="field text-section span-2"><b>.text</b><small>代码 · 入口点 · R-X</small></div>
+        <div class="field rdata-section span-2"><b>.rdata</b><small>只读数据 · R--</small></div>
+        <div class="field data-section span-2"><b>.data / .bss</b><small>全局数据 · RW-</small></div>
+        <div class="field idata-section span-2"><b>.idata / .edata</b><small>导入 / 导出</small></div>
+        <div class="field resource-section span-2"><b>.rsrc / .reloc</b><small>资源 / 重定位</small></div>
+        <div class="field other-sections span-10">
+          <b>其他节：.pdata · .tls · .debug · 自定义节 …</b>
+          <small>文件末尾还可能存在 Overlay；Security Directory 使用文件偏移定位数字签名</small>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="pe-tooltip" role="tooltip"></div>
+  <script>
+    (() => {
+      const descriptions = {
+        "DOS HEADER": "PE 文件最前面的 DOS 头，固定为 64 字节。现代 Windows 主要使用其中的 MZ 标志和 e_lfanew。",
+        "e_magic = \"MZ\"": "DOS 头魔数，值为 0x5A4D。解析器通常先检查它，以判断文件是否可能为 PE。",
+        "DOS 兼容字段 / 保留字段": "来自早期 DOS 可执行文件格式的字段。现代 PE 加载过程通常不会使用其中大部分内容。",
+        "e_lfanew": "位于 DOS 头偏移 0x3C，保存 PE Signature 相对于文件开头的偏移。",
+        "DOS STUB / RICH HEADER（可选）": "DOS Stub 是兼容 DOS 的小程序；Rich Header 常包含微软编译工具链信息，但并非 PE 标准的必需结构。",
+        "PE SIGNATURE": "由 4 字节 PE\\0\\0 构成，用于标识 NT Headers 的开始位置。",
+        "COFF FILE HEADER": "描述目标 CPU、节数量、Optional Header 大小以及文件整体属性，固定为 20 字节。",
+        "Machine": "目标处理器架构，例如 0x014C 表示 x86，0x8664 表示 x64。",
+        "NumberOfSections": "节表中 IMAGE_SECTION_HEADER 项的数量。",
+        "TimeDateStamp": "链接器写入的时间戳。它可能被修改或清零，不能始终当作可靠的编译时间。",
+        "PointerToSymbolTable": "COFF 符号表的文件偏移。普通 PE 映像中通常为 0。",
+        "NumberOfSymbols": "COFF 符号表条目数量。普通 PE 映像中通常为 0。",
+        "SizeOfOptionalHeader": "Optional Header 的实际字节数，加载器借此定位紧随其后的节表。",
+        "Characteristics": "在 COFF 头中表示文件属性；在节表中表示节类型以及可读、可写、可执行等权限。",
+        "OPTIONAL HEADER": "虽然名字叫 Optional，但对于可执行映像通常是必需的，保存入口点、映像基址、对齐方式和数据目录。",
+        "Magic": "区分 PE32 与 PE32+：0x10B 表示 PE32，0x20B 表示 PE32+。",
+        "MajorLinkerVersion": "生成该映像的链接器主版本号。",
+        "MinorLinkerVersion": "生成该映像的链接器次版本号。",
+        "SizeOfCode": "所有代码节在磁盘中的对齐后大小之和。",
+        "SizeOfInitializedData": "所有已初始化数据节在磁盘中的对齐后大小之和。",
+        "SizeOfUninitializedData": "未初始化数据的总大小，典型内容是 .bss，通常主要在内存中占空间。",
+        "AddressOfEntryPoint": "程序入口点的 RVA。对于 DLL 或无入口点映像，该值可以为 0。",
+        "BaseOfCode": "代码区域起始位置的 RVA。",
+        "BaseOfData": "数据区域起始位置的 RVA。该字段只存在于 PE32，不存在于 PE32+。",
+        "ImageBase": "映像的首选装载基址。实际装载地址可能因 ASLR 或地址冲突而改变。",
+        "SectionAlignment": "各节映射到内存时的对齐粒度，常见值为 0x1000。",
+        "FileAlignment": "各节原始数据在磁盘文件中的对齐粒度，常见值为 0x200。",
+        "MajorOperatingSystemVersion": "运行该映像所需操作系统版本的主版本号。",
+        "MinorOperatingSystemVersion": "运行该映像所需操作系统版本的次版本号。",
+        "MajorImageVersion": "映像自身版本的主版本号。",
+        "MinorImageVersion": "映像自身版本的次版本号。",
+        "MajorSubsystemVersion": "所需 Windows 子系统版本的主版本号。",
+        "MinorSubsystemVersion": "所需 Windows 子系统版本的次版本号。",
+        "Win32VersionValue = 0": "保留字段，规范要求为 0。",
+        "SizeOfImage": "映像装入内存后的总大小，包含所有节并按 SectionAlignment 对齐。",
+        "SizeOfHeaders": "DOS 头、NT Headers 和节表的总大小，并按 FileAlignment 对齐。",
+        "CheckSum": "映像校验和。驱动程序和部分系统组件会使用，普通用户程序常为 0。",
+        "Subsystem": "指定程序运行环境，例如 Windows GUI、控制台程序或 EFI 应用。",
+        "DllCharacteristics": "保存 ASLR、DEP、CFG、High Entropy VA 等加载与安全相关标志。",
+        "SizeOfStackReserve": "为初始线程栈保留的虚拟地址空间大小。",
+        "SizeOfStackCommit": "初始线程栈开始时实际提交的内存大小。",
+        "SizeOfHeapReserve": "进程默认堆预留的虚拟地址空间大小。",
+        "SizeOfHeapCommit": "进程默认堆开始时实际提交的内存大小。",
+        "LoaderFlags": "保留字段，规范要求为 0。",
+        "NumberOfRvaAndSizes": "Data Directory 数组中的有效项目数量，常见值为 16。",
+        "DATA DIRECTORIES": "一组 RVA 与 Size 对，用来定位导入表、导出表、资源表、重定位表等重要数据结构。",
+        "0 Export": "描述模块导出的函数、名称和序号，常见于 DLL。",
+        "1 Import": "记录程序依赖的 DLL 及导入函数，加载器据此完成动态链接。",
+        "2 Resource": "保存图标、菜单、字符串、版本信息和对话框等资源。",
+        "3 Exception": "保存异常处理和栈展开信息，在 x64 PE 中尤其重要。",
+        "4 Security": "指向 Authenticode 数字签名。特殊之处是这里保存文件偏移，而不是 RVA。",
+        "5 Base Reloc": "当映像不能装载到首选 ImageBase 时，加载器依据重定位表修正绝对地址。",
+        "6 Debug": "保存调试目录，可指向 PDB 标识、调试信息等内容。",
+        "7 Architecture": "保留目录，通常为空。",
+        "8 GlobalPtr": "保留目录，通常为空。",
+        "9 TLS": "描述线程局部存储数据、TLS 索引和 TLS 回调函数。",
+        "10 Load Config": "保存加载配置及部分安全机制信息，例如安全 Cookie、CFG 等。",
+        "11 Bound Import": "保存绑定导入信息，用于记录预先解析的导入地址。",
+        "12 IAT": "Import Address Table。加载器将导入函数的实际地址写入这里。",
+        "13 Delay Import": "描述延迟加载的 DLL 与函数，仅在首次使用时进行解析。",
+        "14 CLR": "存在该目录通常表示这是托管的 .NET 映像。",
+        "15 Reserved": "保留目录，规范要求为空。",
+        "SECTION TABLE": "由多个 IMAGE_SECTION_HEADER 组成，每项 40 字节，将节的磁盘布局和内存布局联系起来。",
+        "Name[8]": "最多 8 字节的节名，例如 .text、.data、.rsrc。",
+        "VirtualSize": "节装入内存后实际需要的大小，未对齐。",
+        "VirtualAddress": "节相对于 ImageBase 的起始 RVA。",
+        "SizeOfRawData": "节在磁盘文件中占用的大小，按 FileAlignment 对齐。",
+        "PointerToRawData": "节原始数据相对于文件开头的偏移，也称 FOA。",
+        "PointerToRelocations": "对象文件使用的重定位信息偏移；可执行映像中通常为 0。",
+        "PointerToLinenumbers": "COFF 行号信息偏移；现代 PE 映像中通常为 0。",
+        "NumberOfRelocations": "对象文件的重定位项数量；可执行映像中通常为 0。",
+        "NumberOfLinenumbers": "COFF 行号项数量；现代 PE 映像中通常为 0。",
+        "SECTION RAW DATA": "节表之后保存各节的实际字节内容；每节起始位置通常按 FileAlignment 对齐。",
+        ".text": "通常保存可执行机器代码，入口点一般位于该节。",
+        ".rdata": "通常保存只读常量、RTTI、导入相关只读数据等。",
+        ".data / .bss": ".data 保存已初始化可写数据；.bss 表示未初始化数据，常在内存中补零。",
+        ".idata / .edata": ".idata 常保存导入信息，.edata 常保存导出信息；实际链接器也可能将它们合并进其他节。",
+        ".rsrc / .reloc": ".rsrc 保存资源，.reloc 保存基址重定位信息。"
+      };
+
+      const normalize = text => text.replace(/\s+/g, " ").trim();
+      const targets = document.querySelectorAll(".field, .side-title, .full-band");
+      const tooltip = document.getElementById("pe-tooltip");
+      let activeTarget = null;
+
+      targets.forEach(target => {
+        const label = target.querySelector("b, strong");
+        if (!label) return;
+        const key = normalize(label.textContent);
+        const description = descriptions[key];
+        if (!description) return;
+
+        target.classList.add("tooltip-target");
+        target.dataset.tip = description;
+        target.tabIndex = 0;
+        target.removeAttribute("title");
+      });
+
+      function placeTooltip(target, event) {
+        const margin = 14;
+        const rect = target.getBoundingClientRect();
+        tooltip.style.display = "block";
+
+        const preferredX = event && Number.isFinite(event.clientX)
+          ? event.clientX + margin
+          : rect.left + rect.width / 2;
+        const preferredY = event && Number.isFinite(event.clientY)
+          ? event.clientY + margin
+          : rect.bottom + margin;
+
+        const maxX = window.innerWidth - tooltip.offsetWidth - 8;
+        const maxY = window.innerHeight - tooltip.offsetHeight - 8;
+        tooltip.style.left = `${Math.max(8, Math.min(preferredX, maxX))}px`;
+        tooltip.style.top = `${Math.max(8, Math.min(preferredY, maxY))}px`;
+      }
+
+      function showTooltip(target, event) {
+        if (!target.dataset.tip) return;
+        activeTarget = target;
+        tooltip.textContent = target.dataset.tip;
+        placeTooltip(target, event);
+      }
+
+      function hideTooltip() {
+        activeTarget = null;
+        tooltip.style.display = "none";
+      }
+
+      document.addEventListener("pointerover", event => {
+        const target = event.target.closest(".tooltip-target");
+        if (target) showTooltip(target, event);
+      });
+
+      document.addEventListener("pointermove", event => {
+        if (activeTarget) placeTooltip(activeTarget, event);
+      });
+
+      document.addEventListener("pointerout", event => {
+        const target = event.target.closest(".tooltip-target");
+        if (target && !target.contains(event.relatedTarget)) hideTooltip();
+      });
+
+      document.addEventListener("focusin", event => {
+        const target = event.target.closest(".tooltip-target");
+        if (target) showTooltip(target);
+      });
+
+      document.addEventListener("focusout", event => {
+        if (event.target.closest(".tooltip-target")) hideTooltip();
+      });
+
+      window.addEventListener("scroll", hideTooltip, true);
+      window.addEventListener("resize", hideTooltip);
+    })();
+  </script>
+</body>
+</html>

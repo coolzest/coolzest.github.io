@@ -1,0 +1,1829 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>虚拟内存、物理内存与 TLB 地址转换全景图</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #5f6b7c;
+      --line: #cbd5e1;
+      --panel: #ffffff;
+      --canvas: #eef3f8;
+      --blue: #2563eb;
+      --blue-soft: #dbeafe;
+      --cyan: #0891b2;
+      --cyan-soft: #cffafe;
+      --violet: #7c3aed;
+      --violet-soft: #ede9fe;
+      --green: #16803c;
+      --green-soft: #dcfce7;
+      --amber: #b45309;
+      --amber-soft: #fef3c7;
+      --red: #c0262d;
+      --red-soft: #fee2e2;
+      --slate: #475569;
+      --slate-soft: #e2e8f0;
+      --shadow: 0 14px 36px rgba(15, 23, 42, .10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--canvas);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-width: 1180px;
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(37, 99, 235, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37, 99, 235, .035) 1px, transparent 1px),
+        var(--canvas);
+      background-size: 28px 28px;
+      font-family: "Microsoft YaHei UI", "Microsoft YaHei", system-ui, sans-serif;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      width: 100%;
+      padding-bottom: 56px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 30px 40px 26px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 82% 10%, rgba(34, 211, 238, .32), transparent 25%),
+        radial-gradient(circle at 10% 80%, rgba(139, 92, 246, .28), transparent 30%),
+        linear-gradient(125deg, #111827, #1e3a8a 56%, #075985);
+      border-bottom: 5px solid #22d3ee;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 560px;
+      gap: 34px;
+      align-items: center;
+      max-width: 1560px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+      padding: 5px 10px;
+      color: #a5f3fc;
+      background: rgba(8, 145, 178, .18);
+      border: 1px solid rgba(165, 243, 252, .36);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 38px;
+      line-height: 1.18;
+      letter-spacing: -.02em;
+    }
+
+    .hero p {
+      max-width: 850px;
+      margin: 13px 0 0;
+      color: #dbeafe;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .hero-note {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .hero-note div {
+      padding: 11px 12px;
+      background: rgba(15, 23, 42, .42);
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: 10px;
+    }
+
+    .hero-note b {
+      display: block;
+      margin-bottom: 3px;
+      color: #67e8f9;
+      font-size: 13px;
+    }
+
+    .hero-note span {
+      color: #e2e8f0;
+      font-size: 12px;
+    }
+
+    .equation-card {
+      padding: 19px 20px;
+      color: #172033;
+      background: rgba(255, 255, 255, .94);
+      border: 1px solid rgba(255, 255, 255, .82);
+      border-radius: 16px;
+      box-shadow: 0 16px 50px rgba(0, 0, 0, .22);
+    }
+
+    .equation-card h2 {
+      margin: 0 0 12px;
+      font-size: 16px;
+    }
+
+    .equation {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 10px;
+      align-items: center;
+      font-family: "Cascadia Mono", Consolas, monospace;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .equation .formula {
+      padding: 12px;
+      text-align: center;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 9px;
+    }
+
+    .equation .equals {
+      color: var(--blue);
+      font-size: 24px;
+    }
+
+    .offset-rule {
+      margin-top: 12px;
+      padding: 10px 12px;
+      color: #075985;
+      background: #ecfeff;
+      border-left: 4px solid #06b6d4;
+      border-radius: 7px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .section {
+      max-width: 1600px;
+      margin: 24px auto 0;
+      padding: 0 28px;
+    }
+
+    .section-title {
+      display: flex;
+      gap: 14px;
+      align-items: flex-end;
+      margin-bottom: 12px;
+    }
+
+    .section-number {
+      display: inline-grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      flex: 0 0 auto;
+      color: #fff;
+      background: var(--blue);
+      border-radius: 11px;
+      box-shadow: 0 7px 18px rgba(37, 99, 235, .24);
+      font-family: "Cascadia Mono", Consolas, monospace;
+      font-weight: 900;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.2;
+    }
+
+    .section-title p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .address-lab {
+      padding: 20px;
+    }
+
+    .address-controls {
+      display: grid;
+      grid-template-columns: 155px minmax(430px, 1fr) 160px 1fr;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 17px;
+    }
+
+    .control-label {
+      font-weight: 800;
+    }
+
+    .address-input {
+      width: 100%;
+      padding: 11px 13px;
+      color: #172033;
+      background: #f8fafc;
+      border: 2px solid #93c5fd;
+      border-radius: 9px;
+      outline: none;
+      font-family: "Cascadia Mono", Consolas, monospace;
+      font-weight: 800;
+    }
+
+    .address-input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, .12);
+    }
+
+    .apply-button {
+      padding: 11px 14px;
+      color: #fff;
+      background: var(--blue);
+      border: 0;
+      border-radius: 9px;
+      font-weight: 800;
+    }
+
+    .apply-button:hover {
+      background: #1d4ed8;
+    }
+
+    .address-hint {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .bit-ruler {
+      display: grid;
+      grid-template-columns: 16fr 9fr 9fr 9fr 9fr 12fr;
+      overflow: hidden;
+      border: 2px solid #334155;
+      border-radius: 11px;
+    }
+
+    .bit-field {
+      position: relative;
+      min-width: 0;
+      padding: 12px 8px 10px;
+      text-align: center;
+      border-right: 1px solid rgba(15, 23, 42, .35);
+    }
+
+    .bit-field:last-child {
+      border-right: 0;
+    }
+
+    .bit-field b {
+      display: block;
+      font-size: 13px;
+    }
+
+    .bit-field code {
+      display: block;
+      margin: 6px 0 4px;
+      font-family: "Cascadia Mono", Consolas, monospace;
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .bit-field small {
+      font-size: 11px;
+      opacity: .8;
+    }
+
+    .sign { color: #475569; background: #e2e8f0; }
+    .l4 { color: #1e3a8a; background: #bfdbfe; }
+    .l3 { color: #075985; background: #bae6fd; }
+    .l2 { color: #155e75; background: #a5f3fc; }
+    .l1 { color: #4c1d95; background: #ddd6fe; }
+    .offset { color: #166534; background: #bbf7d0; }
+
+    .address-summary {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .metric {
+      padding: 11px 13px;
+      background: #f8fafc;
+      border: 1px solid #dbe3ed;
+      border-radius: 9px;
+    }
+
+    .metric span {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .metric b {
+      font-family: "Cascadia Mono", Consolas, monospace;
+      font-size: 14px;
+    }
+
+    .simulator {
+      overflow: hidden;
+    }
+
+    .sim-toolbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      padding: 16px 18px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .scenario-buttons,
+    .step-buttons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .scenario-button,
+    .step-button {
+      padding: 8px 11px;
+      color: #334155;
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .scenario-button:hover,
+    .step-button:hover {
+      border-color: #60a5fa;
+    }
+
+    .scenario-button.selected {
+      color: #fff;
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .step-button.primary {
+      color: #fff;
+      background: #0f766e;
+      border-color: #0f766e;
+    }
+
+    .step-button:disabled {
+      cursor: not-allowed;
+      opacity: .42;
+    }
+
+    .flow-board {
+      position: relative;
+      padding: 20px;
+      background:
+        linear-gradient(rgba(15, 23, 42, .028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, .028) 1px, transparent 1px),
+        #fff;
+      background-size: 22px 22px;
+    }
+
+    .main-flow {
+      display: grid;
+      grid-template-columns: 145px 52px 190px 52px 175px 52px minmax(340px, 1.35fr) 52px 185px 52px 175px;
+      align-items: stretch;
+      min-height: 178px;
+    }
+
+    .node {
+      position: relative;
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 14px 10px;
+      text-align: center;
+      background: #f8fafc;
+      border: 2px solid #94a3b8;
+      border-radius: 13px;
+      transition: transform .22s, box-shadow .22s, opacity .22s, border-color .22s, background .22s;
+    }
+
+    .node-icon {
+      display: grid;
+      width: 46px;
+      height: 46px;
+      place-items: center;
+      margin-bottom: 8px;
+      color: #fff;
+      background: #475569;
+      border-radius: 12px;
+      font-family: "Cascadia Mono", Consolas, monospace;
+      font-weight: 900;
+    }
+
+    .node b {
+      font-size: 15px;
+      line-height: 1.25;
+    }
+
+    .node small {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .node code {
+      margin-top: 7px;
+      padding: 3px 6px;
+      color: #334155;
+      background: #e2e8f0;
+      border-radius: 5px;
+      font-family: "Cascadia Mono", Consolas, monospace;
+      font-size: 10px;
+    }
+
+    .node.cpu { border-color: #64748b; }
+    .node.mmu { border-color: var(--blue); background: var(--blue-soft); }
+    .node.mmu .node-icon { background: var(--blue); }
+    .node.tlb { border-color: var(--violet); background: var(--violet-soft); }
+    .node.tlb .node-icon { background: var(--violet); }
+    .node.walker { border-color: var(--cyan); background: var(--cyan-soft); }
+    .node.walker .node-icon { background: var(--cyan); }
+    .node.pa { border-color: var(--green); background: var(--green-soft); }
+    .node.pa .node-icon { background: var(--green); }
+    .node.cache { border-color: var(--amber); background: var(--amber-soft); }
+    .node.cache .node-icon { background: var(--amber); }
+
+    .arrow {
+      position: relative;
+      display: grid;
+      place-items: center;
+      color: #94a3b8;
+      font-size: 30px;
+      font-weight: 900;
+      transition: color .22s, transform .22s, opacity .22s;
+    }
+
+    .arrow::after {
+      content: attr(data-label);
+      position: absolute;
+      top: calc(50% + 24px);
+      width: 78px;
+      color: #64748b;
+      font-size: 9px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .walk-box {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(62px, 1fr));
+      gap: 6px;
+      align-content: center;
+      width: 100%;
+    }
+
+    .walk-level {
+      padding: 10px 5px;
+      background: rgba(255, 255, 255, .78);
+      border: 1px solid #67e8f9;
+      border-radius: 8px;
+    }
+
+    .walk-level b {
+      display: block;
+      color: #155e75;
+      font-size: 11px;
+    }
+
+    .walk-level code {
+      display: block;
+      margin: 5px 0 0;
+      padding: 0;
+      color: #0f172a;
+      background: transparent;
+      font-size: 11px;
+    }
+
+    .walk-level small {
+      display: block;
+      margin-top: 3px;
+      font-size: 9px;
+    }
+
+    [data-node].visited {
+      opacity: 1;
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, .12);
+    }
+
+    [data-node].active {
+      z-index: 2;
+      transform: translateY(-5px) scale(1.025);
+      border-color: #f97316;
+      background-color: #fff7ed;
+      box-shadow: 0 14px 28px rgba(249, 115, 22, .24), 0 0 0 4px rgba(249, 115, 22, .13);
+    }
+
+    .arrow.visited,
+    .arrow.active {
+      color: #10b981;
+    }
+
+    .arrow.active {
+      transform: scale(1.18);
+    }
+
+    .secondary-flow {
+      display: grid;
+      grid-template-columns: 1fr 56px 1fr 56px 1fr 56px 1fr;
+      align-items: stretch;
+      margin-top: 18px;
+      padding: 15px;
+      background: #fff7ed;
+      border: 1px dashed #fb923c;
+      border-radius: 13px;
+    }
+
+    .secondary-flow .node {
+      min-height: 104px;
+      padding: 10px;
+    }
+
+    .secondary-flow .node-icon {
+      width: 36px;
+      height: 36px;
+      margin-bottom: 5px;
+      background: #c2410c;
+      border-radius: 9px;
+      font-size: 12px;
+    }
+
+    .fault-node {
+      border-color: #ea580c;
+      background: #ffedd5;
+    }
+
+    .disk-node {
+      border-color: var(--red);
+      background: var(--red-soft);
+    }
+
+    .retry-node {
+      border-color: #0f766e;
+      background: #ccfbf1;
+    }
+
+    .status-strip {
+      display: grid;
+      grid-template-columns: 115px minmax(0, 1fr) 170px;
+      gap: 12px;
+      align-items: center;
+      padding: 15px 18px;
+      color: #e2e8f0;
+      background: #172033;
+    }
+
+    .status-badge {
+      padding: 7px 9px;
+      text-align: center;
+      color: #fff;
+      background: #ea580c;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .status-text {
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .status-counter {
+      color: #93c5fd;
+      text-align: right;
+      font-family: "Cascadia Mono", Consolas, monospace;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .concept-grid {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 18px;
+    }
+
+    .page-walk-panel,
+    .pte-panel,
+    .memory-panel,
+    .hierarchy-panel {
+      padding: 18px;
+    }
+
+    .panel-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .panel-heading h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .panel-heading span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .cr3-line {
+      display: grid;
+      grid-template-columns: 180px 44px repeat(4, minmax(120px, 1fr)) 44px 180px;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .table-card {
+      min-height: 122px;
+      padding: 12px 9px;
+      background: #f8fafc;
+      border: 2px solid #94a3b8;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .table-card.root {
+      border-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .table-card.entry {
+      border-color: var(--cyan);
+      background: var(--cyan-soft);
+    }
+
+    .table-card.final {
+      border-color: var(--green);
+      background: var(--green-soft);
+    }
+
+    .table-card b {
+      display: block;
+      font-size: 13px;
+    }
+
+    .table-card code {
+      display: block;
+      margin: 8px 0;
+      overflow-wrap: anywhere;
+      color: #0f172a;
+      font-family: "Cascadia Mono", Consolas, monospace;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .table-card small {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.45;
+    }
+
+    .mini-arrow {
+      color: var(--cyan);
+      text-align: center;
+      font-size: 25px;
+      font-weight: 900;
+    }
+
+    .walk-cost {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin-top: 14px;
+    }
+
+    .cost-card {
+      padding: 10px 11px;
+      background: #f8fafc;
+      border: 1px solid #dbe3ed;
+      border-radius: 8px;
+    }
+
+    .cost-card b {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 12px;
+    }
+
+    .cost-card span {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .pte-layout {
+      display: grid;
+      grid-template-columns: 28fr repeat(12, 3fr);
+      overflow: hidden;
+      border: 2px solid #334155;
+      border-radius: 9px;
+    }
+
+    .pte-bit {
+      min-width: 0;
+      padding: 12px 4px;
+      text-align: center;
+      border-right: 1px solid rgba(15, 23, 42, .35);
+      font-family: "Cascadia Mono", Consolas, monospace;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .pte-bit:last-child {
+      border-right: 0;
+    }
+
+    .pte-bit.frame {
+      color: #166534;
+      background: var(--green-soft);
+    }
+
+    .pte-bit.flag-on {
+      color: #1e3a8a;
+      background: var(--blue-soft);
+    }
+
+    .pte-bit.flag-off {
+      color: #7f1d1d;
+      background: var(--red-soft);
+    }
+
+    .pte-legend {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .legend-item {
+      padding: 9px 10px;
+      background: #f8fafc;
+      border-left: 4px solid #94a3b8;
+      border-radius: 6px;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .legend-item b {
+      color: #0f172a;
+    }
+
+    .memory-map {
+      display: grid;
+      grid-template-columns: 1fr 90px 1fr;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .memory-column h4 {
+      margin: 0 0 8px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .pages,
+    .frames {
+      display: grid;
+      gap: 5px;
+    }
+
+    .page-row,
+    .frame-row {
+      display: grid;
+      grid-template-columns: 82px 1fr 72px;
+      min-height: 38px;
+      align-items: center;
+      overflow: hidden;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      font-size: 11px;
+    }
+
+    .page-row > *,
+    .frame-row > * {
+      padding: 8px;
+    }
+
+    .page-row b,
+    .frame-row b {
+      color: #fff;
+      background: #475569;
+      text-align: center;
+    }
+
+    .page-row span,
+    .frame-row span {
+      color: #334155;
+    }
+
+    .page-row code,
+    .frame-row code {
+      color: #475569;
+      font-family: "Cascadia Mono", Consolas, monospace;
+      font-size: 10px;
+      text-align: right;
+    }
+
+    .page-row.selected,
+    .frame-row.selected {
+      border: 2px solid #16a34a;
+      background: var(--green-soft);
+      box-shadow: 0 0 0 3px rgba(22, 163, 74, .10);
+    }
+
+    .page-row.shared,
+    .frame-row.shared {
+      border-color: var(--violet);
+      background: var(--violet-soft);
+    }
+
+    .mapping-arrows {
+      display: grid;
+      gap: 10px;
+      color: var(--blue);
+      text-align: center;
+      font-family: "Cascadia Mono", Consolas, monospace;
+      font-size: 19px;
+      font-weight: 900;
+    }
+
+    .memory-callout {
+      margin-top: 13px;
+      padding: 11px 12px;
+      color: #334155;
+      background: #f8fafc;
+      border-left: 4px solid var(--violet);
+      border-radius: 7px;
+      font-size: 11px;
+      line-height: 1.65;
+    }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .compare-table th,
+    .compare-table td {
+      padding: 10px 9px;
+      border: 1px solid #dbe3ed;
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.45;
+    }
+
+    .compare-table th {
+      color: #fff;
+      background: #334155;
+    }
+
+    .compare-table td:first-child {
+      font-weight: 900;
+    }
+
+    .hierarchy {
+      display: grid;
+      grid-template-columns: 145px 1fr;
+      gap: 8px 12px;
+      align-items: center;
+    }
+
+    .hierarchy-label {
+      color: #334155;
+      font-size: 12px;
+      font-weight: 800;
+      text-align: right;
+    }
+
+    .hierarchy-bar {
+      min-height: 39px;
+      padding: 9px 12px;
+      color: #fff;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .h-register { width: 20%; background: #7c3aed; }
+    .h-tlb { width: 31%; background: #6d28d9; }
+    .h-l1 { width: 39%; background: #2563eb; }
+    .h-l2 { width: 53%; background: #0891b2; }
+    .h-l3 { width: 72%; background: #0f766e; }
+    .h-dram { width: 90%; background: #b45309; }
+    .h-disk { width: 100%; background: #b91c1c; }
+
+    .fault-timeline {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .timeline-step {
+      position: relative;
+      min-height: 116px;
+      padding: 12px 10px;
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-top: 5px solid var(--blue);
+      border-radius: 9px;
+    }
+
+    .timeline-step::after {
+      content: "→";
+      position: absolute;
+      top: 45px;
+      right: -13px;
+      z-index: 2;
+      color: #64748b;
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .timeline-step:last-child::after {
+      display: none;
+    }
+
+    .timeline-step.fault { border-top-color: var(--red); }
+    .timeline-step.kernel { border-top-color: var(--amber); }
+    .timeline-step.ok { border-top-color: var(--green); }
+
+    .timeline-step b {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+
+    .timeline-step span {
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .takeaways {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .takeaway {
+      padding: 14px;
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: 11px;
+      box-shadow: 0 7px 18px rgba(15, 23, 42, .06);
+    }
+
+    .takeaway b {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--blue);
+      font-size: 13px;
+    }
+
+    .takeaway span {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .tooltip-target {
+      cursor: help;
+    }
+
+    #vm-tooltip {
+      position: fixed;
+      z-index: 999;
+      display: none;
+      max-width: 360px;
+      padding: 10px 12px;
+      color: #fff;
+      background: rgba(15, 23, 42, .96);
+      border: 1px solid #475569;
+      border-radius: 8px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, .28);
+      pointer-events: none;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .error-message {
+      display: none;
+      margin-top: 9px;
+      padding: 8px 10px;
+      color: #991b1b;
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      border-radius: 7px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 1300px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr) 480px;
+      }
+
+      .main-flow {
+        grid-template-columns: 125px 40px 165px 40px 150px 40px minmax(300px, 1.3fr) 40px 160px 40px 150px;
+      }
+
+      .cr3-line {
+        grid-template-columns: 155px 34px repeat(4, minmax(105px, 1fr)) 34px 155px;
+      }
+    }
+
+    @media print {
+      body {
+        min-width: 0;
+        background: #fff;
+      }
+
+      .section {
+        max-width: none;
+        padding: 0 12px;
+      }
+
+      .sim-toolbar,
+      .step-buttons {
+        display: none;
+      }
+
+      .panel {
+        break-inside: avoid;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">MEMORY TRANSLATION · x86-64 · 4 KiB PAGE</div>
+          <h1>虚拟内存、物理内存与 TLB 地址转换全景图</h1>
+          <p>
+            一次普通的 <code>mov rax, [address]</code> 背后，CPU 会让 MMU 拆分虚拟地址、查询 TLB（快表）、
+            必要时遍历四级页表，检查权限，再组合物理地址并经过 CPU Cache 访问 DRAM。
+          </p>
+          <div class="hero-note">
+            <div><b>虚拟地址</b><span>进程看到的地址，每个进程拥有独立空间</span></div>
+            <div><b>页表映射</b><span>虚拟页号 VPN → 物理页框号 PFN</span></div>
+            <div><b>页内偏移</b><span>转换前后完全不变，直接拼到物理页框后</span></div>
+          </div>
+        </div>
+        <aside class="equation-card">
+          <h2>地址转换最核心的两条式子</h2>
+          <div class="equation">
+            <div class="formula">VA = VPN × PageSize + Offset</div>
+            <div class="equals">⇒</div>
+            <div class="formula">PA = PFN × PageSize + Offset</div>
+          </div>
+          <div class="offset-rule">
+            <b>关键直觉：</b>页表只翻译“页号”。4 KiB 页的低 12 位是页内偏移，
+            无论映射到哪个物理页框，这 12 位都原样保留。
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="section-title">
+        <span class="section-number">01</span>
+        <div>
+          <h2>先把一个 48 位虚拟地址拆开</h2>
+          <p>示例采用常见 x86-64 四级页表与 4 KiB 页面；输入地址后，各级索引会同步更新。</p>
+        </div>
+      </div>
+      <div class="panel address-lab">
+        <div class="address-controls">
+          <label class="control-label" for="virtual-address">虚拟地址 VA</label>
+          <input id="virtual-address" class="address-input" value="0x00007F12_3456_7ABC" spellcheck="false">
+          <button id="apply-address" class="apply-button" type="button">拆分地址</button>
+          <div class="address-hint">范围：48 位规范地址的低半区示例；支持十六进制与下划线分组。</div>
+        </div>
+        <div class="bit-ruler" aria-label="虚拟地址位域">
+          <div class="bit-field sign tooltip-target" data-tip="在典型 48 位虚拟地址模式下，位 63~48 必须是位 47 的符号扩展。这里展示用户空间低半区，所以高位为 0。">
+            <b>规范地址高位</b><code>0000</code><small>63…48 · 16 bit</small>
+          </div>
+          <div class="bit-field l4 tooltip-target" data-tip="PML4 索引：选择顶级页表中的一个 8 字节表项。">
+            <b>L4 / PML4</b><code id="l4-value">0x0FE</code><small>47…39 · 9 bit</small>
+          </div>
+          <div class="bit-field l3 tooltip-target" data-tip="PDPT 索引：由 PML4E 指向的下一级页表中选择一个表项。">
+            <b>L3 / PDPT</b><code id="l3-value">0x048</code><small>38…30 · 9 bit</small>
+          </div>
+          <div class="bit-field l2 tooltip-target" data-tip="Page Directory 索引：如果启用 2 MiB 大页，转换可在这一层提前结束。">
+            <b>L2 / PD</b><code id="l2-value">0x1A2</code><small>29…21 · 9 bit</small>
+          </div>
+          <div class="bit-field l1 tooltip-target" data-tip="Page Table 索引：最终定位到描述 4 KiB 页面映射的 PTE。">
+            <b>L1 / PT</b><code id="l1-value">0x167</code><small>20…12 · 9 bit</small>
+          </div>
+          <div class="bit-field offset tooltip-target" data-tip="页内偏移不会被翻译。4 KiB = 2^12 字节，所以偏移固定占低 12 位。">
+            <b>页内偏移</b><code id="offset-value">0xABC</code><small>11…0 · 12 bit</small>
+          </div>
+        </div>
+        <div id="address-error" class="error-message"></div>
+        <div class="address-summary">
+          <div class="metric"><span>虚拟页号 VPN</span><b id="vpn-value">0x7F1234567</b></div>
+          <div class="metric"><span>示例物理页框 PFN</span><b id="pfn-value">0x2A91B</b></div>
+          <div class="metric"><span>最终物理地址 PA</span><b id="physical-address">0x000000002A91BABC</b></div>
+          <div class="metric"><span>页大小 / 偏移范围</span><b>4 KiB / 0x000–0xFFF</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <span class="section-number">02</span>
+        <div>
+          <h2>一次内存访问到底走哪条路</h2>
+          <p>切换场景并逐步播放。橙色表示当前动作，绿色表示已经完成的动作。</p>
+        </div>
+      </div>
+      <div class="panel simulator">
+        <div class="sim-toolbar">
+          <div class="scenario-buttons" aria-label="转换场景">
+            <button class="scenario-button selected" type="button" data-scenario="hit">① TLB 命中</button>
+            <button class="scenario-button" type="button" data-scenario="miss">② TLB 未命中</button>
+            <button class="scenario-button" type="button" data-scenario="fault">③ 缺页异常</button>
+            <button class="scenario-button" type="button" data-scenario="protect">④ 权限异常</button>
+          </div>
+          <div class="step-buttons">
+            <button id="reset-step" class="step-button" type="button">重置</button>
+            <button id="prev-step" class="step-button" type="button">← 上一步</button>
+            <button id="next-step" class="step-button primary" type="button">下一步 →</button>
+            <button id="auto-step" class="step-button" type="button">自动播放</button>
+          </div>
+        </div>
+
+        <div class="flow-board">
+          <div class="main-flow">
+            <div class="node cpu tooltip-target" data-node="cpu" data-tip="CPU 执行加载、存储或取指令操作时产生虚拟地址。程序通常看不到最终物理地址。">
+              <span class="node-icon">CPU</span>
+              <b>执行内存访问</b>
+              <small>load / store / instruction fetch</small>
+              <code>mov rax, [VA]</code>
+            </div>
+            <div class="arrow" data-node="a-cpu-mmu" data-label="虚拟地址">→</div>
+            <div class="node mmu tooltip-target" data-node="mmu" data-tip="MMU 是 CPU 内部的内存管理单元，负责地址翻译、权限检查，并协调 TLB 与页表遍历器。">
+              <span class="node-icon">MMU</span>
+              <b>拆分虚拟地址</b>
+              <small>VPN + Offset<br>识别访问类型 R / W / X</small>
+              <code id="mmu-vpn">VPN 0x7F1234567</code>
+            </div>
+            <div class="arrow" data-node="a-mmu-tlb" data-label="VPN + ASID">→</div>
+            <div class="node tlb tooltip-target" data-node="tlb" data-tip="TLB（Translation Lookaside Buffer，快表）缓存最近使用的 VPN→PFN 翻译及权限。它缓存的是地址映射，不是程序数据。">
+              <span class="node-icon">TLB</span>
+              <b>查询快表</b>
+              <small>标签通常含 VPN + ASID/PCID</small>
+              <code id="tlb-result">等待查询</code>
+            </div>
+            <div class="arrow" data-node="a-tlb-walk" data-label="命中则跳过页表">→</div>
+            <div class="node walker tooltip-target" data-node="walker" data-tip="TLB 未命中时，硬件页表遍历器从 CR3 指向的根页表开始，按 L4→L3→L2→L1 查询。">
+              <span class="node-icon">PTW</span>
+              <b>硬件遍历四级页表</b>
+              <div class="walk-box">
+                <div class="walk-level" data-node="l4"><b>L4</b><code id="walk-l4">0x0FE</code><small>PML4E</small></div>
+                <div class="walk-level" data-node="l3"><b>L3</b><code id="walk-l3">0x048</code><small>PDPTE</small></div>
+                <div class="walk-level" data-node="l2"><b>L2</b><code id="walk-l2">0x1A2</code><small>PDE</small></div>
+                <div class="walk-level" data-node="l1"><b>L1</b><code id="walk-l1">0x167</code><small>PTE</small></div>
+                <div class="walk-level" data-node="pte"><b>PTE</b><code id="walk-pfn">PFN 2A91B</code><small>P/RW/US/NX</small></div>
+              </div>
+            </div>
+            <div class="arrow" data-node="a-walk-pa" data-label="PFN + 权限">→</div>
+            <div class="node pa tooltip-target" data-node="pa" data-tip="MMU 将 PTE 给出的物理页框号 PFN 与原虚拟地址的页内偏移拼接，形成物理地址。">
+              <span class="node-icon">PA</span>
+              <b>组合物理地址</b>
+              <small>PFN 保证页框<br>Offset 原样保留</small>
+              <code id="pa-node-value">0x2A91BABC</code>
+            </div>
+            <div class="arrow" data-node="a-pa-cache" data-label="物理地址">→</div>
+            <div class="node cache tooltip-target" data-node="cache" data-tip="数据或指令随后通过 L1/L2/L3 Cache 查找。TLB 缓存翻译，CPU Cache 缓存数据，两者不要混淆。">
+              <span class="node-icon">L1</span>
+              <b>CPU Cache / DRAM</b>
+              <small>L1 → L2 → L3 → 内存控制器 → DRAM</small>
+              <code>返回目标字节</code>
+            </div>
+          </div>
+
+          <div class="secondary-flow" aria-label="缺页异常处理路径">
+            <div class="node fault-node tooltip-target" data-node="fault" data-tip="PTE 的 Present 位为 0，或访问违反权限时，MMU 不再继续访问内存，而是产生同步异常。">
+              <span class="node-icon">#PF</span>
+              <b>触发 Page Fault</b>
+              <small>保存错误码与故障虚拟地址</small>
+            </div>
+            <div class="arrow" data-node="a-fault-os" data-label="进入内核">→</div>
+            <div class="node fault-node tooltip-target" data-node="os" data-tip="操作系统的缺页处理器检查该地址是否属于合法 VMA，以及本次读写执行是否符合区域权限。">
+              <span class="node-icon">OS</span>
+              <b>内核检查 VMA</b>
+              <small>地址合法吗？权限允许吗？</small>
+            </div>
+            <div class="arrow" data-node="a-os-disk" data-label="调页 / 分配">→</div>
+            <div class="node disk-node tooltip-target" data-node="disk" data-tip="合法但尚未驻留的页面可以从可执行文件、mmap 文件或 Swap 读入，也可能直接分配一个清零物理页。">
+              <span class="node-icon">I/O</span>
+              <b>准备物理页框</b>
+              <small>零页分配 / 文件读取 / Swap-in / COW</small>
+            </div>
+            <div class="arrow" data-node="a-disk-retry" data-label="更新 PTE">→</div>
+            <div class="node retry-node tooltip-target" data-node="retry" data-tip="内核填写新的 PTE，必要时刷新对应 TLB 项，随后从发生异常的指令重新执行。程序通常感觉不到这次重试。">
+              <span class="node-icon">↻</span>
+              <b>更新页表并重试</b>
+              <small>填入 PFN → 刷新 TLB → 返回用户态</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="status-strip">
+          <div id="status-badge" class="status-badge">准备</div>
+          <div id="status-text" class="status-text">选择场景后点击“下一步”，观察本次内存访问经过哪些硬件与操作系统组件。</div>
+          <div id="status-counter" class="status-counter">STEP 0 / 4</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <span class="section-number">03</span>
+        <div>
+          <h2>TLB 未命中时，四级页表如何“走”到物理页框</h2>
+          <p>CR3 保存当前地址空间根页表的物理基址；每个 9 位索引选择 512 个表项中的一个。</p>
+        </div>
+      </div>
+      <div class="concept-grid">
+        <div class="panel page-walk-panel">
+          <div class="panel-heading">
+            <h3>硬件 Page Walk 展开图</h3>
+            <span>每个表项 8 B · 每张表 512 项 · 恰好占 4 KiB</span>
+          </div>
+          <div class="cr3-line">
+            <div class="table-card root tooltip-target" data-tip="x86-64 中 CR3 指向当前页表层级根节点。切换进程时通常会切换 CR3，并借助 PCID 减少 TLB 全量失效。">
+              <b>CR3 / 页表根</b>
+              <code>0x0000000123400000</code>
+              <small>保存 L4 页表的物理地址</small>
+            </div>
+            <div class="mini-arrow">→</div>
+            <div class="table-card entry">
+              <b>PML4E[<span id="card-l4">0x0FE</span>]</b>
+              <code id="entry-l4">0x00000001234007F0</code>
+              <small>读出 L3 页表物理基址</small>
+            </div>
+            <div class="table-card entry">
+              <b>PDPTE[<span id="card-l3">0x048</span>]</b>
+              <code id="entry-l3">0x0000000456700240</code>
+              <small>读出 L2 页表物理基址</small>
+            </div>
+            <div class="table-card entry">
+              <b>PDE[<span id="card-l2">0x1A2</span>]</b>
+              <code id="entry-l2">0x0000000789A00D10</code>
+              <small>读出 L1 页表物理基址</small>
+            </div>
+            <div class="table-card entry">
+              <b>PTE[<span id="card-l1">0x167</span>]</b>
+              <code id="entry-l1">0x0000000ABCD00B38</code>
+              <small>得到 PFN 与页面权限</small>
+            </div>
+            <div class="mini-arrow">→</div>
+            <div class="table-card final">
+              <b>物理页框 PFN</b>
+              <code id="card-pfn">0x2A91B</code>
+              <small>页框基址 + Offset = PA</small>
+            </div>
+          </div>
+          <div class="walk-cost">
+            <div class="cost-card"><b>最坏情况</b><span>四级页表读取 4 次，再访问目标数据 1 次；TLB 用来避免频繁付出这个代价。</span></div>
+            <div class="cost-card"><b>页表项也会被缓存</b><span>页表遍历读取本身会利用 CPU Cache 和专用的 paging-structure cache。</span></div>
+            <div class="cost-card"><b>大页会缩短路径</b><span>2 MiB 页可在 PDE 结束，1 GiB 页可在 PDPTE 结束，但内部碎片可能更大。</span></div>
+          </div>
+        </div>
+
+        <div class="panel pte-panel">
+          <div class="panel-heading">
+            <h3>最终 PTE 里装了什么</h3>
+            <span>示意布局，不表示所有架构扩展位</span>
+          </div>
+          <div class="pte-layout tooltip-target" data-tip="PTE 不只是保存 PFN，还保存 Present、读写、用户态、访问、脏页、全局页和不可执行等控制位。">
+            <div class="pte-bit frame">物理页框号 PFN<br>位 51…12</div>
+            <div class="pte-bit flag-on">AVL</div>
+            <div class="pte-bit flag-on">G</div>
+            <div class="pte-bit flag-off">PAT</div>
+            <div class="pte-bit flag-on">D</div>
+            <div class="pte-bit flag-on">A</div>
+            <div class="pte-bit flag-off">PCD</div>
+            <div class="pte-bit flag-off">PWT</div>
+            <div class="pte-bit flag-on">U/S</div>
+            <div class="pte-bit flag-on">R/W</div>
+            <div class="pte-bit flag-on">P</div>
+            <div class="pte-bit flag-on">NX</div>
+            <div class="pte-bit flag-off">保留</div>
+          </div>
+          <div class="pte-legend">
+            <div class="legend-item"><b>P · Present</b><br>1 表示映射有效；0 通常触发缺页异常。</div>
+            <div class="legend-item"><b>R/W · Read/Write</b><br>控制页面是否允许写入。</div>
+            <div class="legend-item"><b>U/S · User/Supervisor</b><br>控制用户态能否访问该页。</div>
+            <div class="legend-item"><b>NX · No Execute</b><br>为 1 时禁止从该页取指执行。</div>
+            <div class="legend-item"><b>A / D</b><br>Accessed / Dirty，辅助页面置换与回写。</div>
+            <div class="legend-item"><b>G · Global</b><br>常用于内核全局映射，切换地址空间时可保留。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <span class="section-number">04</span>
+        <div>
+          <h2>虚拟页与物理页框不是“一一排队”</h2>
+          <p>连续虚拟页可以映射到离散物理页框；不同进程也可以共享同一个物理页框。</p>
+        </div>
+      </div>
+      <div class="concept-grid">
+        <div class="panel memory-panel">
+          <div class="panel-heading">
+            <h3>映射关系具象化</h3>
+            <span>页面与页框大小相同，位置可以完全不同</span>
+          </div>
+          <div class="memory-map">
+            <div class="memory-column">
+              <h4>进程 A 的虚拟地址空间</h4>
+              <div class="pages">
+                <div class="page-row"><b>VPN 100</b><span>代码页 .text</span><code>r-x</code></div>
+                <div class="page-row shared"><b>VPN 101</b><span>共享库代码</span><code>r-x</code></div>
+                <div class="page-row selected"><b id="selected-vpn">VPN …567</b><span>当前访问页面</span><code>rw-</code></div>
+                <div class="page-row"><b>VPN 103</b><span>尚未提交</span><code>---</code></div>
+                <div class="page-row"><b>VPN 104</b><span>栈页面</span><code>rw-</code></div>
+              </div>
+            </div>
+            <div class="mapping-arrows" aria-hidden="true">
+              <span>↘</span><span>⇒</span><span>↗</span><span>⋯</span><span>↘</span>
+            </div>
+            <div class="memory-column">
+              <h4>机器中的物理内存页框</h4>
+              <div class="frames">
+                <div class="frame-row"><b>PFN 03A</b><span>进程 A 栈</span><code>DRAM</code></div>
+                <div class="frame-row shared"><b>PFN 091</b><span>libc 共享只读页</span><code>A + B</code></div>
+                <div class="frame-row"><b>PFN 177</b><span>页表页面</span><code>kernel</code></div>
+                <div class="frame-row selected"><b id="selected-pfn">PFN 2A91B</b><span>当前目标页框</span><code>DRAM</code></div>
+                <div class="frame-row"><b>PFN 4C2</b><span>空闲页框</span><code>free</code></div>
+              </div>
+            </div>
+          </div>
+          <div class="memory-callout">
+            <b>进程隔离来自“不同页表”：</b>进程 A 与进程 B 即使都访问虚拟地址
+            <code>0x400000</code>，也可以映射到完全不同的物理页框。共享内存则反过来，让多个虚拟页显式指向同一页框。
+          </div>
+        </div>
+
+        <div class="panel hierarchy-panel">
+          <div class="panel-heading">
+            <h3>TLB 与 CPU Cache 到底差在哪</h3>
+            <span>一个缓存“地址翻译”，一个缓存“实际内容”</span>
+          </div>
+          <table class="compare-table">
+            <thead>
+              <tr><th>组件</th><th>缓存内容</th><th>查询键</th><th>未命中后</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>TLB / 快表</td><td>VPN → PFN + 权限</td><td>虚拟页号 + ASID/PCID</td><td>遍历页表</td></tr>
+              <tr><td>L1/L2/L3 Cache</td><td>指令或数据的 Cache Line</td><td>地址的一部分</td><td>访问下一级 Cache / DRAM</td></tr>
+              <tr><td>页表</td><td>完整、权威的映射关系</td><td>多级虚拟地址索引</td><td>不存在则 Page Fault</td></tr>
+              <tr><td>Swap / 文件</td><td>暂未驻留 DRAM 的页面内容</td><td>内核记录的后备位置</td><td>磁盘 I/O，延迟极高</td></tr>
+            </tbody>
+          </table>
+          <div class="memory-callout">
+            <b>常见误区：</b>TLB 命中只代表“地址翻译找到了”，不代表目标数据也在 L1 Cache；
+            两次命中是两个不同层面的加速。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <span class="section-number">05</span>
+        <div>
+          <h2>缺页异常不是一定“出错”</h2>
+          <p>合法缺页是按需分页的正常机制；非法地址或权限冲突才会最终变成访问违规。</p>
+        </div>
+      </div>
+      <div class="panel memory-panel">
+        <div class="fault-timeline">
+          <div class="timeline-step"><b>1. 指令访问 VA</b><span>CPU 发起读取、写入或取指请求。</span></div>
+          <div class="timeline-step"><b>2. TLB Miss</b><span>快表中没有当前 VPN 的有效翻译。</span></div>
+          <div class="timeline-step fault"><b>3. PTE Present=0</b><span>页表遍历发现页面当前不在物理内存。</span></div>
+          <div class="timeline-step kernel"><b>4. 进入内核</b><span>检查 VMA、访问类型与后备存储信息。</span></div>
+          <div class="timeline-step kernel"><b>5. 准备页框</b><span>分配零页、文件调页、Swap-in 或写时复制。</span></div>
+          <div class="timeline-step ok"><b>6. 更新 PTE/TLB</b><span>写入 PFN 和权限，失效旧 TLB 项。</span></div>
+          <div class="timeline-step ok"><b>7. 重启原指令</b><span>相同指令再次执行，这次可以完成访问。</span></div>
+        </div>
+        <div class="walk-cost">
+          <div class="cost-card"><b>Minor Page Fault</b><span>不需要磁盘读取，例如首次分配匿名零页或写时复制；仍有内核切换成本。</span></div>
+          <div class="cost-card"><b>Major Page Fault</b><span>需要从文件或 Swap 读取，延迟通常远高于普通内存访问。</span></div>
+          <div class="cost-card"><b>Protection Fault</b><span>映射存在但权限不允许，例如写只读页或执行 NX 页；通常不能靠调页解决。</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <span class="section-number">06</span>
+        <div>
+          <h2>速度层级：为什么硬件要费尽心思缓存翻译</h2>
+          <p>下方长度表达容量/延迟增长趋势，不代表精确比例；具体数字依处理器和平台而异。</p>
+        </div>
+      </div>
+      <div class="panel hierarchy-panel">
+        <div class="hierarchy">
+          <div class="hierarchy-label">寄存器</div><div class="hierarchy-bar h-register">极少 · 极快 · 当前指令直接使用</div>
+          <div class="hierarchy-label">TLB</div><div class="hierarchy-bar h-tlb">几十到数千条翻译 · 避免 Page Walk</div>
+          <div class="hierarchy-label">L1 Cache</div><div class="hierarchy-bar h-l1">数十 KiB · 最靠近核心</div>
+          <div class="hierarchy-label">L2 Cache</div><div class="hierarchy-bar h-l2">数百 KiB 到数 MiB · 每核或簇共享</div>
+          <div class="hierarchy-label">L3 / LLC</div><div class="hierarchy-bar h-l3">数 MiB 到数十 MiB · 多核心共享</div>
+          <div class="hierarchy-label">DRAM 物理内存</div><div class="hierarchy-bar h-dram">GiB 级 · 页表与目标数据最终驻留处</div>
+          <div class="hierarchy-label">SSD / Swap / 文件</div><div class="hierarchy-bar h-disk">容量最大 · 延迟最高 · Major Fault 才会触及</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <span class="section-number">✓</span>
+        <div>
+          <h2>把整个体系压缩成五句话</h2>
+          <p>如果这五句能在脑中连起来，虚拟内存的主干就已经建立。</p>
+        </div>
+      </div>
+      <div class="takeaways">
+        <div class="takeaway"><b>1. 程序使用 VA</b><span>每个进程看到自己的虚拟地址空间，而不是直接操作 DRAM 地址。</span></div>
+        <div class="takeaway"><b>2. TLB 先加速翻译</b><span>命中时直接得到 PFN 与权限；未命中才需要遍历页表。</span></div>
+        <div class="takeaway"><b>3. 页表映射 VPN→PFN</b><span>四级索引找到 PTE，页内偏移始终原样保留。</span></div>
+        <div class="takeaway"><b>4. 异常交给 OS</b><span>合法缺页可分配或调入页面；非法地址和权限冲突通常终止进程。</span></div>
+        <div class="takeaway"><b>5. PA 再访问 Cache/DRAM</b><span>翻译命中与数据命中是两件事，TLB 和 CPU Cache 各司其职。</span></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="vm-tooltip" role="tooltip"></div>
+
+  <script>
+    (() => {
+      const PAGE_SHIFT = 12n;
+      const PAGE_MASK = 0xFFFn;
+      const INDEX_MASK = 0x1FFn;
+      const MAX_LOW_CANONICAL = (1n << 47n) - 1n;
+      const PFN = 0x2A91Bn;
+
+      const input = document.getElementById("virtual-address");
+      const errorBox = document.getElementById("address-error");
+
+      const fields = {
+        l4: document.getElementById("l4-value"),
+        l3: document.getElementById("l3-value"),
+        l2: document.getElementById("l2-value"),
+        l1: document.getElementById("l1-value"),
+        offset: document.getElementById("offset-value"),
+        vpn: document.getElementById("vpn-value"),
+        pfn: document.getElementById("pfn-value"),
+        pa: document.getElementById("physical-address")
+      };
+
+      const formatHex = (value, width = 0) => {
+        const digits = value.toString(16).toUpperCase().padStart(width, "0");
+        return `0x${digits}`;
+      };
+
+      const parseAddress = value => {
+        const normalized = value.trim().replaceAll("_", "").replaceAll(" ", "");
+        if (!/^0x[0-9a-f]+$/i.test(normalized)) {
+          throw new Error("请输入以 0x 开头的十六进制地址，例如 0x00007F12_3456_7ABC。");
+        }
+        const address = BigInt(normalized);
+        if (address > MAX_LOW_CANONICAL) {
+          throw new Error("此交互示例使用 x86-64 低半区 48 位规范地址，最大值为 0x00007FFFFFFFFFFF。");
+        }
+        return address;
+      };
+
+      const tableBases = {
+        l4: 0x0000000123400000n,
+        l3: 0x0000000456700000n,
+        l2: 0x0000000789A00000n,
+        l1: 0x0000000ABCD00000n
+      };
+
+      function updateAddress() {
+        try {
+          const va = parseAddress(input.value);
+          const values = {
+            l4: (va >> 39n) & INDEX_MASK,
+            l3: (va >> 30n) & INDEX_MASK,
+            l2: (va >> 21n) & INDEX_MASK,
+            l1: (va >> 12n) & INDEX_MASK,
+            offset: va & PAGE_MASK,
+            vpn: va >> PAGE_SHIFT
+          };
+          const pa = (PFN << PAGE_SHIFT) | values.offset;
+
+          fields.l4.textContent = formatHex(values.l4, 3);
+          fields.l3.textContent = formatHex(values.l3, 3);
+          fields.l2.textContent = formatHex(values.l2, 3);
+          fields.l1.textContent = formatHex(values.l1, 3);
+          fields.offset.textContent = formatHex(values.offset, 3);
+          fields.vpn.textContent = formatHex(values.vpn);
+          fields.pfn.textContent = formatHex(PFN);
+          fields.pa.textContent = formatHex(pa, 16);
+
+          document.getElementById("mmu-vpn").textContent = `VPN ${formatHex(values.vpn)}`;
+          document.getElementById("pa-node-value").textContent = formatHex(pa);
+          document.getElementById("walk-l4").textContent = formatHex(values.l4, 3);
+          document.getElementById("walk-l3").textContent = formatHex(values.l3, 3);
+          document.getElementById("walk-l2").textContent = formatHex(values.l2, 3);
+          document.getElementById("walk-l1").textContent = formatHex(values.l1, 3);
+          document.getElementById("walk-pfn").textContent = `PFN ${formatHex(PFN).slice(2)}`;
+          document.getElementById("card-l4").textContent = formatHex(values.l4, 3);
+          document.getElementById("card-l3").textContent = formatHex(values.l3, 3);
+          document.getElementById("card-l2").textContent = formatHex(values.l2, 3);
+          document.getElementById("card-l1").textContent = formatHex(values.l1, 3);
+          document.getElementById("card-pfn").textContent = formatHex(PFN);
+          document.getElementById("entry-l4").textContent = formatHex(tableBases.l4 + values.l4 * 8n, 16);
+          document.getElementById("entry-l3").textContent = formatHex(tableBases.l3 + values.l3 * 8n, 16);
+          document.getElementById("entry-l2").textContent = formatHex(tableBases.l2 + values.l2 * 8n, 16);
+          document.getElementById("entry-l1").textContent = formatHex(tableBases.l1 + values.l1 * 8n, 16);
+          document.getElementById("selected-vpn").textContent = `VPN …${formatHex(values.vpn & 0xFFFn, 3).slice(2)}`;
+          document.getElementById("selected-pfn").textContent = `PFN ${formatHex(PFN).slice(2)}`;
+
+          errorBox.style.display = "none";
+          errorBox.textContent = "";
+        } catch (error) {
+          errorBox.textContent = error.message;
+          errorBox.style.display = "block";
+        }
+      }
+
+      document.getElementById("apply-address").addEventListener("click", updateAddress);
+      input.addEventListener("keydown", event => {
+        if (event.key === "Enter") updateAddress();
+      });
+
+      const scenarios = {
+        hit: {
+          name: "TLB 命中",
+          badge: "FAST PATH",
+          tlb: "HIT · 直接得到 PFN",
+          steps: [
+            { nodes: ["cpu", "a-cpu-mmu", "mmu"], text: "CPU 发起内存访问，MMU 将虚拟地址拆成虚拟页号 VPN 与页内偏移 Offset。" },
+            { nodes: ["a-mmu-tlb", "tlb"], text: "TLB 使用 VPN 与当前 ASID/PCID 查询缓存，找到有效翻译和权限：TLB Hit。" },
+            { nodes: ["a-tlb-walk", "pa"], text: "命中后无需遍历四级页表；MMU 直接取出 PFN，并与原始 Offset 拼接成物理地址。" },
+            { nodes: ["a-pa-cache", "cache"], text: "物理地址进入 Cache/内存层级，目标字节返回 CPU。一次访问完成。" }
+          ]
+        },
+        miss: {
+          name: "TLB 未命中",
+          badge: "PAGE WALK",
+          tlb: "MISS · 启动 Page Walk",
+          steps: [
+            { nodes: ["cpu", "a-cpu-mmu", "mmu"], text: "CPU 产生虚拟地址，MMU 提取 VPN、四级索引和页内偏移。" },
+            { nodes: ["a-mmu-tlb", "tlb"], text: "TLB 中没有匹配的 VPN + ASID/PCID：这只是缓存未命中，并不等于缺页。" },
+            { nodes: ["a-tlb-walk", "walker", "l4"], text: "硬件页表遍历器从 CR3 指向的 L4 根页表开始，使用 PML4 索引读取 PML4E。" },
+            { nodes: ["l3", "l2", "l1", "pte"], text: "依次读取 L3、L2、L1 表项，最终 PTE 给出 PFN、Present 与 R/W/U/S/NX 等权限。" },
+            { nodes: ["tlb", "a-walk-pa", "pa"], text: "有效翻译被回填到 TLB；PFN 与不变的 Offset 组合为物理地址。" },
+            { nodes: ["a-pa-cache", "cache"], text: "随后才进入数据/指令 Cache 和 DRAM。下次访问同一虚拟页通常可直接 TLB 命中。" }
+          ]
+        },
+        fault: {
+          name: "缺页异常",
+          badge: "PAGE FAULT",
+          tlb: "MISS · PTE Present=0",
+          steps: [
+            { nodes: ["cpu", "a-cpu-mmu", "mmu", "a-mmu-tlb", "tlb"], text: "CPU 访问虚拟地址，TLB 未命中，于是开始查询页表。" },
+            { nodes: ["a-tlb-walk", "walker", "l4", "l3", "l2", "l1", "pte"], text: "页表遍历最终发现 PTE.Present=0：当前没有可直接使用的物理页框映射。" },
+            { nodes: ["fault", "a-fault-os", "os"], text: "MMU 触发 #PF 同步异常。内核检查故障地址是否属于合法 VMA，以及本次访问权限是否合理。" },
+            { nodes: ["a-os-disk", "disk"], text: "若地址合法，内核分配零页、执行写时复制，或从文件/Swap 将页面读入物理内存。" },
+            { nodes: ["a-disk-retry", "retry", "tlb"], text: "内核更新 PTE，失效或刷新相关 TLB 项，然后返回发生异常的指令位置。" },
+            { nodes: ["mmu", "tlb", "pa", "a-pa-cache", "cache"], text: "原指令自动重试；这次翻译成功并完成访问。合法缺页通常不会终止进程。" }
+          ]
+        },
+        protect: {
+          name: "权限异常",
+          badge: "PROTECTION",
+          tlb: "HIT/MISS · 权限拒绝",
+          steps: [
+            { nodes: ["cpu", "a-cpu-mmu", "mmu"], text: "例如 CPU 尝试写入只读页，或从设置了 NX 的数据页取指执行。" },
+            { nodes: ["a-mmu-tlb", "tlb", "pte"], text: "TLB 或 PTE 中的权限位表明当前访问类型不被允许；即使映射存在也不能继续。" },
+            { nodes: ["fault", "a-fault-os", "os"], text: "MMU 产生带保护错误码的 #PF。内核检查这是否是可修复的写时复制等特殊情况。" },
+            { nodes: ["disk"], text: "普通权限违规不会通过从磁盘调页解决；问题是“禁止访问”，不是“页面不在内存”。" },
+            { nodes: ["retry"], text: "若属于 COW，内核复制新页并提升写权限后重试；否则向进程发送 SIGSEGV / Access Violation。" }
+          ]
+        }
+      };
+
+      let currentScenario = "hit";
+      let currentStep = -1;
+      let autoTimer = null;
+
+      const statusBadge = document.getElementById("status-badge");
+      const statusText = document.getElementById("status-text");
+      const statusCounter = document.getElementById("status-counter");
+      const prevButton = document.getElementById("prev-step");
+      const nextButton = document.getElementById("next-step");
+      const autoButton = document.getElementById("auto-step");
+      const tlbResult = document.getElementById("tlb-result");
+
+      function clearAuto() {
+        if (autoTimer) {
+          clearInterval(autoTimer);
+          autoTimer = null;
+        }
+        autoButton.textContent = "自动播放";
+      }
+
+      function renderScenario() {
+        const scenario = scenarios[currentScenario];
+        const allNodes = document.querySelectorAll("[data-node]");
+        allNodes.forEach(node => node.classList.remove("active", "visited"));
+
+        for (let index = 0; index <= currentStep; index += 1) {
+          const step = scenario.steps[index];
+          if (!step) continue;
+          step.nodes.forEach(name => {
+            document.querySelectorAll(`[data-node="${name}"]`).forEach(node => node.classList.add("visited"));
+          });
+        }
+
+        const activeStep = scenario.steps[currentStep];
+        if (activeStep) {
+          activeStep.nodes.forEach(name => {
+            document.querySelectorAll(`[data-node="${name}"]`).forEach(node => node.classList.add("active"));
+          });
+          statusText.textContent = activeStep.text;
+          statusBadge.textContent = scenario.badge;
+        } else {
+          statusText.textContent = `当前场景：${scenario.name}。点击“下一步”开始观察数据通路。`;
+          statusBadge.textContent = "准备";
+        }
+
+        tlbResult.textContent = currentStep >= 1 ? scenario.tlb : "等待查询";
+        statusCounter.textContent = `STEP ${Math.max(0, currentStep + 1)} / ${scenario.steps.length}`;
+        prevButton.disabled = currentStep < 0;
+        nextButton.disabled = currentStep >= scenario.steps.length - 1;
+      }
+
+      function setScenario(name) {
+        clearAuto();
+        currentScenario = name;
+        currentStep = -1;
+        document.querySelectorAll(".scenario-button").forEach(button => {
+          button.classList.toggle("selected", button.dataset.scenario === name);
+        });
+        renderScenario();
+      }
+
+      document.querySelectorAll(".scenario-button").forEach(button => {
+        button.addEventListener("click", () => setScenario(button.dataset.scenario));
+      });
+
+      document.getElementById("reset-step").addEventListener("click", () => {
+        clearAuto();
+        currentStep = -1;
+        renderScenario();
+      });
+
+      prevButton.addEventListener("click", () => {
+        clearAuto();
+        currentStep = Math.max(-1, currentStep - 1);
+        renderScenario();
+      });
+
+      nextButton.addEventListener("click", () => {
+        clearAuto();
+        const last = scenarios[currentScenario].steps.length - 1;
+        currentStep = Math.min(last, currentStep + 1);
+        renderScenario();
+      });
+
+      autoButton.addEventListener("click", () => {
+        if (autoTimer) {
+          clearAuto();
+          return;
+        }
+        if (currentStep >= scenarios[currentScenario].steps.length - 1) currentStep = -1;
+        autoButton.textContent = "暂停播放";
+        currentStep += 1;
+        renderScenario();
+        autoTimer = setInterval(() => {
+          const last = scenarios[currentScenario].steps.length - 1;
+          if (currentStep >= last) {
+            clearAuto();
+            return;
+          }
+          currentStep += 1;
+          renderScenario();
+        }, 1900);
+      });
+
+      const tooltip = document.getElementById("vm-tooltip");
+      let tooltipTarget = null;
+
+      function placeTooltip(target, event) {
+        const rect = target.getBoundingClientRect();
+        tooltip.style.display = "block";
+        const x = event && Number.isFinite(event.clientX) ? event.clientX + 14 : rect.left + rect.width / 2;
+        const y = event && Number.isFinite(event.clientY) ? event.clientY + 14 : rect.bottom + 10;
+        tooltip.style.left = `${Math.max(8, Math.min(x, window.innerWidth - tooltip.offsetWidth - 8))}px`;
+        tooltip.style.top = `${Math.max(8, Math.min(y, window.innerHeight - tooltip.offsetHeight - 8))}px`;
+      }
+
+      function showTooltip(target, event) {
+        const text = target.dataset.tip;
+        if (!text) return;
+        tooltipTarget = target;
+        tooltip.textContent = text;
+        placeTooltip(target, event);
+      }
+
+      function hideTooltip() {
+        tooltipTarget = null;
+        tooltip.style.display = "none";
+      }
+
+      document.querySelectorAll(".tooltip-target").forEach(target => {
+        target.tabIndex = target.tabIndex >= 0 ? target.tabIndex : 0;
+      });
+
+      document.addEventListener("pointerover", event => {
+        const target = event.target.closest(".tooltip-target");
+        if (target) showTooltip(target, event);
+      });
+      document.addEventListener("pointermove", event => {
+        if (tooltipTarget) placeTooltip(tooltipTarget, event);
+      });
+      document.addEventListener("pointerout", event => {
+        const target = event.target.closest(".tooltip-target");
+        if (target && !target.contains(event.relatedTarget)) hideTooltip();
+      });
+      document.addEventListener("focusin", event => {
+        const target = event.target.closest(".tooltip-target");
+        if (target) showTooltip(target);
+      });
+      document.addEventListener("focusout", event => {
+        if (event.target.closest(".tooltip-target")) hideTooltip();
+      });
+      window.addEventListener("scroll", hideTooltip, true);
+      window.addEventListener("resize", hideTooltip);
+
+      updateAddress();
+      renderScenario();
+    })();
+  </script>
+</body>
+</html>
